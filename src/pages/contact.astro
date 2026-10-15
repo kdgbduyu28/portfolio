@@ -7,7 +7,8 @@ const links = [
   { label: 'Email', value: SITE.email, href: `mailto:${SITE.email}` },
   { label: 'GitHub', value: SITE.github.replace('https://', ''), href: SITE.github },
   SITE.linkedin && { label: 'LinkedIn', value: SITE.linkedin.replace('https://www.', ''), href: SITE.linkedin },
-  SITE.resume && { label: 'Résumé', value: 'Download PDF', href: SITE.resume },
+  SITE.resume && { label: 'Résumé', value: 'View PDF', href: SITE.resume },
+  SITE.portfolio && { label: 'Technical portfolio', value: 'View PDF', href: SITE.portfolio },
 ].filter((l) => !!l);
 ---
 
@@ -17,14 +18,18 @@ const links = [
       <p class="eyebrow">Contact</p>
       <h1 class="h-display mt-3 text-5xl sm:text-6xl">Let's build something.</h1>
       <p class="mt-5 max-w-md text-lg text-muted">
-        A project for your business, a role on your team, or just a question about something here. We usually reply within a
-        day or two.
+        A project for your business, a role on your team, or a question about something here. I usually reply within a day
+        or two.
       </p>
       <ul class="mt-10 divide-y divide-line border-y border-line">
         {
           links.map((l) => (
             <li>
-              <a href={l.href} class="group flex items-center justify-between gap-4 py-4">
+              <a
+                href={l.href}
+                class="group flex items-center justify-between gap-4 py-4"
+                {...(l.href.endsWith('.pdf') ? { target: '_blank', rel: 'noopener' } : {})}
+              >
                 <span class="text-sm text-muted">{l.label}</span>
                 <span class="truncate font-medium group-hover:text-accent">
                   {l.value} <span aria-hidden="true">↗</span>
@@ -34,7 +39,7 @@ const links = [
           ))
         }
       </ul>
-      <p class="mt-6 text-sm text-muted">Based in the {SITE.location}. Happy to work remotely.</p>
+      <p class="mt-6 text-sm text-muted">Based in {SITE.location}. Contract or direct engagement, remote worldwide.</p>
     </div>
     <div class="rounded-3xl border border-line bg-card p-6 sm:p-8">
       <ContactForm />

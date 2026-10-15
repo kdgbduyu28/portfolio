@@ -3,6 +3,7 @@ import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import ClinicMock from './ClinicMock.astro';
 import AgentGraph from './AgentGraph.astro';
+import LayersDiagram from './LayersDiagram.astro';
 
 // The picture at the top of a project card: a cropped screenshot or a drawn mock-up on the project's colour.
 
@@ -33,6 +34,10 @@ const { data } = Astro.props.project;
     ) : data.demo.kind === 'clinic-mock' ? (
       <div class="absolute top-[12%] left-[7%] w-[120%] origin-top-left transition duration-500 group-hover:-translate-y-2">
         <ClinicMock variant="cover" />
+      </div>
+    ) : data.demo.kind === 'layers' ? (
+      <div class="absolute inset-x-[6%] top-1/2 -translate-y-1/2 transition duration-500 group-hover:-translate-y-[calc(50%+8px)]">
+        <LayersDiagram rows={data.demo.rows} accent={data.accent} compact />
       </div>
     ) : data.demo.kind === 'agent-graph' ? (
       <div class="absolute inset-x-[6%] top-1/2 -translate-y-1/2 transition duration-500 group-hover:scale-[1.03]">

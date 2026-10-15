@@ -11,33 +11,38 @@ export async function getProjects(): Promise<Project[]> {
 // so a skill with no project behind it simply doesn't appear.
 export const SKILL_GROUPS: { title: string; skills: { name: string; blurb: string }[] }[] = [
   {
-    title: 'Apps',
+    title: 'Mobile & frontend',
     skills: [
+      { name: 'Flutter & Dart', blurb: 'Native iOS and Android apps in production, with Riverpod, Provider and BLoC.' },
       { name: 'React Native & Expo', blurb: 'One codebase for web, Android and iOS, with Expo Router.' },
       { name: 'TypeScript', blurb: 'Typed end to end, from database rows to screens.' },
-      { name: 'Product design', blurb: 'Flows, layouts and copy that work on a phone and a desktop.' },
+      { name: 'Product design', blurb: 'Flows, layouts and copy that work on a phone, a tablet and a desktop.' },
     ],
   },
   {
-    title: 'Backend & data',
+    title: 'Backend & cloud',
     skills: [
-      { name: 'Supabase & PostgreSQL', blurb: 'Schemas, migrations, functions and full-text search.' },
-      { name: 'Database security (RLS)', blurb: 'Many clients on one database, kept apart by the database itself.' },
+      { name: 'AWS serverless', blurb: 'Lambda, API Gateway, AppSync, Step Functions, EventBridge and DynamoDB.' },
+      { name: 'Node.js & GraphQL', blurb: 'REST and GraphQL APIs over dozens of services.' },
+      { name: 'Payments (Stripe Connect)', blurb: 'Split tender, payouts, deposit holds, refunds and disputes, to the cent.' },
+      { name: 'Supabase & PostgreSQL', blurb: 'Schemas, migrations, PL/pgSQL, triggers and full-text search.' },
+      { name: 'Database security (RLS)', blurb: 'Many tenants on one database, kept apart by the database itself.' },
+    ],
+  },
+  {
+    title: 'Data & AI',
+    skills: [
       { name: 'Python data pipelines', blurb: 'Turning PDFs, CSVs and messy sites into clean, versioned data.' },
-    ],
-  },
-  {
-    title: 'AI',
-    skills: [
       { name: 'AI agents & LLMs', blurb: 'LangGraph agents on Claude that check their own work.' },
       { name: 'Search & retrieval', blurb: 'Hybrid vector and keyword search, re-ranking, measured with evals.' },
     ],
   },
   {
-    title: 'Shipping',
+    title: 'Delivery & operations',
     skills: [
-      { name: 'Testing', blurb: 'Vitest and pytest suites that run on every change.' },
+      { name: 'App Store & Play releases', blurb: 'fastlane and EAS builds, TestFlight and store releases in one command.' },
       { name: 'CI/CD & automation', blurb: 'GitHub Actions that test, fetch data and deploy on a schedule.' },
+      { name: 'Testing', blurb: 'Vitest, pytest and database test suites that run on every change.' },
       { name: 'Cloudflare', blurb: 'Pages hosting, Functions and Turnstile bot protection.' },
     ],
   },

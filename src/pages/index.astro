@@ -4,6 +4,7 @@ import PhoneFrame from '../components/PhoneFrame.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import Skills from '../components/Skills.astro';
 import Team from '../components/Team.astro';
+import Experience from '../components/Experience.astro';
 import { getProjects } from '../data/projects';
 import { SITE } from '../data/site';
 
@@ -34,21 +35,33 @@ const liveCount = projects.filter((p) => p.data.status === 'Live').length;
         <p class="mt-6 max-w-xl text-lg leading-relaxed text-muted sm:text-xl">{SITE.intro}</p>
         <div class="mt-8 flex flex-wrap gap-3">
           <a href="/projects" class="btn-primary">See the projects</a>
-          <a href="/contact" class="btn-ghost">Contact us</a>
-          {SITE.resume && <a href={SITE.resume} class="btn-ghost">Résumé (PDF)</a>}
+          {
+            SITE.resume && (
+              <a href={SITE.resume} target="_blank" rel="noopener" class="btn-ghost">
+                Résumé (PDF)
+              </a>
+            )
+          }
+          {
+            SITE.portfolio && (
+              <a href={SITE.portfolio} target="_blank" rel="noopener" class="btn-ghost">
+                Portfolio (PDF)
+              </a>
+            )
+          }
         </div>
         <dl class="mt-12 grid max-w-md grid-cols-3 gap-6 border-t border-line pt-6">
           <div>
-            <dt class="text-xs text-muted">Projects</dt>
-            <dd class="h-display mt-1 text-3xl">{projects.length}</dd>
+            <dt class="text-xs text-muted">Years shipping</dt>
+            <dd class="h-display mt-1 text-3xl">4+</dd>
           </div>
           <div>
             <dt class="text-xs text-muted">Live now</dt>
             <dd class="h-display mt-1 text-3xl">{liveCount}</dd>
           </div>
           <div>
-            <dt class="text-xs text-muted">Based in</dt>
-            <dd class="h-display mt-1 text-3xl">PH</dd>
+            <dt class="text-xs text-muted">Orders through my apps</dt>
+            <dd class="h-display mt-1 text-3xl">15k+</dd>
           </div>
         </dl>
       </div>
@@ -88,6 +101,7 @@ const liveCount = projects.filter((p) => p.data.status === 'Live').length;
     </div>
   </section>
 
+  <Experience />
   <Skills projects={projects} />
   <Team projects={projects} />
 
@@ -99,9 +113,9 @@ const liveCount = projects.filter((p) => p.data.status === 'Live').length;
       >
       </div>
       <p class="font-mono text-xs tracking-[0.14em] text-paper/60 uppercase">Contact</p>
-      <h2 class="h-display mt-3 max-w-2xl text-4xl sm:text-5xl">Have an app or a dataset in mind? Let's talk.</h2>
+      <h2 class="h-display mt-3 max-w-2xl text-4xl sm:text-5xl">Have an app or a backend to build? Let's talk.</h2>
       <p class="mt-4 max-w-xl text-paper/70">
-        We usually reply within a day or two. Tell us what you're building, or what you'd like us to build.
+        I usually reply within a day or two. Tell me what you're building, or what you need built.
       </p>
       <div class="mt-8 flex flex-wrap gap-3">
         <a href="/contact" class="btn bg-paper text-ink hover:bg-accent hover:text-paper">Send a message</a>

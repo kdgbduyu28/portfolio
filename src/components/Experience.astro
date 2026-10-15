@@ -1,0 +1,61 @@
+---
+import { EXPERIENCE, EDUCATION } from '../data/experience';
+import { SITE } from '../data/site';
+---
+
+<section id="experience" class="wrap scroll-mt-24 py-20">
+  <div class="flex flex-wrap items-end justify-between gap-6">
+    <div class="max-w-2xl">
+      <p class="eyebrow">Experience</p>
+      <h2 class="h-display mt-3 text-4xl sm:text-5xl">Where the work happened.</h2>
+    </div>
+    {
+      SITE.resume && (
+        <a href={SITE.resume} target="_blank" rel="noopener" class="btn-ghost">
+          Full résumé (PDF) ↗
+        </a>
+      )
+    }
+  </div>
+
+  <ol class="mt-12 border-l border-line">
+    {
+      EXPERIENCE.map((job) => (
+        <li class="relative pb-12 pl-8 last:pb-0 sm:pl-10">
+          <span class="absolute top-1.5 -left-[5px] size-[9px] rounded-full border-2 border-paper bg-accent" />
+          <div class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
+            <h3 class="text-lg font-semibold">
+              {job.title} <span class="font-normal text-muted">· {job.org}</span>
+            </h3>
+            <p class="font-mono text-xs text-muted">{job.period}</p>
+          </div>
+          {job.context && <p class="mt-1 text-sm text-muted">{job.context}</p>}
+          {job.points.length > 0 && (
+            <ul class="mt-4 max-w-3xl space-y-2">
+              {job.points.map((p) => (
+                <li class="flex gap-3 text-[0.95rem] leading-relaxed text-ink/85">
+                  <span class="mt-[10px] h-px w-3 shrink-0 bg-muted" />
+                  {p}
+                </li>
+              ))}
+            </ul>
+          )}
+          {job.project && (
+            <a href={`/projects/${job.project}`} class="mt-4 inline-block text-sm font-semibold underline-offset-4 hover:underline">
+              Read the case study →
+            </a>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+
+  <div class="mt-12 flex flex-wrap items-baseline justify-between gap-2 rounded-2xl border border-line bg-card px-6 py-5">
+    <p>
+      <span class="font-mono text-xs tracking-[0.14em] text-muted uppercase">Education</span>
+      <span class="ml-3 font-semibold">{EDUCATION.degree}</span>
+      <span class="text-muted"> · {EDUCATION.school}</span>
+    </p>
+    <p class="font-mono text-xs text-muted">{EDUCATION.period}</p>
+  </div>
+</section>

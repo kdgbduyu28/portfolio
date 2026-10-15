@@ -1,6 +1,6 @@
 # Portfolio
 
-Our project showcase: live demos, case studies, skills tied to the projects that prove them, the team, and a contact form.
+Tim Borja's portfolio site: case studies with live demos, work history, skills tied to the projects that prove them, the résumé and technical portfolio as PDFs, and a contact form.
 
 Built with [Astro](https://astro.build) and Tailwind CSS 4. Every page is static HTML, so it's fast and search engines can read it. The contact form is the only server code: one Cloudflare Pages Function.
 
@@ -17,7 +17,8 @@ npx astro check    # type check
 
 | To change… | Edit |
 |---|---|
-| Name, headline, email, GitHub, LinkedIn, résumé link | `src/data/site.ts` |
+| Name, headline, email, GitHub, LinkedIn, PDF links | `src/data/site.ts` |
+| Work history and education | `src/data/experience.ts` |
 | Team members | `src/data/team.ts` |
 | A project's case study | `src/content/projects/<slug>.md` (file name = URL) |
 | Skills list and their groups | `src/data/projects.ts` (`SKILL_GROUPS`) |
@@ -29,6 +30,7 @@ npx astro check    # type check
 Copy one of the files in `src/content/projects/`, change the frontmatter, and write the story below it. The schema is in `src/content.config.ts`. `demo.kind` picks how it is shown:
 
 - `phone` with a `url`: the live app in a phone frame, behind a "Try it live" button. Add a `screenshot` (390×844 at 2×, in `src/assets/projects/`) for the poster.
+- `layers`: an architecture diagram, one row per layer (see `food-delivery-platform.md`).
 - `clinic-mock` / `agent-graph`: drawn visuals for projects that can't be embedded.
 
 A project's `skills` must use the names in `SKILL_GROUPS` to show up under that skill. `team` lists member ids from `src/data/team.ts`.
@@ -37,9 +39,13 @@ A project's `skills` must use the names in `SKILL_GROUPS` to show up under that 
 
 The Clinic Platform is shown with a drawn mock-up (`src/components/ClinicMock.astro`). Every name and record in it is made up. Never put screenshots of the live system here.
 
-### Résumé
+### Résumé and portfolio PDFs
 
-Put the PDF at `public/resume.pdf` and set `resume: '/resume.pdf'` in `src/data/site.ts`. The buttons appear on their own.
+`public/resume.pdf` and `public/portfolio.pdf` are the downloadable versions. Short links to share: `/resume` and `/portfolio` (set in `public/_redirects`).
+
+To update one, replace the file and redeploy; keep the file names. Clear `resume` or `portfolio` in `src/data/site.ts` to hide its buttons.
+
+The Experience section on the home page (`src/data/experience.ts`) is copied from the résumé, so update both together.
 
 ## Contact form
 

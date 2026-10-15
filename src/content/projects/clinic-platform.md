@@ -1,54 +1,56 @@
 ---
-title: Clinic Platform
-tagline: One system for many clinics, with apps for patients, doctors, assistants and admins
-summary: A multi-clinic booking and records platform. Patients book and fill in intake forms; doctors work from a day calendar, dental chart and visit notes; admins run their own clinic. Every clinic's data is kept apart by the database itself.
-year: 2026
-status: Live
-order: 1
+title: D-Touch Health Platform
+tagline: Clinic management SaaS for many independent clinics, with every authorization rule enforced in PostgreSQL
+summary: Four React Native Web apps (patient, doctor, front desk, admin) on one Supabase Postgres backend, serving any number of clinics. There is no custom application server; tenant isolation, roles and privacy all live in the database. D-Touch Dental is the first clinic, running on test data ahead of launch.
+year: 2024
+status: Pre-launch
+order: 2
 featured: true
 demo:
   kind: clinic-mock
 accent: '#0f766e'
-role: Design, front end, database and deployment
-stack: [React Native for Web, Expo Router, TypeScript, Supabase, PostgreSQL, Row Level Security, Cloudflare Pages, Turnstile, Vitest]
+repo: https://github.com/kdgbduyu28/health-platform-fe
+links:
+  - { label: Backend repo, url: 'https://github.com/kdgbduyu28/health-platform-be' }
+role: Sole engineer. Product, front end, database and deployment.
+stack: [React Native for Web, Expo Router, React 19, TypeScript, TanStack Query, Supabase, PostgreSQL 17, Row Level Security, PL/pgSQL, Deno Edge Functions, Web Push, Cloudflare Pages, Turnstile, Vitest]
 skills: [React Native & Expo, TypeScript, Supabase & PostgreSQL, Database security (RLS), Product design, Testing, Cloudflare]
 highlights:
-  - Four apps (patient, doctor, assistant, admin) built from one shared code package
-  - Many clinics on one database, kept apart by Row Level Security rather than separate servers
-  - Month, week and day calendar with rescheduling and a live status board for the waiting room
-  - Tooth-by-tooth dental chart, private clinical notes and printable statements
-  - Patients fill in their intake form on a clinic tablet, which locks behind a staff PIN when handed back
-  - CSV import and export, audit log, and a Privacy Policy written for the Data Privacy Act (RA 10173)
-  - Rebuilt from Flutter to React Native, with every screen ported and 184 automated tests
+  - 77 Row Level Security policies across 28 tables; tables deny by default
+  - 660+ database checks verify tenant isolation and every role's access
+  - Exclusion constraints make double-booking impossible for any doctor or patient chart
+  - CSV imports you can preview with a real dry run, then undo as a batch
+  - An audit log written by database triggers, so no client can skip it
+  - Consent recorded per Privacy Policy version and per clinic, under the Data Privacy Act (RA 10173)
+  - Rewritten from Flutter to React Native for Web, about 30,600 lines and 78 routes, with 187 Vitest tests
 stats:
-  - { value: '4', label: 'apps from one codebase' }
-  - { value: '184', label: 'automated tests' }
-  - { value: '30+', label: 'database migrations' }
+  - { value: '77', label: 'RLS policies' }
+  - { value: '660+', label: 'database checks' }
+  - { value: '187', label: 'Vitest tests' }
 ---
 
-## The problem
+## What it is
 
-Small clinics in the Philippines often run on paper logbooks, Messenger and a spreadsheet. Patients can't see open slots, assistants re-type the same details at every visit, and a doctor's notes sit in a folder only one person can find.
+Small clinics in the Philippines often run on paper logbooks, Messenger and a spreadsheet. This platform gives each clinic four apps, one for each person's job, built for landscape tablets and desktops:
 
-Off-the-shelf clinic software is priced for hospitals. A small clinic needs something cheaper that still keeps patient data properly separated and private.
+- **Patient:** book and reschedule, a four-step intake form a guardian can complete, visit history, and a private calendar feed.
+- **Doctor:** day, week and month views, tooth charting (FDI or Universal), clinician-only notes and patient handover.
+- **Front desk:** a drag-and-drop status board from confirmed to arrived, in consultation and completed, plus walk-ins and recall lists.
+- **Admin:** staff invite codes with approval, billing with GCash, QR Ph, bank transfer or cash, an expense ledger, CSV import and export, and the audit log.
 
-## What we built
+It started as one dental practice with three hard-coded clinic identities. It is now multi-tenant: clinics are data rows, the clinic type switches dental features on per vertical, and each clinic has its own public page.
 
-One platform with four web apps, each made for one person's job:
+## The database is the backend
 
-- **Patient app:** book or reschedule visits, fill in the intake form (including a parent or guardian for minors), add visits to a phone calendar, and see past visits.
-- **Doctor app:** a day, week or month calendar, the patient's history, a tooth-by-tooth dental chart and private visit notes that only clinicians can read.
-- **Assistant app:** a front-desk status board (waiting, in the chair, done), walk-in booking and recording missed visits.
-- **Admin app:** clinic settings, branches, staff invites and codes, billing, CSV import and export, and an audit log of who changed what.
+There is no custom application server and no role logic in client queries. The apps talk to PostgREST and Supabase Auth, and **PostgreSQL enforces every rule**: 77 Row Level Security policies, 100+ PL/pgSQL functions and 50+ triggers, checked by 660+ database tests.
 
-## How it works
-
-There is no custom server. The apps talk straight to **Supabase** (Postgres plus sign-in), and every rule about who can see what is written into the database as **Row Level Security** policies. A doctor at one clinic cannot read another clinic's patients even if the app has a bug, because the database refuses the query.
-
-Each clinic is just a row in a `clinics` table, so adding a new clinic means adding data, not releasing a new version. A person can be a patient at one clinic and on staff at another, with one login.
-
-The front end started in Flutter. We rebuilt it in **React Native for Web with Expo Router** so the four apps could share one TypeScript package of screens, data access and components. The rebuild ported every screen and added 184 tests, and all four apps deploy to Cloudflare Pages with a single script.
+- **A role that leaked across tenants.** Roles used to live on the global user profile, so one clinic's admin could promote a person at another clinic. Roles now sit on each clinic membership, a trigger restricts branch-locked admins, and a guard keeps every clinic's last full admin.
+- **Overlap rules that respect privacy.** Scheduling clashes are checked per patient chart, not per person. A person-wide rule would let one clinic discover that the same patient has a booking at another.
+- **Notifications sent from the database.** One SQL function writes the inbox row, checks mutes, and calls a Deno Edge Function through `pg_net` for Web Push. `pg_cron` sends reminders.
+- **Integrity by construction.** Time-range exclusion constraints stop double-booking, composite foreign keys keep each appointment inside its own clinic, and walk-ins run in one transaction, so a lost slot race leaves no orphan chart.
 
 ## Privacy
 
-Patient data is sensitive, so the screenshots on this page use **made-up patients and appointments only**. The platform includes a Privacy Policy and Terms written for the Philippine Data Privacy Act (RA 10173), sign-up consent, Cloudflare Turnstile against bots, and an audit trail.
+The platform is **pre-launch and runs on test data**. The picture on this page is a drawn mock-up with made-up patients and visits; no real patient information appears on this site.
+
+Sign-up records which version of the Privacy Policy and Terms each person was shown. Consent to process health information is collected separately, per clinic, as the National Privacy Commission recommends.

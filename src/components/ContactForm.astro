@@ -47,7 +47,7 @@ const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as string | undefined;
     </form>
   ) : (
     <div class="rounded-2xl border border-line bg-card p-6">
-      <p class="font-semibold">Email us directly</p>
+      <p class="font-semibold">Email me directly</p>
       <p class="mt-1 text-sm text-muted">The contact form isn't switched on yet.</p>
       <a href={`mailto:${SITE.email}`} class="btn-primary mt-5">
         {SITE.email}
@@ -100,9 +100,9 @@ const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as string | undefined;
         const data = (await res.json().catch(() => ({}))) as { error?: string };
         if (!res.ok) throw new Error(data.error ?? 'Something went wrong.');
         form.reset();
-        say("Thanks! Your message is on its way. We'll reply by email.", true);
+        say("Thanks! Your message is on its way. I'll reply by email.", true);
       } catch (err) {
-        say(`${(err as Error).message} You can also email us directly.`, false);
+        say(`${(err as Error).message} You can also email me directly.`, false);
       } finally {
         submit.disabled = false;
         // A Turnstile token works once; get a fresh one for the next try.

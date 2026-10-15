@@ -4,7 +4,7 @@ tagline: An AI agent that answers questions from documentation and checks its ow
 summary: A retrieval-augmented (RAG) agent built with LangGraph and Claude. It searches the docs, judges whether what it found is good enough, searches again if not, and checks every claim in its answer against the source before replying.
 year: 2026
 status: Source only
-order: 4
+order: 5
 featured: false
 demo:
   kind: agent-graph
@@ -32,7 +32,7 @@ Most "chat with your docs" demos search once and answer with whatever comes back
 
 The question Groundwork is built to answer is the one interviewers ask: **how do you know your search is any good?**
 
-## What we built
+## What I built
 
 An agent that answers questions about the LangGraph documentation, so anyone can check its answers against the real source. It is built as a graph with two loops:
 

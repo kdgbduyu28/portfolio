@@ -1,0 +1,58 @@
+---
+// An architecture diagram drawn from a project's `demo.rows`: one labelled row per layer.
+
+interface Props {
+  rows: { label: string; items: { name: string; note?: string }[]; emphasis: boolean }[];
+  accent: string;
+  compact?: boolean;
+}
+
+const { rows, accent, compact = false } = Astro.props;
+---
+
+<figure
+  class:list={['layers rounded-xl border border-stone-200 bg-white text-stone-800 shadow-sm', compact ? 'p-3' : 'p-4 sm:p-6']}
+  style={`--layer-accent:${accent}`}
+>
+  <div class:list={['grid', compact ? 'gap-1.5' : 'gap-2.5']}>
+    {
+      rows.map((row) => (
+        <div class:list={['grid items-stretch', compact ? 'grid-cols-[52px_1fr] gap-2' : 'gap-1.5 sm:grid-cols-[110px_1fr] sm:gap-3']}>
+          <p
+            class:list={[
+              'self-center font-mono tracking-[0.12em] text-stone-400 uppercase',
+              compact ? 'text-[7px]' : 'text-[10px]',
+            ]}
+          >
+            {row.label}
+          </p>
+          <div
+            class:list={[
+              'grid gap-1.5',
+              compact ? 'grid-cols-[repeat(var(--cols),minmax(0,1fr))]' : 'grid-cols-2 sm:grid-cols-[repeat(var(--cols),minmax(0,1fr))]',
+            ]}
+            style={`--cols:${Math.min(row.items.length, 4)}`}
+          >
+            {row.items.map((item) => (
+              <div
+                class:list={[
+                  'min-w-0 rounded-md border break-words',
+                  !compact && row.items.length === 1 && 'col-span-2 sm:col-span-1',
+                  compact ? 'px-1.5 py-1' : 'px-2.5 py-2',
+                  row.emphasis ? 'border-[var(--layer-accent)] bg-[color-mix(in_oklab,var(--layer-accent)_7%,white)]' : 'border-stone-200 bg-stone-50/60',
+                ]}
+              >
+                <p class:list={['font-semibold', compact ? 'truncate text-[8px]' : 'text-xs leading-snug sm:text-[13px]']}>{item.name}</p>
+                {item.note && (
+                  <p class:list={['font-mono text-stone-500', compact ? 'truncate text-[6.5px]' : 'mt-0.5 text-[10px] leading-snug']}>
+                    {item.note}
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</figure>

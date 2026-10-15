@@ -16,8 +16,8 @@ export const TEAM: Member[] = [
   {
     id: 'tim',
     name: 'Tim Borja',
-    role: 'Full-stack & mobile developer',
-    bio: 'Builds React Native and web apps, Supabase/Postgres backends, Python data pipelines and LLM agents, and ships them to production.',
+    role: 'Full-stack engineer',
+    bio: 'Sole engineer on a campus food-ordering platform in production on the App Store and Google Play. Builds Flutter and React Native clients, AWS serverless and Postgres backends, and the pipelines that ship them.',
     github: 'https://github.com/kdgbduyu28',
     email: 'timothyborja28@gmail.com',
   },

@@ -52,6 +52,13 @@ const initials = SITE.name
             d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4m11.4-11.4 1.4-1.4"></path></svg
         >
       </button>
+      {
+        SITE.resume && (
+          <a href={SITE.resume} target="_blank" rel="noopener" class="btn-ghost hidden lg:inline-flex">
+            Résumé
+          </a>
+        )
+      }
       <a href="/contact" class="btn-primary hidden sm:inline-flex">Get in touch</a>
       <details class="relative md:hidden" data-mobile-nav>
         <summary
@@ -72,6 +79,13 @@ const initials = SITE.name
                 {item.label}
               </a>
             ))
+          }
+          {
+            SITE.resume && (
+              <a href={SITE.resume} target="_blank" rel="noopener" class="rounded-xl px-3 py-2.5 text-sm font-medium hover:bg-line/60">
+                Résumé (PDF) ↗
+              </a>
+            )
           }
         </nav>
       </details>

@@ -1,31 +1,49 @@
 // Everything a visitor sees about who we are and how to reach us.
 // Edit here; pages read from this file.
 
-export const SITE: Record<
-  'url' | 'name' | 'title' | 'description' | 'headline' | 'intro' | 'location' | 'availability' | 'email' | 'github' | 'linkedin' | 'resume',
-  string
-> = {
+type SiteKey =
+  | 'url'
+  | 'name'
+  | 'fullName'
+  | 'role'
+  | 'title'
+  | 'description'
+  | 'headline'
+  | 'intro'
+  | 'location'
+  | 'availability'
+  | 'email'
+  | 'github'
+  | 'linkedin'
+  | 'resume'
+  | 'portfolio';
+
+export const SITE: Record<SiteKey, string> = {
   // Change after the first Cloudflare deploy (or when a custom domain is added).
   url: 'https://tim-borja.pages.dev',
   name: 'Tim Borja',
-  title: 'Tim Borja · Apps, data and AI, built and shipped',
+  fullName: 'Timothy Maersk M. Borja',
+  role: 'Full-stack engineer',
+  title: 'Tim Borja · Full-stack engineer: mobile, web and serverless',
   description:
-    'Mobile and web apps, data pipelines and AI agents built in the Philippines. Live demos, case studies and contact.',
-  headline: 'We build apps people can actually open.',
+    'Full-stack engineer in the Philippines building production mobile apps, web platforms and AWS serverless backends. Case studies, live demos, résumé and contact.',
+  headline: 'Production apps, from the phone to the database.',
   intro:
-    'Mobile and web apps, data pipelines and AI agents, built end to end and shipped live. Every project here has a working demo or its source code, so you can try it before you read about it.',
-  location: 'Philippines',
-  availability: 'Open to freelance projects and full-time roles',
+    "Full-stack engineer with 4+ years shipping web and mobile systems: Flutter and React Native clients, AWS serverless and Postgres backends, payments, and the release pipeline. Most of what's here is live, so you can try it before you read about it.",
+  location: 'Cavite, Philippines',
+  availability: 'Available for contract or direct work · remote worldwide',
   email: 'timothyborja28@gmail.com',
   github: 'https://github.com/kdgbduyu28',
   linkedin: '', // e.g. 'https://www.linkedin.com/in/…' (left empty to hide)
-  // Put a PDF at public/resume.pdf and set this to '/resume.pdf' to show the button.
-  resume: '',
+  // PDFs in public/. Short links /resume and /portfolio point at them (public/_redirects).
+  // Set to '' to hide the buttons.
+  resume: '/resume.pdf',
+  portfolio: '/portfolio.pdf',
 };
 
 export const NAV = [
   { href: '/projects', label: 'Projects' },
+  { href: '/#experience', label: 'Experience' },
   { href: '/#skills', label: 'Skills' },
-  { href: '/#team', label: 'Team' },
   { href: '/contact', label: 'Contact' },
 ] as const;
