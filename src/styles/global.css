@@ -1,0 +1,106 @@
+@import 'tailwindcss';
+
+/* Dark mode follows the `dark` class on <html>, set by the theme script in Base.astro. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Bricolage Grotesque', 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+
+  --color-paper: #faf8f4;
+  --color-ink: #16140f;
+  --color-muted: #6b665c;
+  --color-line: #e6e1d6;
+  --color-card: #ffffff;
+  --color-accent: #0d7c6c;
+  --color-accent-soft: #d9efe9;
+}
+
+/* Same token names, dark values: components use bg-paper, text-ink, etc. in both themes. */
+.dark {
+  --color-paper: #0f0f0d;
+  --color-ink: #f2efe8;
+  --color-muted: #a29d92;
+  --color-line: #2a2924;
+  --color-card: #181815;
+  --color-accent: #3fc7ad;
+  --color-accent-soft: #11332c;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-paper text-ink font-sans antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    background: var(--color-accent);
+    color: var(--color-paper);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+}
+
+@utility wrap {
+  @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
+}
+@utility eyebrow {
+  @apply font-mono text-xs font-medium tracking-[0.14em] text-accent uppercase;
+}
+@utility h-display {
+  @apply font-display font-semibold tracking-tight text-balance;
+}
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition;
+}
+@utility btn-primary {
+  @apply btn bg-ink text-paper hover:bg-accent;
+}
+@utility btn-ghost {
+  @apply btn border border-line bg-card text-ink hover:border-ink;
+}
+@utility chip {
+  @apply inline-flex items-center rounded-full border border-line bg-card px-2.5 py-1 text-xs font-medium text-muted;
+}
+
+@layer components {
+  /* Case-study body copy rendered from Markdown. */
+  .prose-case h2 {
+    @apply h-display mt-12 mb-4 text-2xl sm:text-3xl;
+  }
+  .prose-case p,
+  .prose-case ul {
+    @apply mb-5 text-[1.05rem] leading-relaxed text-ink/85;
+  }
+  .prose-case ul {
+    @apply list-disc space-y-2 pl-5 marker:text-accent;
+  }
+  .prose-case strong {
+    @apply font-semibold text-ink;
+  }
+  .prose-case a {
+    @apply font-medium text-accent underline decoration-accent/40 underline-offset-4 hover:decoration-accent;
+  }
+  .prose-case code {
+    @apply rounded bg-accent-soft px-1.5 py-0.5 font-mono text-[0.85em];
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

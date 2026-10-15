@@ -1,0 +1,112 @@
+---
+import Base from '../layouts/Base.astro';
+import PhoneFrame from '../components/PhoneFrame.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import Skills from '../components/Skills.astro';
+import Team from '../components/Team.astro';
+import { getProjects } from '../data/projects';
+import { SITE } from '../data/site';
+
+const projects = await getProjects();
+const featured = projects.filter((p) => p.data.featured);
+const rest = projects.filter((p) => !p.data.featured);
+const heroDemo = projects.find((p) => p.id === 'pabili') ?? projects.find((p) => p.data.demo.kind === 'phone');
+const liveCount = projects.filter((p) => p.data.status === 'Live').length;
+---
+
+<Base>
+  <!-- Hero -->
+  <section class="relative overflow-hidden">
+    <div
+      class="pointer-events-none absolute inset-0 -z-10 opacity-60 [background-image:radial-gradient(var(--color-line)_1px,transparent_1px)] [background-size:22px_22px] [mask-image:radial-gradient(70%_60%_at_30%_30%,black,transparent)]"
+    >
+    </div>
+    <div class="wrap grid items-center gap-14 pt-14 pb-20 lg:grid-cols-[1.2fr_1fr] lg:pt-20">
+      <div>
+        <p class="inline-flex items-center gap-2 rounded-full border border-line bg-card px-3 py-1.5 text-xs font-medium text-muted">
+          <span class="relative flex size-2"
+            ><span class="absolute inline-flex size-full animate-ping rounded-full bg-emerald-500 opacity-60"></span><span
+              class="relative inline-flex size-2 rounded-full bg-emerald-500"></span></span
+          >
+          {SITE.availability}
+        </p>
+        <h1 class="h-display mt-6 text-5xl leading-[1.02] sm:text-6xl lg:text-7xl">{SITE.headline}</h1>
+        <p class="mt-6 max-w-xl text-lg leading-relaxed text-muted sm:text-xl">{SITE.intro}</p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="/projects" class="btn-primary">See the projects</a>
+          <a href="/contact" class="btn-ghost">Contact us</a>
+          {SITE.resume && <a href={SITE.resume} class="btn-ghost">Résumé (PDF)</a>}
+        </div>
+        <dl class="mt-12 grid max-w-md grid-cols-3 gap-6 border-t border-line pt-6">
+          <div>
+            <dt class="text-xs text-muted">Projects</dt>
+            <dd class="h-display mt-1 text-3xl">{projects.length}</dd>
+          </div>
+          <div>
+            <dt class="text-xs text-muted">Live now</dt>
+            <dd class="h-display mt-1 text-3xl">{liveCount}</dd>
+          </div>
+          <div>
+            <dt class="text-xs text-muted">Based in</dt>
+            <dd class="h-display mt-1 text-3xl">PH</dd>
+          </div>
+        </dl>
+      </div>
+
+      {
+        heroDemo && heroDemo.data.demo.kind === 'phone' && (
+          <div class="relative">
+            <div
+              class="absolute inset-x-6 top-10 bottom-16 -z-10 rounded-[3rem] opacity-25 blur-3xl"
+              style={`background:${heroDemo.data.accent}`}
+            />
+            <PhoneFrame
+              url={heroDemo.data.demo.url}
+              title={heroDemo.data.title}
+              screenshot={heroDemo.data.screenshot}
+              accent={heroDemo.data.accent}
+              eager
+            />
+          </div>
+        )
+      }
+    </div>
+  </section>
+
+  <!-- Work -->
+  <section id="work" class="wrap scroll-mt-24 py-20">
+    <div class="flex flex-wrap items-end justify-between gap-6">
+      <div class="max-w-2xl">
+        <p class="eyebrow">Selected work</p>
+        <h2 class="h-display mt-3 text-4xl sm:text-5xl">Built, shipped, and still running.</h2>
+      </div>
+      <a href="/projects" class="text-sm font-semibold underline-offset-4 hover:underline">All projects →</a>
+    </div>
+    <div class="mt-12 grid gap-6 md:grid-cols-2">
+      {featured.map((p) => <ProjectCard project={p} />)}
+      {rest.map((p) => <ProjectCard project={p} />)}
+    </div>
+  </section>
+
+  <Skills projects={projects} />
+  <Team projects={projects} />
+
+  <!-- Contact band -->
+  <section class="wrap py-10">
+    <div class="relative overflow-hidden rounded-[2rem] bg-ink px-6 py-14 text-paper sm:px-12 sm:py-16">
+      <div
+        class="pointer-events-none absolute -top-24 -right-24 size-80 rounded-full bg-accent opacity-30 blur-3xl"
+      >
+      </div>
+      <p class="font-mono text-xs tracking-[0.14em] text-paper/60 uppercase">Contact</p>
+      <h2 class="h-display mt-3 max-w-2xl text-4xl sm:text-5xl">Have an app or a dataset in mind? Let's talk.</h2>
+      <p class="mt-4 max-w-xl text-paper/70">
+        We usually reply within a day or two. Tell us what you're building, or what you'd like us to build.
+      </p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href="/contact" class="btn bg-paper text-ink hover:bg-accent hover:text-paper">Send a message</a>
+        <a href={`mailto:${SITE.email}`} class="btn border border-paper/25 hover:border-paper">{SITE.email}</a>
+      </div>
+    </div>
+  </section>
+</Base>

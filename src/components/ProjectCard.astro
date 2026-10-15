@@ -1,0 +1,36 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import ProjectCover from './ProjectCover.astro';
+import StatusBadge from './StatusBadge.astro';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+}
+
+const { project } = Astro.props;
+const { data } = project;
+---
+
+<article
+  class="group relative flex flex-col overflow-hidden rounded-3xl border border-line bg-card transition duration-300 hover:-translate-y-1 hover:shadow-[0_24px_50px_-30px_rgba(0,0,0,0.35)]"
+  data-skills={data.skills.join('|')}
+>
+  <ProjectCover project={project} />
+  <div class="flex flex-1 flex-col p-6">
+    <div class="mb-3 flex items-center gap-2">
+      <StatusBadge status={data.status} />
+      <span class="font-mono text-xs text-muted">{data.year}</span>
+    </div>
+    <h3 class="h-display text-2xl">
+      <a href={`/projects/${project.id}`} class="after:absolute after:inset-0">{data.title}</a>
+    </h3>
+    <p class="mt-2 text-[0.95rem] leading-relaxed text-muted">{data.tagline}</p>
+    <ul class="mt-5 flex flex-wrap gap-1.5" aria-label="Built with">
+      {data.stack.slice(0, 5).map((s) => <li class="chip">{s}</li>)}
+      {data.stack.length > 5 && <li class="chip">+{data.stack.length - 5}</li>}
+    </ul>
+    <p class="mt-auto pt-6 text-sm font-semibold text-ink">
+      Read the case study <span class="inline-block transition group-hover:translate-x-1" aria-hidden="true">→</span>
+    </p>
+  </div>
+</article>

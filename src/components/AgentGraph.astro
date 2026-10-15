@@ -1,0 +1,73 @@
+---
+// Groundwork's agent graph: search → grade → write → verify, with its two retry loops.
+---
+
+<figure class="agent-graph rounded-xl border border-white/10 bg-[#14122b] p-4 text-white sm:p-6">
+  <svg viewBox="0 0 700 300" class="h-auto w-full" role="img" aria-labelledby="ag-title ag-desc">
+    <title id="ag-title">Groundwork agent graph</title>
+    <desc id="ag-desc">
+      A question is triaged, then the agent retrieves documents and grades them. If they are not good enough it
+      expands the search and retrieves again. Then it writes an answer and verifies every claim, rewriting if a claim is
+      unsupported, before finishing.
+    </desc>
+    <defs>
+      <marker id="ag-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0 0 10 5 0 10z" fill="#a5b4fc"></path>
+      </marker>
+      <marker id="ag-loop" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0 0 10 5 0 10z" fill="#fbbf24"></path>
+      </marker>
+    </defs>
+
+    <g fill="none" stroke-width="1.6">
+      <!-- main path -->
+      <path d="M78 150H104" stroke="#a5b4fc" marker-end="url(#ag-arrow)"></path>
+      <path d="M186 150H212" stroke="#a5b4fc" marker-end="url(#ag-arrow)"></path>
+      <path d="M294 150H320" stroke="#a5b4fc" marker-end="url(#ag-arrow)"></path>
+      <path d="M402 150H428" stroke="#a5b4fc" marker-end="url(#ag-arrow)"></path>
+      <path d="M510 150H536" stroke="#a5b4fc" marker-end="url(#ag-arrow)"></path>
+      <!-- search-again loop: grade → expand → retrieve -->
+      <path d="M361 128V80H253V100" stroke="#fbbf24" stroke-dasharray="5 4"></path>
+      <path d="M253 100V126" stroke="#fbbf24" stroke-dasharray="5 4" marker-end="url(#ag-loop)"></path>
+      <!-- rewrite loop: verify → write -->
+      <path d="M577 172V226H469V196" stroke="#fbbf24" stroke-dasharray="5 4"></path>
+      <path d="M469 196V174" stroke="#fbbf24" stroke-dasharray="5 4" marker-end="url(#ag-loop)"></path>
+    </g>
+
+    <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="12" text-anchor="middle">
+      <circle cx="62" cy="150" r="14" fill="#312e81" stroke="#a5b4fc"></circle>
+      <text x="62" y="186" fill="#c7d2fe" font-size="10">question</text>
+
+      {
+        [
+          { x: 104, label: 'triage' },
+          { x: 212, label: 'retrieve' },
+          { x: 320, label: 'grade' },
+          { x: 428, label: 'write' },
+          { x: 536, label: 'verify' },
+        ].map((n) => (
+          <g>
+            <rect x={n.x} y="128" width="82" height="44" rx="10" fill="#1e1b4b" stroke="#6366f1" />
+            <text x={n.x + 41} y="155" fill="#eef2ff">
+              {n.label}
+            </text>
+          </g>
+        ))
+      }
+
+      <!-- nodes on the loops -->
+      <rect x="276" y="62" width="64" height="30" rx="8" fill="#422006" stroke="#fbbf24"></rect>
+      <text x="308" y="81" fill="#fde68a" font-size="11">expand</text>
+      <text x="307" y="50" fill="#fbbf24" font-size="10">not enough? search again (max 2)</text>
+      <text x="523" y="250" fill="#fbbf24" font-size="10">unsupported claim? rewrite (max 1)</text>
+
+      <!-- verified answer leaves the graph -->
+      <path d="M618 150h26" stroke="#86efac" stroke-width="1.6" marker-end="url(#ag-arrow)"></path>
+      <circle cx="660" cy="150" r="14" fill="#14532d" stroke="#86efac"></circle>
+      <text x="660" y="186" fill="#86efac" font-size="10">answer</text>
+    </g>
+  </svg>
+  <figcaption class="mt-3 text-center font-mono text-[11px] text-indigo-200/70">
+    Both loops are capped, so the agent can't retry forever or run up an API bill.
+  </figcaption>
+</figure>

@@ -1,0 +1,168 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import PhoneFrame from '../../components/PhoneFrame.astro';
+import ClinicMock from '../../components/ClinicMock.astro';
+import AgentGraph from '../../components/AgentGraph.astro';
+import StatusBadge from '../../components/StatusBadge.astro';
+import { getProjects, type Project } from '../../data/projects';
+import { memberById } from '../../data/team';
+
+export async function getStaticPaths() {
+  const projects = await getProjects();
+  return projects.map((project, i) => ({
+    params: { id: project.id },
+    props: { project, next: projects[(i + 1) % projects.length] },
+  }));
+}
+
+interface Props {
+  project: Project;
+  next: Project;
+}
+
+const { project, next } = Astro.props;
+const { data } = project;
+const { Content } = await render(project);
+const team = data.team.map(memberById).filter((m) => m !== undefined);
+---
+
+<Base title={data.title} description={data.summary}>
+  <article>
+    <header class="relative overflow-hidden border-b border-line">
+      <div
+        class="pointer-events-none absolute inset-0 -z-10 opacity-[0.07]"
+        style={`background: radial-gradient(60% 80% at 85% 20%, ${data.accent}, transparent)`}
+      >
+      </div>
+      <div class="wrap pt-10 pb-14 lg:pt-14">
+        <a href="/projects" class="text-sm font-medium text-muted hover:text-ink">← All projects</a>
+        <div class="mt-8 flex flex-wrap items-center gap-3">
+          <StatusBadge status={data.status} />
+          <span class="font-mono text-xs text-muted">{data.year}</span>
+        </div>
+        <h1 class="h-display mt-4 text-5xl sm:text-6xl lg:text-7xl">{data.title}</h1>
+        <p class="mt-4 max-w-3xl text-xl text-muted sm:text-2xl">{data.tagline}</p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          {
+            data.live && (
+              <a href={data.live} class="btn-primary" target="_blank" rel="noopener">
+                Open the live app ↗
+              </a>
+            )
+          }
+          {
+            data.repo && (
+              <a href={data.repo} class="btn-ghost" target="_blank" rel="noopener">
+                Source on GitHub ↗
+              </a>
+            )
+          }
+        </div>
+      </div>
+    </header>
+
+    <div class="wrap grid gap-14 py-14 lg:grid-cols-[1fr_340px]">
+      <!-- Demo + story -->
+      <div class="min-w-0">
+        <section aria-label="Demo" class="mb-4">
+          {
+            data.demo.kind === 'phone' && (
+              <div class="rounded-3xl border border-line bg-card px-4 py-10">
+                <PhoneFrame url={data.demo.url} title={data.title} screenshot={data.screenshot} accent={data.accent} eager />
+              </div>
+            )
+          }
+          {
+            data.demo.kind === 'clinic-mock' && (
+              <div class="rounded-3xl p-4 sm:p-8" style={`background:${data.accent}`}>
+                <ClinicMock />
+                <p class="mt-4 text-center text-sm text-white/85">
+                  A drawn mock-up with made-up patients and visits. The live system is private to the clinics that use it.
+                </p>
+              </div>
+            )
+          }
+          {data.demo.kind === 'agent-graph' && <AgentGraph />}
+        </section>
+
+        <p class="mt-10 text-lg leading-relaxed text-ink/85 sm:text-xl">{data.summary}</p>
+        <div class="prose-case">
+          <Content />
+        </div>
+      </div>
+
+      <!-- Facts -->
+      <aside class="lg:sticky lg:top-24 lg:self-start">
+        {
+          data.stats.length > 0 && (
+            <dl class="grid grid-cols-3 gap-3 lg:grid-cols-1">
+              {data.stats.map((s) => (
+                <div class="rounded-2xl border border-line bg-card p-4">
+                  <dd class="h-display text-3xl" style={`color:${data.accent}`}>
+                    {s.value}
+                  </dd>
+                  <dt class="mt-1 text-xs text-muted">{s.label}</dt>
+                </div>
+              ))}
+            </dl>
+          )
+        }
+
+        <div class="mt-8 space-y-7 text-sm">
+          <div>
+            <h2 class="font-mono text-xs tracking-[0.14em] text-muted uppercase">Our role</h2>
+            <p class="mt-2">{data.role}</p>
+          </div>
+          {
+            team.length > 0 && (
+              <div>
+                <h2 class="font-mono text-xs tracking-[0.14em] text-muted uppercase">Built by</h2>
+                <p class="mt-2">{team.map((m) => m.name).join(', ')}</p>
+              </div>
+            )
+          }
+          <div>
+            <h2 class="font-mono text-xs tracking-[0.14em] text-muted uppercase">Highlights</h2>
+            <ul class="mt-3 space-y-2.5">
+              {
+                data.highlights.map((h) => (
+                  <li class="flex gap-2.5">
+                    <span class="mt-[7px] size-1.5 shrink-0 rounded-full" style={`background:${data.accent}`} />
+                    <span class="leading-relaxed">{h}</span>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+          <div>
+            <h2 class="font-mono text-xs tracking-[0.14em] text-muted uppercase">Built with</h2>
+            <ul class="mt-3 flex flex-wrap gap-1.5">
+              {data.stack.map((s) => <li class="chip">{s}</li>)}
+            </ul>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    {
+      next.id !== project.id && (
+        <nav class="wrap" aria-label="Next project">
+          <a
+            href={`/projects/${next.id}`}
+            class="group flex items-center justify-between gap-6 rounded-3xl border border-line bg-card p-6 transition hover:border-ink sm:p-8"
+          >
+            <span>
+              <span class="font-mono text-xs tracking-[0.14em] text-muted uppercase">Next project</span>
+              <span class="h-display mt-2 block text-3xl">{next.data.title}</span>
+              <span class="mt-1 block text-muted">{next.data.tagline}</span>
+            </span>
+            <span class="text-3xl transition group-hover:translate-x-1" aria-hidden="true">
+              →
+            </span>
+          </a>
+        </nav>
+      )
+    }
+  </article>
+</Base>

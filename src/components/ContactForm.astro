@@ -1,0 +1,113 @@
+---
+import { SITE } from '../data/site';
+
+// The form posts to functions/api/contact.ts. Without a Turnstile site key at build time the form
+// is replaced by a plain email link, since the function refuses messages it can't verify.
+const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as string | undefined;
+---
+
+{
+  siteKey ? (
+    <form class="space-y-5" data-contact novalidate>
+      <div class="grid gap-5 sm:grid-cols-2">
+        <label class="block">
+          <span class="text-sm font-medium">Your name</span>
+          <input name="name" required maxlength="100" autocomplete="name" class="field" />
+        </label>
+        <label class="block">
+          <span class="text-sm font-medium">Email</span>
+          <input name="email" type="email" required maxlength="200" autocomplete="email" class="field" />
+        </label>
+      </div>
+      <label class="block">
+        <span class="text-sm font-medium">What would you like to talk about?</span>
+        <select name="topic" class="field">
+          <option>A project for my business</option>
+          <option>A job or role</option>
+          <option>Collaborating</option>
+          <option>Something else</option>
+        </select>
+      </label>
+      <label class="block">
+        <span class="text-sm font-medium">Message</span>
+        <textarea name="message" required minlength="10" maxlength="5000" rows="6" class="field resize-y" />
+      </label>
+      {/* Bots fill every field; people never see this one. */}
+      <label class="absolute -left-[9999px]" aria-hidden="true">
+        Leave this empty
+        <input name="website" tabindex="-1" autocomplete="off" />
+      </label>
+      <div class="cf-turnstile" data-sitekey={siteKey} data-theme="auto" data-size="flexible" />
+      <div class="flex flex-wrap items-center gap-4">
+        <button type="submit" class="btn-primary disabled:opacity-60" data-submit>
+          Send message
+        </button>
+        <p class="text-sm" role="status" aria-live="polite" data-status />
+      </div>
+    </form>
+  ) : (
+    <div class="rounded-2xl border border-line bg-card p-6">
+      <p class="font-semibold">Email us directly</p>
+      <p class="mt-1 text-sm text-muted">The contact form isn't switched on yet.</p>
+      <a href={`mailto:${SITE.email}`} class="btn-primary mt-5">
+        {SITE.email}
+      </a>
+    </div>
+  )
+}
+
+{siteKey && <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer />}
+
+<style>
+  @reference '../styles/global.css';
+  .field {
+    @apply mt-1.5 block w-full rounded-xl border border-line bg-card px-3.5 py-2.5 text-base text-ink transition outline-none placeholder:text-muted focus:border-accent focus:ring-4 focus:ring-accent/15;
+  }
+  .field[aria-invalid='true'] {
+    @apply border-rose-500;
+  }
+</style>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-contact]');
+  if (form) {
+    const status = form.querySelector<HTMLElement>('[data-status]')!;
+    const submit = form.querySelector<HTMLButtonElement>('[data-submit]')!;
+    const say = (text: string, ok: boolean) => {
+      status.textContent = text;
+      status.className = `text-sm ${ok ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}`;
+    };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      let valid = true;
+      form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input[required], textarea[required]').forEach((el) => {
+        const bad = !el.checkValidity();
+        el.setAttribute('aria-invalid', String(bad));
+        valid &&= !bad;
+      });
+      if (!valid) return say('Please fill in your name, a valid email and a message.', false);
+
+      const body = Object.fromEntries(new FormData(form));
+      submit.disabled = true;
+      say('Sending…', true);
+      try {
+        const res = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+        const data = (await res.json().catch(() => ({}))) as { error?: string };
+        if (!res.ok) throw new Error(data.error ?? 'Something went wrong.');
+        form.reset();
+        say("Thanks! Your message is on its way. We'll reply by email.", true);
+      } catch (err) {
+        say(`${(err as Error).message} You can also email us directly.`, false);
+      } finally {
+        submit.disabled = false;
+        // A Turnstile token works once; get a fresh one for the next try.
+        (window as unknown as { turnstile?: { reset: () => void } }).turnstile?.reset();
+      }
+    });
+  }
+</script>

@@ -1,0 +1,143 @@
+---
+// A drawn mock-up of the Clinic Platform's doctor app, not a screenshot.
+// Every name, time and record below is made up: no real patient data appears on this site.
+
+interface Props {
+  variant?: 'cover' | 'full';
+}
+
+const { variant = 'full' } = Astro.props;
+const full = variant === 'full';
+
+type Status = 'Done' | 'In the chair' | 'Waiting' | 'Booked';
+const visits: { time: string; name: string; service: string; status: Status }[] = [
+  { time: '9:00', name: 'Juan Dela Cruz', service: 'Cleaning', status: 'Done' },
+  { time: '9:45', name: 'Ana Reyes', service: 'Filling · #36', status: 'Done' },
+  { time: '10:30', name: 'Marco Santos', service: 'Check-up', status: 'In the chair' },
+  { time: '11:15', name: 'Liza Bautista', service: 'Braces adjustment', status: 'Waiting' },
+  { time: '1:00', name: 'Paolo Garcia', service: 'Extraction · #48', status: 'Booked' },
+  { time: '2:00', name: 'Bea Mendoza', service: 'Whitening', status: 'Booked' },
+];
+
+const pill: Record<Status, string> = {
+  Done: 'bg-stone-100 text-stone-500',
+  'In the chair': 'bg-teal-600 text-white',
+  Waiting: 'bg-amber-100 text-amber-800',
+  Booked: 'bg-sky-50 text-sky-700',
+};
+
+// Upper and lower arch, FDI numbering. Marked teeth get a colour.
+const upper = [18, 17, 16, 15, 14, 13, 12, 11, 21, 22, 23, 24, 25, 26, 27, 28];
+const lower = [48, 47, 46, 45, 44, 43, 42, 41, 31, 32, 33, 34, 35, 36, 37, 38];
+const marks: Record<number, string> = {
+  16: 'bg-sky-400', // filled
+  26: 'bg-amber-400', // watch
+  36: 'bg-sky-400',
+  48: 'bg-rose-400', // to extract
+  11: 'bg-emerald-400', // crown
+};
+---
+
+<div
+  class="clinic-mock @container overflow-hidden rounded-xl border border-stone-200 bg-white text-stone-800 shadow-sm select-none"
+  role="img"
+  aria-label="Mock-up of the Clinic Platform doctor app showing today's appointments, with sample data"
+>
+  <!-- window bar -->
+  <div class="flex items-center gap-1.5 border-b border-stone-200 bg-stone-50 px-3 py-2">
+    <span class="size-2.5 rounded-full bg-stone-300"></span>
+    <span class="size-2.5 rounded-full bg-stone-300"></span>
+    <span class="size-2.5 rounded-full bg-stone-300"></span>
+    <span class="ml-3 truncate rounded-md bg-white px-2 py-0.5 font-mono text-[10px] text-stone-400">doctor app · Today</span>
+    <span class="ml-auto shrink-0 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold text-amber-800">Sample data</span>
+  </div>
+
+  <div class:list={['grid', full ? 'grid-cols-1 @lg:grid-cols-[1fr_200px] @3xl:grid-cols-[140px_1fr_210px]' : 'grid-cols-[110px_1fr]']}>
+    <!-- sidebar -->
+    <aside class:list={['border-r border-stone-200 bg-stone-50/60 p-3', full ? 'hidden @3xl:block' : '']}>
+      <div class="mb-4 flex items-center gap-2">
+        <span class="grid size-6 place-items-center rounded-md bg-teal-700 text-[10px] font-bold text-white">+</span>
+        <span class="text-[11px] font-semibold">Sample Clinic</span>
+      </div>
+      <ul class="space-y-1 text-[11px] text-stone-500">
+        <li class="rounded-md bg-teal-50 px-2 py-1.5 font-semibold text-teal-800">Today</li>
+        <li class="px-2 py-1.5">Calendar</li>
+        <li class="px-2 py-1.5">Patients</li>
+        <li class="px-2 py-1.5">Status board</li>
+        <li class="px-2 py-1.5">Reports</li>
+        <li class="px-2 py-1.5">Settings</li>
+      </ul>
+    </aside>
+
+    <!-- day list -->
+    <section class="min-w-0 p-3 sm:p-4">
+      <div class="mb-3 flex items-baseline justify-between gap-2">
+        <div>
+          <p class="text-[10px] font-semibold tracking-wider text-stone-400 uppercase">Thursday</p>
+          <p class="text-sm font-bold">16 October</p>
+        </div>
+        <p class="text-[10px] text-stone-500"><b class="text-stone-800">6</b> visits · <b class="text-stone-800">1</b> waiting</p>
+      </div>
+      <ul class="space-y-1.5">
+        {
+          (full ? visits : visits.slice(0, 5)).map((v) => (
+            <li
+              class:list={[
+                'flex items-center gap-2.5 rounded-lg border px-2.5 py-2',
+                v.status === 'In the chair' ? 'border-teal-200 bg-teal-50/70' : 'border-stone-100',
+              ]}
+            >
+              <span class="w-9 shrink-0 font-mono text-[10px] text-stone-400">{v.time}</span>
+              <span class="grid size-6 shrink-0 place-items-center rounded-full bg-stone-200 text-[9px] font-bold text-stone-600">
+                {v.name
+                  .split(' ')
+                  .map((w) => w[0])
+                  .join('')
+                  .slice(0, 2)}
+              </span>
+              <span class="min-w-0 flex-1">
+                <span class="block truncate text-[11px] font-semibold">{v.name}</span>
+                <span class="block truncate text-[10px] text-stone-500">{v.service}</span>
+              </span>
+              <span class:list={['shrink-0 rounded-full px-2 py-0.5 text-[9px] font-semibold', pill[v.status]]}>{v.status}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <!-- chart panel -->
+    {
+      full && (
+        <aside class="border-t border-stone-200 p-4 @lg:border-t-0 @lg:border-l">
+          <p class="text-[10px] font-semibold tracking-wider text-stone-400 uppercase">In the chair</p>
+          <p class="text-sm font-bold">Marco Santos</p>
+          <p class="mb-3 text-[10px] text-stone-500">Check-up · last visit 12 Jun</p>
+          <p class="mb-1.5 text-[10px] font-semibold text-stone-500">Dental chart</p>
+          <div class="space-y-1">
+            {[upper, lower].map((row) => (
+              <div class="grid grid-cols-16 gap-[2px]">
+                {row.map((t) => (
+                  <span
+                    title={String(t)}
+                    class:list={['aspect-[3/4] rounded-[3px] border border-stone-200', marks[t] ?? 'bg-stone-50']}
+                  />
+                ))}
+              </div>
+            ))}
+          </div>
+          <ul class="mt-2.5 flex flex-wrap gap-x-2.5 gap-y-1 text-[9px] text-stone-500">
+            <li><span class="mr-1 inline-block size-2 rounded-sm bg-sky-400" />Filled</li>
+            <li><span class="mr-1 inline-block size-2 rounded-sm bg-amber-400" />Watch</li>
+            <li><span class="mr-1 inline-block size-2 rounded-sm bg-rose-400" />Extract</li>
+            <li><span class="mr-1 inline-block size-2 rounded-sm bg-emerald-400" />Crown</li>
+          </ul>
+          <p class="mt-4 mb-1 text-[10px] font-semibold text-stone-500">Private note</p>
+          <p class="rounded-md bg-stone-50 p-2 text-[10px] leading-relaxed text-stone-500">
+            Watch #26 at next visit. Recall in 6 months.
+          </p>
+        </aside>
+      )
+    }
+  </div>
+</div>

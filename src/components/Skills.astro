@@ -1,0 +1,50 @@
+---
+import { SKILL_GROUPS, projectsWithSkill, type Project } from '../data/projects';
+
+interface Props {
+  projects: Project[];
+}
+
+const { projects } = Astro.props;
+const groups = SKILL_GROUPS.map((g) => ({
+  ...g,
+  skills: g.skills.map((s) => ({ ...s, proof: projectsWithSkill(projects, s.name) })).filter((s) => s.proof.length),
+})).filter((g) => g.skills.length);
+---
+
+<section id="skills" class="wrap scroll-mt-24 py-20">
+  <div class="max-w-2xl">
+    <p class="eyebrow">Skills</p>
+    <h2 class="h-display mt-3 text-4xl sm:text-5xl">Every skill comes with proof.</h2>
+    <p class="mt-4 text-lg text-muted">No logo wall. Each skill links to the projects where we used it, so you can see it working.</p>
+  </div>
+
+  <div class="mt-12 grid gap-px overflow-hidden rounded-3xl border border-line bg-line sm:grid-cols-2">
+    {
+      groups.map((g) => (
+        <div class="bg-card p-6 sm:p-8">
+          <h3 class="font-mono text-xs font-medium tracking-[0.14em] text-muted uppercase">{g.title}</h3>
+          <ul class="mt-5 space-y-6">
+            {g.skills.map((s) => (
+              <li>
+                <p class="font-semibold">{s.name}</p>
+                <p class="mt-1 text-sm text-muted">{s.blurb}</p>
+                <p class="mt-2 flex flex-wrap gap-1.5">
+                  {s.proof.map((p) => (
+                    <a
+                      href={`/projects/${p.id}`}
+                      class="inline-flex items-center gap-1.5 rounded-full border border-line px-2.5 py-1 text-xs font-medium transition hover:border-ink"
+                    >
+                      <span class="size-2 rounded-full" style={`background:${p.data.accent}`} />
+                      {p.data.title}
+                    </a>
+                  ))}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
+  </div>
+</section>

@@ -1,0 +1,17 @@
+---
+interface Props {
+  status: 'Live' | 'In progress' | 'Source only';
+}
+
+const { status } = Astro.props;
+const tone = {
+  Live: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300',
+  'In progress': 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300',
+  'Source only': 'bg-indigo-100 text-indigo-800 dark:bg-indigo-950 dark:text-indigo-300',
+}[status];
+---
+
+<span class:list={['inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold', tone]}>
+  {status === 'Live' && <span class="size-1.5 rounded-full bg-current" />}
+  {status}
+</span>

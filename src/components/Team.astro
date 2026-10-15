@@ -1,0 +1,67 @@
+---
+import { TEAM } from '../data/team';
+import type { Project } from '../data/projects';
+
+interface Props {
+  projects: Project[];
+}
+
+const { projects } = Astro.props;
+const initials = (name: string) =>
+  name
+    .split(' ')
+    .map((w) => w[0])
+    .join('')
+    .slice(0, 2);
+---
+
+<section id="team" class="wrap scroll-mt-24 py-20">
+  <div class="max-w-2xl">
+    <p class="eyebrow">Team</p>
+    <h2 class="h-display mt-3 text-4xl sm:text-5xl">Who builds it.</h2>
+  </div>
+
+  <ul class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+    {
+      TEAM.map((m) => {
+        const worked = projects.filter((p) => p.data.team.includes(m.id));
+        return (
+          <li class="flex flex-col rounded-3xl border border-line bg-card p-6">
+            <div class="flex items-center gap-4">
+              {m.photo ? (
+                <img src={m.photo} alt="" class="size-14 rounded-2xl object-cover" width="56" height="56" />
+              ) : (
+                <span class="grid size-14 place-items-center rounded-2xl bg-accent-soft font-display text-lg font-semibold text-accent">
+                  {initials(m.name)}
+                </span>
+              )}
+              <div>
+                <p class="font-display text-lg font-semibold">{m.name}</p>
+                <p class="text-sm text-muted">{m.role}</p>
+              </div>
+            </div>
+            <p class="mt-4 text-sm leading-relaxed text-ink/80">{m.bio}</p>
+            {worked.length > 0 && (
+              <p class="mt-4 text-xs text-muted">
+                Worked on{' '}
+                {worked.map((p, i) => (
+                  <>
+                    <a class="font-medium text-ink underline-offset-4 hover:underline" href={`/projects/${p.id}`}>
+                      {p.data.title}
+                    </a>
+                    {i < worked.length - 1 ? ', ' : ''}
+                  </>
+                ))}
+              </p>
+            )}
+            <p class="mt-auto flex gap-4 pt-5 text-sm font-medium">
+              {m.github && <a class="hover:text-accent" href={m.github}>GitHub</a>}
+              {m.linkedin && <a class="hover:text-accent" href={m.linkedin}>LinkedIn</a>}
+              {m.email && <a class="hover:text-accent" href={`mailto:${m.email}`}>Email</a>}
+            </p>
+          </li>
+        );
+      })
+    }
+  </ul>
+</section>

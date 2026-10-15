@@ -1,0 +1,69 @@
+---
+import Base from '../../layouts/Base.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { getProjects, SKILL_GROUPS } from '../../data/projects';
+
+const projects = await getProjects();
+// Filter chips: only skills that at least one project uses, in Skills-section order.
+const skills = SKILL_GROUPS.flatMap((g) => g.skills.map((s) => s.name)).filter((s) =>
+  projects.some((p) => p.data.skills.includes(s)),
+);
+---
+
+<Base title="Projects" description="Apps, data pipelines and AI agents we've built, with live demos and case studies.">
+  <section class="wrap pt-14 pb-6 lg:pt-20">
+    <p class="eyebrow">Projects</p>
+    <h1 class="h-display mt-3 text-5xl sm:text-6xl">Everything we've built.</h1>
+    <p class="mt-5 max-w-2xl text-lg text-muted">
+      Each project has a case study: the problem, what we built, how it works, and a live demo or the source code.
+    </p>
+
+    <div class="mt-10 flex flex-wrap gap-2" role="group" aria-label="Filter by skill" data-filters>
+      <button type="button" class="filter" aria-pressed="true" data-skill="">All</button>
+      {
+        skills.map((s) => (
+          <button type="button" class="filter" aria-pressed="false" data-skill={s}>
+            {s}
+          </button>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="wrap pb-10">
+    <div class="grid gap-6 md:grid-cols-2" data-grid>
+      {projects.map((p) => <ProjectCard project={p} />)}
+    </div>
+    <p class="mt-6 text-sm text-muted" aria-live="polite" data-count></p>
+  </section>
+</Base>
+
+<style>
+  @reference '../../styles/global.css';
+  .filter {
+    @apply rounded-full border border-line bg-card px-3.5 py-1.5 text-sm font-medium text-muted transition hover:border-ink hover:text-ink;
+  }
+  .filter[aria-pressed='true'] {
+    @apply border-ink bg-ink text-paper;
+  }
+</style>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-filters] button');
+  const cards = document.querySelectorAll<HTMLElement>('[data-grid] > article');
+  const count = document.querySelector('[data-count]')!;
+
+  buttons.forEach((btn) =>
+    btn.addEventListener('click', () => {
+      const skill = btn.dataset.skill ?? '';
+      buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+      let shown = 0;
+      cards.forEach((card) => {
+        const match = !skill || card.dataset.skills!.split('|').includes(skill);
+        card.hidden = !match;
+        if (match) shown++;
+      });
+      count.textContent = skill ? `${shown} project${shown === 1 ? '' : 's'} using ${skill}` : '';
+    }),
+  );
+</script>
