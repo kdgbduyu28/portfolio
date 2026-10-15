@@ -12,7 +12,7 @@ tagline: An AI agent that answers questions from documentation and checks its ow
 summary: A retrieval-augmented (RAG) agent built with LangGraph and Claude. It searches the docs, judges whether what it found is good enough, searches again if not, and checks every claim in its answer against the source before replying.
 year: 2026
 status: Source only
-order: 5
+order: 6
 featured: false
 accent: '#4338ca'
 repo: https://github.com/kdgbduyu28/groundwork
