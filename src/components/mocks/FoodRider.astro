@@ -1,0 +1,195 @@
+---
+// Drawn rider-app screen: an incoming job offer with a countdown. Illustration with made-up data.
+---
+
+<div class="m" role="img" aria-label="Illustration of a rider app showing a new order offer worth 6 dollars 40, sample data">
+  <header>
+    <div>
+      <p class="muted">Today</p>
+      <p class="earn">$84.20 <small>· 11 trips</small></p>
+    </div>
+    <span class="online"><i></i>Online</span>
+  </header>
+
+  <div class="mapbg" aria-hidden="true"></div>
+
+  <div class="offer">
+    <div class="top">
+      <span class="new">New order</span>
+      <svg class="ring" viewBox="0 0 40 40" aria-hidden="true">
+        <circle cx="20" cy="20" r="17" stroke="#3f3f46" stroke-width="4" fill="none"></circle>
+        <circle class="count" cx="20" cy="20" r="17" stroke="#fb923c" stroke-width="4" fill="none" pathLength="100"></circle>
+        <text x="20" y="25" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">15</text>
+      </svg>
+    </div>
+    <p class="pay">$6.40</p>
+    <p class="muted">Estimated earnings · 1.2 mi total</p>
+    <ul class="route">
+      <li><b>Pickup</b>Campus Grill · Student Union</li>
+      <li><b>Drop-off</b>Maple Hall · 0.8 mi</li>
+    </ul>
+    <button type="button" tabindex="-1">Accept</button>
+    <p class="decline">Decline</p>
+  </div>
+  <span class="tag">Sample data</span>
+</div>
+
+<style>
+  .m {
+    position: absolute;
+    inset: 0;
+    font-size: 4.1026cqw;
+    font-family: 'Inter', system-ui, sans-serif;
+    color: #fafafa;
+    background: #0c0c0e;
+  }
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6em 1.25em 0.8em;
+  }
+  .muted {
+    font-size: 0.75em;
+    color: #a1a1aa;
+  }
+  .earn {
+    font-size: 1.35em;
+    font-weight: 800;
+  }
+  .earn small {
+    font-size: 0.6em;
+    font-weight: 500;
+    color: #a1a1aa;
+  }
+  .online {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    padding: 0.4em 0.8em;
+    border-radius: 2em;
+    background: #052e16;
+    color: #4ade80;
+    font-size: 0.75em;
+    font-weight: 700;
+  }
+  .online i {
+    width: 0.5em;
+    height: 0.5em;
+    border-radius: 50%;
+    background: #4ade80;
+    box-shadow: 0 0 0 0.25em rgb(74 222 128 / 0.25);
+  }
+  .mapbg {
+    position: absolute;
+    inset: 5em 0 0;
+    background:
+      linear-gradient(transparent 0 46%, #1c1c20 46% 50%, transparent 50%) 0 0 / 100% 6em,
+      linear-gradient(90deg, transparent 0 46%, #1c1c20 46% 52%, transparent 52%) 0 0 / 5.5em 100%,
+      #121215;
+    mask-image: linear-gradient(#000 30%, transparent 75%);
+  }
+  .offer {
+    position: absolute;
+    inset: auto 0.9em 1.6em;
+    padding: 1.1em 1.2em 1em;
+    border-radius: 1.4em;
+    background: #18181b;
+    box-shadow:
+      0 0 0 1px #27272a,
+      0 1em 2em rgb(0 0 0 / 0.5);
+    animation: rise 0.8s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+  }
+  @keyframes rise {
+    from {
+      transform: translateY(40%);
+      opacity: 0;
+    }
+  }
+  .top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .new {
+    padding: 0.3em 0.7em;
+    border-radius: 2em;
+    background: #431407;
+    color: #fdba74;
+    font-size: 0.72em;
+    font-weight: 700;
+  }
+  .ring {
+    width: 2.6em;
+    height: 2.6em;
+    rotate: -90deg;
+  }
+  .ring text {
+    rotate: 90deg;
+    transform-origin: 20px 20px;
+  }
+  .count {
+    stroke-dasharray: 100;
+    stroke-linecap: round;
+    animation: countdown 8s linear infinite;
+  }
+  @keyframes countdown {
+    to {
+      stroke-dashoffset: 100;
+    }
+  }
+  .pay {
+    margin-top: 0.4em;
+    font-size: 2.4em;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+  }
+  .route {
+    margin: 0.9em 0 1em;
+    padding-left: 1em;
+    border-left: 2px dashed #3f3f46;
+    font-size: 0.82em;
+  }
+  .route li + li {
+    margin-top: 0.6em;
+  }
+  .route b {
+    display: block;
+    font-size: 0.8em;
+    color: #a1a1aa;
+    font-weight: 600;
+  }
+  button {
+    width: 100%;
+    padding: 0.85em;
+    border: 0;
+    border-radius: 0.9em;
+    background: #f97316;
+    color: #fff;
+    font: inherit;
+    font-weight: 800;
+  }
+  .decline {
+    margin-top: 0.6em;
+    text-align: center;
+    font-size: 0.8em;
+    color: #a1a1aa;
+  }
+  .tag {
+    position: absolute;
+    top: 5.2em;
+    right: 1.25em;
+    padding: 0.25em 0.6em;
+    border-radius: 1em;
+    background: #fef3c7;
+    color: #92400e;
+    font-size: 0.65em;
+    font-weight: 700;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .offer,
+    .count {
+      animation: none;
+    }
+  }
+</style>

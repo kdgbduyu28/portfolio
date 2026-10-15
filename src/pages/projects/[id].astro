@@ -1,13 +1,15 @@
 ---
 import { render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
-import PhoneFrame from '../../components/PhoneFrame.astro';
-import ClinicMock from '../../components/ClinicMock.astro';
-import AgentGraph from '../../components/AgentGraph.astro';
-import LayersDiagram from '../../components/LayersDiagram.astro';
+import AppIcon from '../../components/AppIcon.astro';
+import Screen from '../../components/Screen.astro';
 import StatusBadge from '../../components/StatusBadge.astro';
+import Platforms from '../../components/Platforms.astro';
+import LayersDiagram from '../../components/LayersDiagram.astro';
 import { getProjects, type Project } from '../../data/projects';
+import { deviceOf } from '../../data/screens';
 import { memberById } from '../../data/team';
+import { SITE } from '../../data/site';
 
 export async function getStaticPaths() {
   const projects = await getProjects();
@@ -26,154 +28,210 @@ const { project, next } = Astro.props;
 const { data } = project;
 const { Content } = await render(project);
 const team = data.team.map(memberById).filter((m) => m !== undefined);
+
+// The main button: the live app, else a store listing, else the source.
+const isStore = (label: string) => /app store|google play/i.test(label);
+const actions = [
+  ...(data.live ? [{ label: 'Open', url: data.live }] : []),
+  ...data.links.filter((l) => isStore(l.label)),
+  ...(data.repo ? [{ label: 'Source', url: data.repo }] : []),
+  ...data.links.filter((l) => !isStore(l.label)),
+].map((a) => ({ label: a.label, url: 'url' in a ? a.url : '' }));
+const [primary, ...secondary] = actions;
+const firstPhone = data.screens.findIndex((s) => deviceOf(project, s) === 'phone');
+
+const info = [
+  ['Developer', team.map((m) => m.name).join(', ') || SITE.name],
+  ['Role', data.role],
+  ['Category', data.category],
+  ['Platforms', data.platforms.join(', ')],
+  ['Status', data.status],
+  ['Since', String(data.year)],
+];
 ---
 
 <Base title={data.title} description={data.summary}>
-  <article>
-    <header class="relative overflow-hidden border-b border-line">
+  <article style={`--accent:${data.accent}`}>
+    <!-- Header -->
+    <header class="relative overflow-hidden">
       <div
-        class="pointer-events-none absolute inset-0 -z-10 opacity-[0.07]"
-        style={`background: radial-gradient(60% 80% at 85% 20%, ${data.accent}, transparent)`}
+        class="pointer-events-none absolute inset-0 -z-10 opacity-[0.12]"
+        style={`background: radial-gradient(50% 90% at 15% 0%, ${data.accent}, transparent)`}
       >
       </div>
-      <div class="wrap pt-10 pb-14 lg:pt-14">
-        <a href="/projects" class="text-sm font-medium text-muted hover:text-ink">← All projects</a>
-        <div class="mt-8 flex flex-wrap items-center gap-3">
-          <StatusBadge status={data.status} />
-          <span class="font-mono text-xs text-muted">{data.year}</span>
+      <div class="wrap pt-8 pb-8 lg:pt-12">
+        <a href="/projects" class="inline-flex items-center gap-1 text-sm font-medium text-accent">
+          <span aria-hidden="true">‹</span> Apps
+        </a>
+        <div class="mt-6 flex flex-col gap-6 sm:flex-row sm:items-center">
+          <AppIcon project={project} size={128} class="!size-24 sm:!size-32" transitionName={`icon-${project.id}`} />
+          <div class="min-w-0 flex-1">
+            <h1 class="h-display text-4xl leading-[1.05] sm:text-5xl">{data.title}</h1>
+            <p class="mt-2 max-w-2xl text-lg text-muted">{data.tagline}</p>
+            <p class="mt-2 text-sm font-medium text-accent">{SITE.fullName}</p>
+          </div>
         </div>
-        <h1 class="h-display mt-4 text-5xl sm:text-6xl lg:text-7xl">{data.title}</h1>
-        <p class="mt-4 max-w-3xl text-xl text-muted sm:text-2xl">{data.tagline}</p>
-        <div class="mt-8 flex flex-wrap gap-3">
+        <div class="mt-6 flex flex-wrap items-center gap-3">
           {
-            data.live && (
-              <a href={data.live} class="btn-primary" target="_blank" rel="noopener">
-                Open the live app ↗
+            primary && (
+              <a
+                href={primary.url}
+                target="_blank"
+                rel="noopener"
+                class="btn rounded-full px-6 text-white"
+                style={`background:${data.accent}`}
+              >
+                {primary.label} ↗
               </a>
             )
           }
           {
-            data.repo && (
-              <a href={data.repo} class="btn-ghost" target="_blank" rel="noopener">
-                Source on GitHub ↗
-              </a>
-            )
-          }
-          {
-            data.links.map((l) => (
-              <a href={l.url} class="btn-ghost" target="_blank" rel="noopener">
-                {l.label} ↗
+            secondary.map((a) => (
+              <a href={a.url} target="_blank" rel="noopener" class="btn-ghost">
+                {a.label} ↗
               </a>
             ))
           }
+          <StatusBadge status={data.status} />
         </div>
+      </div>
+
+      <!-- Info strip, App Store style -->
+      <div class="wrap">
+        <dl class="flex snap-x overflow-x-auto border-y border-line py-4 [scrollbar-width:none]">
+          {
+            data.stats.map((s) => (
+              <div class="min-w-[120px] flex-1 snap-start border-r border-line px-4 text-center sm:px-6">
+                <dt class="sr-only">{s.label}</dt>
+                <dd class="font-display text-2xl leading-tight font-semibold" style={`color:${data.accent}`}>
+                  {s.value}
+                </dd>
+                <dd class="mt-1 text-xs text-muted">{s.label}</dd>
+              </div>
+            ))
+          }
+          <div class="min-w-[120px] flex-1 snap-start border-r border-line px-4 text-center sm:px-6">
+            <dt class="sr-only">Platforms</dt>
+            <dd class="flex h-8 items-center justify-center"><Platforms platforms={data.platforms} class="[&_svg]:size-5" /></dd>
+            <dd class="mt-1 text-xs text-muted">{data.platforms.join(' · ')}</dd>
+          </div>
+          <div class="min-w-[120px] flex-1 snap-start px-4 text-center sm:px-6">
+            <dt class="sr-only">Since</dt>
+            <dd class="font-display text-2xl leading-tight font-semibold">{data.year}</dd>
+            <dd class="mt-1 text-xs text-muted">{data.category.split(' · ')[0]}</dd>
+          </div>
+        </dl>
       </div>
     </header>
 
-    <div class="wrap grid gap-14 py-14 lg:grid-cols-[1fr_340px]">
-      <!-- Demo + story -->
-      <div class="min-w-0">
-        <section aria-label="Demo" class="mb-4">
-          {
-            data.demo.kind === 'phone' && (
-              <div class="rounded-3xl border border-line bg-card px-4 py-10">
-                <PhoneFrame url={data.demo.url} title={data.title} screenshot={data.screenshot} accent={data.accent} eager />
-              </div>
-            )
-          }
-          {
-            data.demo.kind === 'clinic-mock' && (
-              <div class="rounded-3xl p-4 sm:p-8" style={`background:${data.accent}`}>
-                <ClinicMock />
-                <p class="mt-4 text-center text-sm text-white/85">
-                  A drawn mock-up with made-up patients and visits. The platform is pre-launch and runs on test data.
-                </p>
-              </div>
-            )
-          }
-          {data.demo.kind === 'agent-graph' && <AgentGraph />}
-          {
-            data.demo.kind === 'layers' && (
-              <div class="rounded-3xl p-4 sm:p-8" style={`background:${data.accent}`}>
-                <LayersDiagram rows={data.demo.rows} accent={data.accent} />
-                <p class="mt-4 text-center text-sm text-white/85">Architecture. The client's code is private.</p>
-              </div>
-            )
-          }
-        </section>
+    <!-- Screens -->
+    <section aria-label="Screens" class="py-10">
+      <div class="wrap">
+        <h2 class="h-display text-2xl">Preview</h2>
+      </div>
+      <div
+        class="mt-5 flex snap-x snap-mandatory items-end gap-5 overflow-x-auto px-4 pt-4 pb-4 sm:px-6 lg:px-[max(2rem,calc((100vw_-_72rem)/2_+_2rem))]"
+      >
+        {
+          data.screens.map((s, i) => {
+            const device = deviceOf(project, s);
+            return (
+              <figure
+                class:list={[
+                  'shrink-0 snap-center sm:snap-start',
+                  device === 'phone' && 'w-[220px] sm:w-[250px]',
+                  device === 'tablet' && 'w-[min(86vw,620px)]',
+                  device === 'browser' && 'w-[min(86vw,680px)]',
+                ]}
+              >
+                <Screen project={project} screen={s} live={i === firstPhone} eager={i < 2} glow={i === 0} />
+                <figcaption class="mt-3 text-center text-sm text-muted">{s.caption}</figcaption>
+              </figure>
+            );
+          })
+        }
+      </div>
+      {
+        data.screens.some((s) => s.mock) && (
+          <p class="wrap mt-2 text-xs text-muted">
+            Drawn screens use made-up sample data. The client's and clinics' real data never appears on this site.
+          </p>
+        )
+      }
+    </section>
 
-        <p class="mt-10 text-lg leading-relaxed text-ink/85 sm:text-xl">{data.summary}</p>
+    {
+      data.architecture && (
+        <section class="wrap pb-6" aria-label="Architecture">
+          <h2 class="h-display text-2xl">Architecture</h2>
+          <div class="mt-5 rounded-3xl p-3 sm:p-6" style={`background:${data.accent}`}>
+            <LayersDiagram rows={data.architecture} accent={data.accent} />
+          </div>
+        </section>
+      )
+    }
+
+    <!-- Story + information -->
+    <div class="wrap grid gap-12 pt-8 lg:grid-cols-[1fr_340px]">
+      <div class="min-w-0">
+        <p class="text-lg leading-relaxed text-ink/85 sm:text-xl">{data.summary}</p>
         <div class="prose-case">
           <Content />
         </div>
       </div>
 
-      <!-- Facts -->
-      <aside class="lg:sticky lg:top-24 lg:self-start">
-        {
-          data.stats.length > 0 && (
-            <dl class="grid grid-cols-3 gap-3 lg:grid-cols-1">
-              {data.stats.map((s) => (
-                <div class="rounded-2xl border border-line bg-card p-4">
-                  <dd class="h-display text-3xl" style={`color:${data.accent}`}>
-                    {s.value}
-                  </dd>
-                  <dt class="mt-1 text-xs text-muted">{s.label}</dt>
+      <aside class="space-y-6 lg:sticky lg:top-24 lg:self-start">
+        <div class="rounded-3xl border border-line bg-card p-5">
+          <h2 class="font-display text-lg font-semibold">Information</h2>
+          <dl class="mt-3 divide-y divide-line text-sm">
+            {
+              info.map(([k, v]) => (
+                <div class="flex justify-between gap-6 py-2.5">
+                  <dt class="shrink-0 text-muted">{k}</dt>
+                  <dd class="text-right">{v}</dd>
                 </div>
-              ))}
-            </dl>
-          )
-        }
+              ))
+            }
+          </dl>
+        </div>
 
-        <div class="mt-8 space-y-7 text-sm">
-          <div>
-            <h2 class="font-mono text-xs tracking-[0.14em] text-muted uppercase">Role</h2>
-            <p class="mt-2">{data.role}</p>
-          </div>
-          {
-            team.length > 0 && (
-              <div>
-                <h2 class="font-mono text-xs tracking-[0.14em] text-muted uppercase">Built by</h2>
-                <p class="mt-2">{team.map((m) => m.name).join(', ')}</p>
-              </div>
-            )
-          }
-          <div>
-            <h2 class="font-mono text-xs tracking-[0.14em] text-muted uppercase">Highlights</h2>
-            <ul class="mt-3 space-y-2.5">
-              {
-                data.highlights.map((h) => (
-                  <li class="flex gap-2.5">
-                    <span class="mt-[7px] size-1.5 shrink-0 rounded-full" style={`background:${data.accent}`} />
-                    <span class="leading-relaxed">{h}</span>
-                  </li>
-                ))
-              }
-            </ul>
-          </div>
-          <div>
-            <h2 class="font-mono text-xs tracking-[0.14em] text-muted uppercase">Built with</h2>
-            <ul class="mt-3 flex flex-wrap gap-1.5">
-              {data.stack.map((s) => <li class="chip">{s}</li>)}
-            </ul>
-          </div>
+        <div class="rounded-3xl border border-line bg-card p-5">
+          <h2 class="font-display text-lg font-semibold">What stands out</h2>
+          <ul class="mt-3 space-y-2.5 text-sm">
+            {
+              data.highlights.map((h) => (
+                <li class="flex gap-2.5">
+                  <span class="mt-[7px] size-1.5 shrink-0 rounded-full" style={`background:${data.accent}`} />
+                  <span class="leading-relaxed">{h}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <div class="rounded-3xl border border-line bg-card p-5">
+          <h2 class="font-display text-lg font-semibold">Built with</h2>
+          <ul class="mt-3 flex flex-wrap gap-1.5">
+            {data.stack.map((s) => <li class="chip">{s}</li>)}
+          </ul>
         </div>
       </aside>
     </div>
 
     {
       next.id !== project.id && (
-        <nav class="wrap" aria-label="Next project">
+        <nav class="wrap mt-16" aria-label="Next app">
           <a
             href={`/projects/${next.id}`}
-            class="group flex items-center justify-between gap-6 rounded-3xl border border-line bg-card p-6 transition hover:border-ink sm:p-8"
+            class="group flex items-center gap-5 rounded-[28px] border border-line bg-card p-5 transition hover:border-ink sm:p-6"
           >
-            <span>
-              <span class="font-mono text-xs tracking-[0.14em] text-muted uppercase">Next project</span>
-              <span class="h-display mt-2 block text-3xl">{next.data.title}</span>
-              <span class="mt-1 block text-muted">{next.data.tagline}</span>
+            <AppIcon project={next} size={64} />
+            <span class="min-w-0 flex-1">
+              <span class="font-mono text-[11px] tracking-[0.14em] text-muted uppercase">Next app</span>
+              <span class="h-display block text-2xl">{next.data.title}</span>
+              <span class="line-clamp-1 text-sm text-muted">{next.data.tagline}</span>
             </span>
-            <span class="text-3xl transition group-hover:translate-x-1" aria-hidden="true">
+            <span class="text-2xl transition group-hover:translate-x-1" aria-hidden="true">
               →
             </span>
           </a>

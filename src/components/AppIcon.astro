@@ -1,0 +1,55 @@
+---
+import { Image } from 'astro:assets';
+import type { Project } from '../data/projects';
+
+// An app icon: the project's real icon, or a glyph on its accent colour, in the iOS squircle shape.
+
+interface Props {
+  project: Project;
+  size?: number; // px, used for layout and image resolution
+  class?: string;
+  transitionName?: string;
+}
+
+const { project, size = 64, class: className, transitionName } = Astro.props;
+const { iconImage, glyph, accent } = project.data;
+
+const glyphs: Record<string, string> = {
+  // bag with fork: food ordering
+  food: '<path d="M7 9h18l-1.6 15.2a2 2 0 0 1-2 1.8H10.6a2 2 0 0 1-2-1.8L7 9Z" fill="#fff"/><path d="M11.5 9V8a4.5 4.5 0 0 1 9 0v1" stroke="#fff" stroke-width="2.2" fill="none"/><path d="M14 13.5v4.2a2 2 0 0 0 4 0v-4.2M16 17.7V22" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/>',
+  tooth:
+    '<path d="M16 7.2c-1.6-1.4-4.6-2.2-6.9-.6-2.6 1.8-2.5 5.6-1.3 8.4.8 1.9 1.2 3.8 1.5 6 .3 2.4.9 4.2 2.4 4.2 1.7 0 1.8-2.4 2.3-4.5.3-1.3.9-2.2 2-2.2s1.7.9 2 2.2c.5 2.1.6 4.5 2.3 4.5 1.5 0 2.1-1.8 2.4-4.2.3-2.2.7-4.1 1.5-6 1.2-2.8 1.3-6.6-1.3-8.4-2.3-1.6-5.3-.8-6.9.6Z" fill="#fff"/>',
+  peso: '<path d="M11 25V7h6.2a5.6 5.6 0 0 1 0 11.2H11" stroke="#fff" stroke-width="2.6" fill="none" stroke-linejoin="round"/><path d="M8 11.2h16M8 14.2h16" stroke="#fff" stroke-width="2" stroke-linecap="round"/>',
+  bag: '<path d="M8 11h16l-1.2 13a2 2 0 0 1-2 1.8h-9.6a2 2 0 0 1-2-1.8L8 11Z" fill="#fff"/><path d="M12 11V9.5a4 4 0 0 1 8 0V11" stroke="#fff" stroke-width="2.2" fill="none"/>',
+  graph:
+    '<circle cx="8.5" cy="16" r="2.6" fill="#fff"/><circle cx="16" cy="9" r="2.6" fill="#fff"/><circle cx="16" cy="23" r="2.6" fill="#fff"/><circle cx="23.5" cy="16" r="2.6" fill="#fff"/><path d="M10.4 14.2 14 10.8M10.4 17.8 14 21.2M18 10.8l3.6 3.4M18 21.2l3.6-3.4" stroke="#fff" stroke-width="1.6" opacity=".8"/>',
+};
+---
+
+<span
+  class:list={['app-icon relative inline-grid shrink-0 place-items-center overflow-hidden', className]}
+  style={`width:${size}px;height:${size}px;--accent:${accent};color:${accent}`}
+  transition:name={transitionName}
+  aria-hidden="true"
+>
+  {
+    iconImage ? (
+      <Image src={iconImage} alt="" width={size * 2} height={size * 2} class="size-full object-cover" />
+    ) : (
+      <svg viewBox="0 0 32 32" class="size-[62%]" set:html={glyph ? glyphs[glyph] : ''} />
+    )
+  }
+</span>
+
+<style>
+  .app-icon {
+    border-radius: 22.5%;
+    background:
+      radial-gradient(120% 90% at 20% 0%, color-mix(in oklab, var(--accent) 55%, white) 0%, transparent 60%),
+      linear-gradient(160deg, var(--accent), color-mix(in oklab, var(--accent) 70%, black));
+    box-shadow:
+      inset 0 0 0 0.5px rgb(255 255 255 / 0.25),
+      0 1px 2px rgb(0 0 0 / 0.15),
+      0 6px 16px -6px color-mix(in oklab, var(--accent) 70%, transparent);
+  }
+</style>

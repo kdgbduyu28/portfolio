@@ -1,0 +1,205 @@
+---
+// Drawn merchant-app screen: the order queue. Illustration with made-up data.
+
+const orders = [
+  { id: '#1042', items: 'Spicy chicken bowl, Iced tea', due: 'Pickup in 5 min', state: 'new' },
+  { id: '#1041', items: '2× Classic burger, Fries', due: 'Rider arriving 3 min', state: 'prep' },
+  { id: '#1039', items: 'Veggie wrap', due: 'Ready · waiting for rider', state: 'ready' },
+];
+---
+
+<div class="m" role="img" aria-label="Illustration of a merchant app order queue, sample data">
+  <header>
+    <div>
+      <p class="store">Campus Grill</p>
+      <p class="muted">Student Union · Open until 9 PM</p>
+    </div>
+    <span class="switch" aria-hidden="true"><i></i></span>
+  </header>
+  <nav>
+    <span class="on">New <b>1</b></span>
+    <span>Preparing <b>3</b></span>
+    <span>Ready <b>1</b></span>
+  </nav>
+  <ul>
+    {
+      orders.map((o) => (
+        <li class={o.state}>
+          <div class="row">
+            <b>{o.id}</b>
+            <span class="due">{o.due}</span>
+          </div>
+          <p class="items">{o.items}</p>
+          {o.state === 'new' && (
+            <div class="actions">
+              <span class="accept">Accept</span>
+              <span class="ghost">Adjust time</span>
+            </div>
+          )}
+        </li>
+      ))
+    }
+  </ul>
+  <p class="soldout"><span>Sold out until 2:00 PM</span> Fish tacos</p>
+  <span class="tag">Sample data</span>
+</div>
+
+<style>
+  .m {
+    position: absolute;
+    inset: 0;
+    font-size: 4.1026cqw;
+    font-family: 'Inter', system-ui, sans-serif;
+    color: #16140f;
+    background: #f6f5f3;
+  }
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5em 1.25em 0.9em;
+    background: #fff;
+  }
+  .store {
+    font-size: 1.3em;
+    font-weight: 800;
+  }
+  .muted {
+    font-size: 0.72em;
+    color: #78716c;
+  }
+  .switch {
+    position: relative;
+    width: 2.8em;
+    height: 1.65em;
+    border-radius: 1em;
+    background: #22c55e;
+  }
+  .switch i {
+    position: absolute;
+    top: 0.15em;
+    right: 0.15em;
+    width: 1.35em;
+    height: 1.35em;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0.1em 0.3em rgb(0 0 0 / 0.2);
+  }
+  nav {
+    display: flex;
+    gap: 0.4em;
+    padding: 0 1.25em 0.9em;
+    background: #fff;
+    font-size: 0.78em;
+    font-weight: 600;
+  }
+  nav span {
+    padding: 0.45em 0.8em;
+    border-radius: 2em;
+    background: #f5f5f4;
+    color: #57534e;
+  }
+  nav span.on {
+    background: #16140f;
+    color: #fff;
+  }
+  nav b {
+    margin-left: 0.2em;
+    color: #c2410c;
+  }
+  nav .on b {
+    color: #fdba74;
+  }
+  ul {
+    display: grid;
+    gap: 0.7em;
+    padding: 1em 1em 0;
+  }
+  li {
+    padding: 0.9em 1em;
+    border-radius: 1em;
+    background: #fff;
+    box-shadow: 0 0.05em 0.2em rgb(0 0 0 / 0.06);
+    border-left: 0.3em solid #e7e5e4;
+  }
+  li.new {
+    border-left-color: #f97316;
+    animation: ping 2.4s ease-in-out infinite;
+  }
+  li.prep {
+    border-left-color: #eab308;
+  }
+  li.ready {
+    border-left-color: #22c55e;
+  }
+  @keyframes ping {
+    50% {
+      box-shadow:
+        0 0 0 0.25em rgb(249 115 22 / 0.18),
+        0 0.05em 0.2em rgb(0 0 0 / 0.06);
+    }
+  }
+  .row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.88em;
+  }
+  .due {
+    font-size: 0.85em;
+    color: #78716c;
+  }
+  .items {
+    margin-top: 0.3em;
+    font-size: 0.8em;
+    color: #44403c;
+  }
+  .actions {
+    display: flex;
+    gap: 0.5em;
+    margin-top: 0.8em;
+    font-size: 0.78em;
+    font-weight: 700;
+  }
+  .accept {
+    flex: 1;
+    padding: 0.6em;
+    border-radius: 0.7em;
+    background: #f97316;
+    color: #fff;
+    text-align: center;
+  }
+  .ghost {
+    padding: 0.6em 0.9em;
+    border-radius: 0.7em;
+    background: #f5f5f4;
+  }
+  .soldout {
+    margin: 1em 1.25em 0;
+    font-size: 0.75em;
+    color: #57534e;
+  }
+  .soldout span {
+    margin-right: 0.4em;
+    padding: 0.25em 0.55em;
+    border-radius: 0.4em;
+    background: #fee2e2;
+    color: #b91c1c;
+    font-weight: 700;
+  }
+  .tag {
+    position: absolute;
+    right: 1em;
+    bottom: 2em;
+    padding: 0.25em 0.6em;
+    border-radius: 1em;
+    background: #fef3c7;
+    color: #92400e;
+    font-size: 0.65em;
+    font-weight: 700;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    li.new {
+      animation: none;
+    }
+  }
+</style>

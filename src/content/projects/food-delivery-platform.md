@@ -1,41 +1,48 @@
 ---
 title: Campus Food-Ordering Platform
+shortName: Campus Food
+category: Food & Drink · Marketplace
+platforms: [iOS, Android, Web]
+glyph: food
+device: phone
+screens:
+  - { mock: food-tracking, caption: Live order tracking }
+  - { mock: food-rider, caption: Rider job offers }
+  - { mock: food-merchant, caption: Merchant order queue }
+architecture:
+  - label: Clients
+    items:
+      - { name: Customer, note: Flutter · iOS/Android }
+      - { name: Rider, note: Flutter · iOS/Android }
+      - { name: Merchant, note: Flutter · mobile + web }
+      - { name: Admin, note: web · internal iOS }
+  - label: API & identity
+    items:
+      - { name: API Gateway, note: REST }
+      - { name: AppSync, note: GraphQL · real-time }
+      - { name: Cognito + IAM, note: custom auth challenges }
+  - label: Services
+    emphasis: true
+    items:
+      - { name: AWS Lambda · Node.js, note: 'dozens of services: payments, orders, dispatch, ads, messaging, identity' }
+  - label: Data & events
+    items:
+      - { name: DynamoDB, note: GSIs · conditional writes }
+      - { name: EventBridge, note: schedules · sweeps }
+      - { name: Step Functions, note: SNS · SQS · SES }
+      - { name: S3 · CloudWatch, note: storage · alerts }
+  - label: External
+    items:
+      - { name: Stripe Connect, note: + 2 meal-plan processors }
+      - { name: Twilio · FCM, note: masked calls · push }
+      - { name: Google Maps, note: tiered cache }
+      - { name: Slack, note: alerts }
 tagline: Four native apps, two web portals and a full serverless backend, live on the App Store and Google Play
 summary: A campus marketplace connecting customers, merchants and riders, covering discovery, split-tender checkout, dispatch, live tracking and settlement, plus an internal admin layer for onboarding, financial policy and oversight. I designed, built, released and operate every part of it.
 year: 2022
 status: In production
 order: 1
 featured: true
-demo:
-  kind: layers
-  rows:
-    - label: Clients
-      items:
-        - { name: Customer, note: Flutter · iOS/Android }
-        - { name: Rider, note: Flutter · iOS/Android }
-        - { name: Merchant, note: Flutter · mobile + web }
-        - { name: Admin, note: web · internal iOS }
-    - label: API & identity
-      items:
-        - { name: API Gateway, note: REST }
-        - { name: AppSync, note: GraphQL · real-time }
-        - { name: Cognito + IAM, note: custom auth challenges }
-    - label: Services
-      emphasis: true
-      items:
-        - { name: AWS Lambda · Node.js, note: 'dozens of services: payments, orders, dispatch, ads, messaging, identity' }
-    - label: Data & events
-      items:
-        - { name: DynamoDB, note: GSIs · conditional writes }
-        - { name: EventBridge, note: schedules · sweeps }
-        - { name: Step Functions, note: SNS · SQS · SES }
-        - { name: S3 · CloudWatch, note: storage · alerts }
-    - label: External
-      items:
-        - { name: Stripe Connect, note: + 2 meal-plan processors }
-        - { name: Twilio · FCM, note: masked calls · push }
-        - { name: Google Maps, note: tiered cache }
-        - { name: Slack, note: alerts }
 accent: '#c2410c'
 links:
   - { label: App Store, url: 'https://apps.apple.com/us/developer/https-www-byppo-com/id1755669272' }

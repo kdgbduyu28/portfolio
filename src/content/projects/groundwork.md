@@ -1,13 +1,19 @@
 ---
 title: Groundwork
+shortName: Groundwork
+category: Developer tools · AI agent
+platforms: [Web]
+glyph: graph
+device: browser
+screens:
+  - { mock: groundwork-chat, caption: Cited answers with a live agent trace }
+  - { mock: groundwork-graph, caption: The agent graph and its two loops }
 tagline: An AI agent that answers questions from documentation and checks its own citations
 summary: A retrieval-augmented (RAG) agent built with LangGraph and Claude. It searches the docs, judges whether what it found is good enough, searches again if not, and checks every claim in its answer against the source before replying.
 year: 2026
 status: Source only
 order: 5
 featured: false
-demo:
-  kind: agent-graph
 accent: '#4338ca'
 repo: https://github.com/kdgbduyu28/groundwork
 role: Agent design, retrieval, evaluation and UI

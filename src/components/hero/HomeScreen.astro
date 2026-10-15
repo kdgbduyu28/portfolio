@@ -1,0 +1,670 @@
+---
+import Phone from '../device/Phone.astro';
+import StatusBar from '../device/StatusBar.astro';
+import AppIcon from '../AppIcon.astro';
+import ScreenContent from '../ScreenContent.astro';
+import type { Project } from '../../data/projects';
+import { phoneScreen, statusBarFor } from '../../data/screens';
+import { SITE } from '../../data/site';
+
+// The hero phone: a home screen whose app icons are the projects. Tapping one opens it with an
+// app-launch animation; the home bar (or Escape) goes back. Dock items are real links.
+
+interface Props {
+  projects: Project[];
+}
+
+const { projects } = Astro.props;
+const apps = projects
+  .map((p) => ({ p, screen: phoneScreen(p) }))
+  .filter((a): a is { p: Project; screen: NonNullable<typeof a.screen> } => !!a.screen);
+
+// Notification banners that drop in on the home screen. Tapping one opens its app. Sample content.
+const banners = [
+  { id: 'food-delivery-platform', when: 'now', text: 'Sam picked up your order. Arriving in 8 min.' },
+  { id: 'presyo', when: '2h ago', text: 'Diesel ▼ ₱1.30/L this week in Quezon City.' },
+  { id: 'clinic-platform', when: '9:00 AM', text: 'Reminder: cleaning tomorrow at 11:15 AM.' },
+  { id: 'pabili', when: 'now', text: 'You won 50 coins on Spin & Win 🎉' },
+]
+  .map((b) => ({ ...b, p: projects.find((p) => p.id === b.id) }))
+  .filter((b): b is typeof b & { p: Project } => !!b.p);
+
+const dock = [
+  { label: 'Résumé', href: SITE.resume, icon: 'doc', bg: '#f5f5f4', fg: '#16140f', external: true },
+  { label: 'Portfolio', href: SITE.portfolio, icon: 'book', bg: '#1d4ed8', fg: '#fff', external: true },
+  { label: 'Mail', href: `mailto:${SITE.email}`, icon: 'mail', bg: '#0ea5e9', fg: '#fff', external: false },
+  { label: 'GitHub', href: SITE.github, icon: 'code', bg: '#18181b', fg: '#fff', external: true },
+].filter((d) => d.href);
+
+const dockIcons: Record<string, string> = {
+  doc: '<path d="M9 5h9l5 5v17H9z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12.5 15h7M12.5 19h7M12.5 23h4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+  book: '<path d="M7 8.5C10 7 13 7 16 9c3-2 6-2 9-.5V24c-3-1.5-6-1.5-9 .5-3-2-6-2-9-.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M16 9v15" stroke="currentColor" stroke-width="2"/>',
+  mail: '<rect x="6" y="9" width="20" height="15" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="m7 11 9 6.5 9-6.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>',
+  code: '<path d="m12 11-5 5 5 5M20 11l5 5-5 5M17.5 9l-3 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>',
+};
+---
+
+<div class="home" data-home>
+  <div class="tilt" data-tilt>
+    <Phone overlay sbBg="transparent" sbFg="#ffffff" glow="#6366f1">
+      <div class="wallpaper" aria-hidden="true"></div>
+
+      <div class="springboard" data-springboard>
+        <!-- Widget -->
+        <a href="/#experience" class="widget">
+          <span class="widget-k">Timothy Borja</span>
+          <span class="widget-title">Mobile & full-stack engineer</span>
+          <span class="widget-stats">
+            <span><b>15k+</b>orders</span>
+            <span><b>9</b>campuses</span>
+            <span><b>4+</b>years</span>
+          </span>
+        </a>
+
+        <!-- Apps -->
+        <ul class="grid-apps" aria-label="My apps. Open one to try it.">
+          {
+            apps.map(({ p }) => (
+              <li>
+                <button type="button" class="app" data-open={p.id} aria-label={`Open ${p.data.title}`}>
+                  <span class="app-icon-wrap" data-icon>
+                    <AppIcon project={p} size={60} class="!size-full" />
+                  </span>
+                  <span class="app-label">{p.data.shortName}</span>
+                </button>
+              </li>
+            ))
+          }
+        </ul>
+
+        <!-- Small widgets -->
+        <div class="mini-widgets">
+          <div class="mini">
+            <span class="mini-k">Manila</span>
+            <span class="mini-v" data-manila-time>9:41</span>
+            <span class="mini-s">Replies within a day</span>
+          </div>
+          <a href="/projects/presyo" class="mini mini-presyo">
+            <span class="mini-k">Presyo · Oct 6–12</span>
+            <span class="mini-v">▼ ₱1.30</span>
+            <span class="mini-s">Diesel, per liter</span>
+          </a>
+        </div>
+
+        <div class="dots" aria-hidden="true"><i class="on"></i><i></i></div>
+
+        <!-- Dock -->
+        <nav class="dock" aria-label="Links">
+          {
+            dock.map((d) => (
+              <a
+                href={d.href}
+                class="dock-item"
+                aria-label={d.label}
+                {...(d.external ? { target: '_blank', rel: 'noopener' } : {})}
+              >
+                <span class="dock-icon" style={`background:${d.bg};color:${d.fg}`}>
+                  <svg viewBox="0 0 32 32" set:html={dockIcons[d.icon]} />
+                </span>
+              </a>
+            ))
+          }
+        </nav>
+      </div>
+
+      <!-- Notification banners -->
+      <div class="banners" data-banners>
+        {
+          banners.map((b) => (
+            <button type="button" class="banner" data-banner={b.id} tabindex="-1" aria-hidden="true">
+              <AppIcon project={b.p} size={36} class="!size-[9.5cqw]" />
+              <span class="banner-body">
+                <span class="banner-top">
+                  <b>{b.p.data.shortName}</b>
+                  <span>{b.when}</span>
+                </span>
+                <span class="banner-text">{b.text}</span>
+              </span>
+            </button>
+          ))
+        }
+      </div>
+
+      <!-- Open apps -->
+      {
+        apps.map(({ p, screen }) => {
+          const [bg, fg] = statusBarFor(screen);
+          return (
+            <section class="app-view" data-app={p.id} hidden aria-label={p.data.title}>
+              <StatusBar bg={bg} fg={fg} />
+              <div class="app-body" data-live-src={p.data.embed ? p.data.live : undefined}>
+                <ScreenContent project={p} screen={screen} />
+              </div>
+              <div class="app-bar">
+                {p.data.embed && p.data.live && (
+                  <button type="button" class="chip-btn" data-run>
+                    <span class="live-dot" style={`background:${p.data.accent}`} />
+                    Run live
+                  </button>
+                )}
+                <a href={`/projects/${p.id}`} class="chip-btn chip-dark">
+                  Case study →
+                </a>
+              </div>
+              <button type="button" class="home-bar" data-close aria-label="Back to home screen">
+                <span />
+              </button>
+            </section>
+          );
+        })
+      }
+    </Phone>
+  </div>
+  <p class="hint" data-hint><span aria-hidden="true">👆</span> Tap an app to open it</p>
+</div>
+
+<style>
+  .home {
+    position: relative;
+    width: min(100%, 330px);
+    margin-inline: auto;
+    perspective: 1400px;
+  }
+  .tilt {
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    will-change: transform;
+  }
+  .wallpaper {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(80% 50% at 15% 10%, #7c3aed 0%, transparent 60%),
+      radial-gradient(70% 45% at 95% 35%, #0ea5e9 0%, transparent 60%),
+      radial-gradient(90% 60% at 30% 100%, #f43f5e 0%, transparent 60%),
+      linear-gradient(160deg, #1e1b4b, #0b1020 60%, #1a0b16);
+  }
+  .springboard {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 16cqw 5.5cqw 4cqw;
+    transition:
+      transform 0.45s cubic-bezier(0.2, 0.9, 0.2, 1),
+      filter 0.45s,
+      opacity 0.45s;
+  }
+  .springboard.behind {
+    transform: scale(0.9);
+    filter: blur(1.5cqw);
+    opacity: 0.4;
+  }
+  .widget {
+    display: flex;
+    flex-direction: column;
+    gap: 1cqw;
+    padding: 4.5cqw 5cqw;
+    border-radius: 6.5cqw;
+    background: rgb(255 255 255 / 0.14);
+    backdrop-filter: blur(4cqw);
+    -webkit-backdrop-filter: blur(4cqw);
+    box-shadow: inset 0 0 0 0.3cqw rgb(255 255 255 / 0.18);
+    color: #fff;
+    transition: background 0.2s;
+  }
+  .widget:hover {
+    background: rgb(255 255 255 / 0.2);
+  }
+  .widget-k {
+    font: 600 3.1cqw/1 'JetBrains Mono', monospace;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+  .widget-title {
+    font: 700 5.6cqw/1.15 'Bricolage Grotesque', 'Inter', sans-serif;
+  }
+  .widget-stats {
+    display: flex;
+    gap: 5cqw;
+    margin-top: 1.5cqw;
+    font-size: 2.9cqw;
+    opacity: 0.85;
+  }
+  .widget-stats b {
+    display: block;
+    font-size: 5cqw;
+    font-weight: 700;
+  }
+  .grid-apps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 5cqw 3cqw;
+    margin-top: 7cqw;
+  }
+  .app {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.6cqw;
+    width: 100%;
+    cursor: pointer;
+  }
+  .app-icon-wrap {
+    display: block;
+    width: 15.5cqw;
+    height: 15.5cqw;
+    transition: transform 0.2s;
+  }
+  .app:hover .app-icon-wrap {
+    transform: scale(1.06);
+  }
+  .app:active .app-icon-wrap {
+    transform: scale(0.92);
+  }
+  .app:focus-visible {
+    outline: none;
+  }
+  .app:focus-visible .app-icon-wrap {
+    outline: 0.7cqw solid #fff;
+    outline-offset: 0.8cqw;
+    border-radius: 22%;
+  }
+  .app-label {
+    max-width: 100%;
+    overflow: hidden;
+    color: #fff;
+    font-size: 2.9cqw;
+    font-weight: 500;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-shadow: 0 0.2cqw 0.8cqw rgb(0 0 0 / 0.4);
+  }
+  .mini-widgets {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3.5cqw;
+    margin-top: 6cqw;
+  }
+  .mini {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6cqw;
+    padding: 3.6cqw 4cqw;
+    border-radius: 5.5cqw;
+    background: rgb(255 255 255 / 0.14);
+    backdrop-filter: blur(4cqw);
+    -webkit-backdrop-filter: blur(4cqw);
+    box-shadow: inset 0 0 0 0.3cqw rgb(255 255 255 / 0.16);
+    color: #fff;
+  }
+  .mini-presyo {
+    background: linear-gradient(160deg, rgb(21 128 61 / 0.75), rgb(20 83 45 / 0.75));
+  }
+  .mini-k {
+    font-size: 2.7cqw;
+    font-weight: 600;
+    opacity: 0.75;
+  }
+  .mini-v {
+    font: 700 7.2cqw/1.05 'Bricolage Grotesque', 'Inter', sans-serif;
+    font-variant-numeric: tabular-nums;
+  }
+  .mini-v::after {
+    content: ' ' attr(data-suffix);
+    font-size: 0.45em;
+    opacity: 0.7;
+  }
+  .mini-presyo .mini-v::after {
+    content: none;
+  }
+  .mini-s {
+    font-size: 2.6cqw;
+    opacity: 0.7;
+  }
+  .dots {
+    display: flex;
+    justify-content: center;
+    gap: 1.6cqw;
+    margin-top: auto;
+    margin-bottom: 3.5cqw;
+  }
+  .dots i {
+    width: 1.8cqw;
+    height: 1.8cqw;
+    border-radius: 50%;
+    background: rgb(255 255 255 / 0.35);
+  }
+  .dots i.on {
+    background: #fff;
+  }
+  .dock {
+    display: flex;
+    justify-content: space-around;
+    padding: 3.5cqw;
+    margin-bottom: 1.5cqw;
+    border-radius: 9cqw;
+    background: rgb(255 255 255 / 0.16);
+    backdrop-filter: blur(5cqw);
+    -webkit-backdrop-filter: blur(5cqw);
+  }
+  .dock-icon {
+    display: grid;
+    place-items: center;
+    width: 15.5cqw;
+    height: 15.5cqw;
+    border-radius: 22.5%;
+    box-shadow: 0 0.6cqw 2cqw rgb(0 0 0 / 0.25);
+    transition: transform 0.2s;
+  }
+  .dock-item:hover .dock-icon {
+    transform: scale(1.06);
+  }
+  .dock-icon svg {
+    width: 58%;
+    height: 58%;
+  }
+  .banners {
+    position: absolute;
+    z-index: 4;
+    top: 14.5cqw;
+    left: 3cqw;
+    right: 3cqw;
+    pointer-events: none;
+  }
+  .banner {
+    position: absolute;
+    inset: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 3cqw;
+    padding: 3cqw 3.5cqw;
+    border-radius: 6cqw;
+    background: rgb(245 245 247 / 0.82);
+    backdrop-filter: blur(5cqw) saturate(1.6);
+    -webkit-backdrop-filter: blur(5cqw) saturate(1.6);
+    box-shadow: 0 2cqw 6cqw rgb(0 0 0 / 0.3);
+    color: #111;
+    text-align: left;
+    opacity: 0;
+    transform: translateY(-120%) scale(0.96);
+    transition:
+      transform 0.55s cubic-bezier(0.2, 0.9, 0.25, 1.15),
+      opacity 0.35s;
+    cursor: pointer;
+  }
+  .banner.in {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+  .banner-body {
+    min-width: 0;
+    flex: 1;
+  }
+  .banner-top {
+    display: flex;
+    justify-content: space-between;
+    font-size: 3cqw;
+    color: #6b7280;
+  }
+  .banner-top b {
+    color: #111;
+    font-weight: 650;
+  }
+  .banner-text {
+    display: block;
+    font-size: 3.3cqw;
+    line-height: 1.3;
+  }
+  .app-view {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    overflow: hidden;
+    background: #fff;
+    transform-origin: 0 0;
+  }
+  .app-view[hidden] {
+    display: none;
+  }
+  .app-body {
+    position: absolute;
+    inset: 12.8cqw 0 0;
+    overflow: hidden;
+  }
+  .app-bar {
+    position: absolute;
+    z-index: 6;
+    left: 0;
+    right: 0;
+    bottom: 7cqw;
+    display: flex;
+    justify-content: center;
+    gap: 2cqw;
+    pointer-events: none;
+  }
+  .chip-btn {
+    pointer-events: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 1.6cqw;
+    padding: 2.4cqw 4.2cqw;
+    border-radius: 6cqw;
+    background: rgb(255 255 255 / 0.92);
+    backdrop-filter: blur(3cqw);
+    -webkit-backdrop-filter: blur(3cqw);
+    box-shadow: 0 1cqw 4cqw rgb(0 0 0 / 0.25);
+    color: #16140f;
+    font-size: 3.5cqw;
+    font-weight: 650;
+    cursor: pointer;
+  }
+  .chip-dark {
+    background: rgb(22 20 15 / 0.88);
+    color: #fff;
+  }
+  .live-dot {
+    width: 2cqw;
+    height: 2cqw;
+    border-radius: 50%;
+    box-shadow: 0 0 0 0.8cqw rgb(255 255 255 / 0.6);
+  }
+  .home-bar {
+    position: absolute;
+    z-index: 7;
+    left: 50%;
+    bottom: 0;
+    width: 50cqw;
+    height: 7cqw;
+    translate: -50% 0;
+    cursor: pointer;
+  }
+  .home-bar span {
+    position: absolute;
+    left: 50%;
+    bottom: 2cqw;
+    width: 35cqw;
+    height: 1.3cqw;
+    translate: -50% 0;
+    border-radius: 1cqw;
+    background: rgb(0 0 0 / 0.75);
+    box-shadow: 0 0 0 0.4cqw rgb(255 255 255 / 0.5);
+  }
+  .home-bar:hover span {
+    width: 40cqw;
+  }
+  .hint {
+    margin-top: 18px;
+    text-align: center;
+    color: rgb(255 255 255 / 0.6);
+    font-size: 13px;
+    transition: opacity 0.4s;
+  }
+  .hint span {
+    display: inline-block;
+    animation: tap 1.6s ease-in-out infinite;
+  }
+  .hint.done {
+    opacity: 0;
+  }
+  @keyframes tap {
+    50% {
+      transform: translateY(-4px);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hint span {
+      animation: none;
+    }
+    .tilt,
+    .springboard {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const reduce = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const EASE = 'cubic-bezier(0.2, 0.9, 0.2, 1)';
+
+  function setup() {
+    const home = document.querySelector<HTMLElement>('[data-home]');
+    if (!home || home.dataset.ready) return;
+    home.dataset.ready = '1';
+
+    const board = home.querySelector<HTMLElement>('[data-springboard]')!;
+    const hint = home.querySelector<HTMLElement>('[data-hint]');
+    const screen = home.querySelector<HTMLElement>('.phone-screen')!;
+    let open: { view: HTMLElement; icon: HTMLElement; trigger: HTMLElement } | null = null;
+
+    // Transform that shrinks the full screen onto the icon's box.
+    const toIcon = (icon: HTMLElement) => {
+      const s = screen.getBoundingClientRect();
+      const i = icon.getBoundingClientRect();
+      return `translate(${i.left - s.left}px, ${i.top - s.top}px) scale(${i.width / s.width}, ${i.height / s.height})`;
+    };
+
+    const openApp = (trigger: HTMLElement) => {
+      const id = trigger.dataset.open!;
+      const view = home.querySelector<HTMLElement>(`[data-app="${id}"]`)!;
+      const icon = trigger.querySelector<HTMLElement>('[data-icon]')!;
+      view.hidden = false;
+      board.classList.add('behind');
+      board.inert = true;
+      hint?.classList.add('done');
+      open = { view, icon, trigger };
+      if (!reduce()) {
+        view.animate(
+          [
+            { transform: toIcon(icon), borderRadius: '22%', opacity: 0.4 },
+            { transform: 'none', borderRadius: '0', opacity: 1 },
+          ],
+          { duration: 480, easing: EASE },
+        );
+      }
+      view.querySelector<HTMLElement>('[data-close]')?.focus({ preventScroll: true });
+    };
+
+    const closeApp = () => {
+      if (!open) return;
+      const { view, icon, trigger } = open;
+      open = null;
+      board.classList.remove('behind');
+      board.inert = false;
+      const done = () => {
+        view.hidden = true;
+        // Stop a live app when its view closes.
+        view.querySelector('iframe')?.remove();
+        trigger.focus({ preventScroll: true });
+      };
+      if (reduce()) return done();
+      view
+        .animate(
+          [
+            { transform: 'none', borderRadius: '0', opacity: 1 },
+            { transform: toIcon(icon), borderRadius: '22%', opacity: 0 },
+          ],
+          { duration: 380, easing: EASE },
+        )
+        .finished.then(done);
+    };
+
+    home.querySelectorAll<HTMLElement>('[data-open]').forEach((b) => b.addEventListener('click', () => openApp(b)));
+
+    // Banners drop in one at a time while the home screen is showing; tapping one opens its app.
+    const banners = [...home.querySelectorAll<HTMLElement>('[data-banner]')];
+    banners.forEach((b) =>
+      b.addEventListener('click', () => {
+        b.classList.remove('in');
+        const trigger = home.querySelector<HTMLElement>(`[data-open="${b.dataset.banner}"]`);
+        if (trigger) openApp(trigger);
+      }),
+    );
+    if (banners.length && !reduce()) {
+      let i = 0;
+      const cycle = () => {
+        if (!home.isConnected) return;
+        if (!open && !document.hidden) {
+          const b = banners[i++ % banners.length];
+          b.classList.add('in');
+          setTimeout(() => b.classList.remove('in'), 3800);
+        }
+        setTimeout(cycle, 6000);
+      };
+      setTimeout(cycle, 1800);
+    }
+    home.querySelectorAll<HTMLElement>('[data-close]').forEach((b) => b.addEventListener('click', closeApp));
+    home.addEventListener('keydown', (e) => e.key === 'Escape' && closeApp());
+
+    // "Run live": swap the screenshot for the real web app.
+    home.querySelectorAll<HTMLButtonElement>('[data-run]').forEach((btn) =>
+      btn.addEventListener('click', () => {
+        const body = btn.closest('.app-view')!.querySelector<HTMLElement>('[data-live-src]')!;
+        if (body.querySelector('iframe')) return;
+        const frame = document.createElement('iframe');
+        frame.src = body.dataset.liveSrc!;
+        frame.title = 'Live app';
+        frame.className = 'absolute inset-0 z-[5] size-full border-0 bg-white opacity-0 transition-opacity duration-300';
+        body.appendChild(frame);
+        btn.lastChild!.textContent = ' Loading…';
+        frame.addEventListener('load', () => {
+          frame.classList.remove('opacity-0');
+          // The live app has its own buttons; leave just the home bar to get back.
+          btn.closest('.app-bar')?.remove();
+        });
+      }),
+    );
+
+    // Gentle 3D tilt toward the pointer (mouse only, and not for reduced motion).
+    const tilt = home.querySelector<HTMLElement>('[data-tilt]')!;
+    const stage = home.closest('[data-stage]') ?? home;
+    if (matchMedia('(hover: hover) and (pointer: fine)').matches && !reduce()) {
+      stage.addEventListener('pointermove', (e) => {
+        const ev = e as PointerEvent;
+        const r = home.getBoundingClientRect();
+        const x = (ev.clientX - (r.left + r.width / 2)) / innerWidth;
+        const y = (ev.clientY - (r.top + r.height / 2)) / innerHeight;
+        tilt.style.transform = `rotateY(${x * 14}deg) rotateX(${-y * 10}deg)`;
+      });
+      stage.addEventListener('pointerleave', () => (tilt.style.transform = ''));
+    }
+  }
+
+  // The Manila-time widget shows the real time there, so visitors abroad know when I'm around.
+  const manila = new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: '2-digit', timeZone: 'Asia/Manila' });
+  const tick = () =>
+    document.querySelectorAll<HTMLElement>('[data-manila-time]').forEach((el) => {
+      el.textContent = manila.format(new Date()).replace(/\s?[AP]M$/, '');
+      el.dataset.suffix = /PM$/.test(manila.format(new Date())) ? 'PM' : 'AM';
+    });
+  let clock: ReturnType<typeof setInterval> | undefined;
+
+  document.addEventListener('astro:page-load', () => {
+    setup();
+    tick();
+    clearInterval(clock);
+    clock = setInterval(tick, 15_000);
+  });
+</script>

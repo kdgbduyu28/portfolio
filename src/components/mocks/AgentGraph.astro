@@ -1,8 +1,15 @@
 ---
 // Groundwork's agent graph: search → grade → write → verify, with its two retry loops.
+
+interface Props {
+  /** No border of its own, e.g. inside a browser frame. */
+  bare?: boolean;
+}
+
+const { bare = false } = Astro.props;
 ---
 
-<figure class="agent-graph rounded-xl border border-white/10 bg-[#14122b] p-4 text-white sm:p-6">
+<figure class:list={['agent-graph bg-[#14122b] p-4 text-white sm:p-6', !bare && 'rounded-xl border border-white/10']}>
   <svg viewBox="0 0 700 300" class="h-auto w-full" role="img" aria-labelledby="ag-title ag-desc">
     <title id="ag-title">Groundwork agent graph</title>
     <desc id="ag-desc">

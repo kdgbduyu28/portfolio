@@ -2,39 +2,68 @@ import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
+// Drawn screens (src/components/mocks) for projects with no public screenshots.
+export const MOCKS = [
+  'food-tracking',
+  'food-rider',
+  'food-merchant',
+  'clinic-patient',
+  'clinic-day',
+  'clinic-board',
+  'groundwork-chat',
+  'groundwork-graph',
+] as const;
+
+export const GLYPHS = ['food', 'tooth', 'peso', 'bag', 'graph'] as const;
+
 // One Markdown file per project in src/content/projects. The file name is the URL.
 const projects = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/projects' }),
   schema: ({ image }) =>
     z.object({
       title: z.string(),
+      shortName: z.string(), // label under the app icon
       tagline: z.string(),
       summary: z.string(),
+      category: z.string(), // e.g. "Food & Drink · Marketplace"
       year: z.number(),
       status: z.enum(['In production', 'Live', 'Pre-launch', 'In progress', 'Source only']),
       order: z.number(),
       featured: z.boolean().default(false),
-      // How the project is shown: a live app in a phone or browser frame, or a built-in visual.
-      demo: z.discriminatedUnion('kind', [
-        z.object({ kind: z.literal('phone'), url: z.url() }),
-        z.object({ kind: z.literal('browser'), url: z.url() }),
-        z.object({ kind: z.literal('clinic-mock') }),
-        z.object({ kind: z.literal('agent-graph') }),
-        // An architecture diagram: one row per layer, boxes left to right.
+      platforms: z.array(z.enum(['iOS', 'Android', 'Web'])),
+
+      // App icon: a real image, or a drawn glyph on the accent colour.
+      iconImage: image().optional(),
+      glyph: z.enum(GLYPHS).optional(),
+      accent: z.string(), // CSS colour: icon, cover and highlights
+
+      // What the screens are shown in, and the screens themselves (real screenshots or drawn mocks).
+      device: z.enum(['phone', 'tablet', 'browser']),
+      screens: z.array(
         z.object({
-          kind: z.literal('layers'),
-          rows: z.array(
-            z.object({
-              label: z.string(),
-              items: z.array(z.object({ name: z.string(), note: z.string().optional() })),
-              emphasis: z.boolean().default(false),
-            }),
-          ),
+          image: image().optional(),
+          mock: z.enum(MOCKS).optional(),
+          caption: z.string(),
+          device: z.enum(['phone', 'tablet', 'browser']).optional(), // overrides the project's device
+          // Phone status bar behind a screenshot: a CSS background matching the screenshot's top edge.
+          bar: z.string().optional(),
+          barText: z.enum(['light', 'dark']).default('dark'),
         }),
-      ]),
-      accent: z.string(), // CSS color for the project's cover
-      // Real screenshot of the app, relative to the Markdown file.
-      screenshot: image().optional(),
+      ),
+      // The live web build can run inside a phone frame.
+      embed: z.boolean().default(false),
+
+      // Optional architecture diagram: one row per layer.
+      architecture: z
+        .array(
+          z.object({
+            label: z.string(),
+            items: z.array(z.object({ name: z.string(), note: z.string().optional() })),
+            emphasis: z.boolean().default(false),
+          }),
+        )
+        .optional(),
+
       live: z.url().optional(),
       repo: z.url().optional(),
       // Any other links (second repo, app stores), shown with the live and repo buttons.

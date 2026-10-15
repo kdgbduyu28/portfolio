@@ -1,0 +1,128 @@
+---
+import type { Project } from '../data/projects';
+import { deviceOf, statusBarFor, type ScreenEntry } from '../data/screens';
+import Phone from './device/Phone.astro';
+import Tablet from './device/Tablet.astro';
+import Browser from './device/Browser.astro';
+import ScreenContent from './ScreenContent.astro';
+import ClinicDay from './mocks/ClinicDay.astro';
+import ClinicBoard from './mocks/ClinicBoard.astro';
+import GroundworkChat from './mocks/GroundworkChat.astro';
+import AgentGraph from './mocks/AgentGraph.astro';
+
+// One of a project's screens, inside the right device. With `live`, a "Try it live" button swaps the
+// screenshot for the running web app.
+
+interface Props {
+  project: Project;
+  screen: ScreenEntry;
+  live?: boolean;
+  eager?: boolean;
+  glow?: boolean;
+  class?: string;
+}
+
+const { project, screen, live = false, eager = false, glow = false, class: className } = Astro.props;
+const device = deviceOf(project, screen);
+const [sbBg, sbFg] = statusBarFor(screen);
+const liveUrl = live && project.data.embed ? project.data.live : undefined;
+---
+
+{
+  device === 'phone' && (
+    <div class:list={['screen-phone relative', className]} data-live-src={liveUrl}>
+      <Phone sbBg={sbBg} sbFg={sbFg} glow={glow ? project.data.accent : undefined}>
+        <ScreenContent project={project} screen={screen} eager={eager} />
+        {liveUrl && (
+          <div class="absolute inset-x-0 bottom-0 z-10 flex justify-center bg-gradient-to-t from-black/50 to-transparent p-[6cqw] pt-[20cqw]" data-live-cta>
+            <button
+              type="button"
+              class="inline-flex items-center gap-2 rounded-full bg-white px-[5cqw] py-[2.6cqw] text-[4.2cqw] font-semibold text-stone-900 shadow-lg transition hover:scale-[1.04]"
+              data-live-load
+            >
+              <span class="relative flex size-[2.4cqw]">
+                <span class="absolute inline-flex size-full animate-ping rounded-full opacity-75" style={`background:${project.data.accent}`} />
+                <span class="relative inline-flex size-full rounded-full" style={`background:${project.data.accent}`} />
+              </span>
+              Try it live
+            </button>
+          </div>
+        )}
+      </Phone>
+    </div>
+  )
+}
+{
+  device === 'tablet' && (
+    <div class:list={['relative', className]}>
+      <Tablet glow={glow ? project.data.accent : undefined}>
+        {screen.mock === 'clinic-day' && <ClinicDay variant="tablet" />}
+        {screen.mock === 'clinic-board' && <ClinicBoard />}
+      </Tablet>
+    </div>
+  )
+}
+{
+  device === 'browser' && (
+    <div class:list={['relative', className]}>
+      {screen.mock === 'groundwork-chat' && (
+        <Browser url="groundwork · localhost:3000" dark>
+          <div class="relative aspect-[16/10] overflow-hidden">
+            <div class="absolute top-0 left-0 h-[640px] w-[1024px] origin-top-left [transform:scale(var(--fit,0.5))]" data-fit="1024">
+              <GroundworkChat />
+            </div>
+          </div>
+        </Browser>
+      )}
+      {screen.mock === 'groundwork-graph' && (
+        <Browser url="groundwork · agent graph" dark>
+          <AgentGraph bare />
+        </Browser>
+      )}
+    </div>
+  )
+}
+
+<script>
+  // Drawn tablet and desktop screens are laid out at real width (data-fit, in px) and scaled to their frame.
+  const fit = (el: HTMLElement) =>
+    el.style.setProperty('--fit', String(el.parentElement!.clientWidth / Number(el.dataset.fit || 1024)));
+  const resized = new ResizeObserver((entries) =>
+    entries.forEach((e) => {
+      const canvas = (e.target as HTMLElement).querySelector<HTMLElement>(':scope > [data-fit]');
+      if (canvas) fit(canvas);
+    }),
+  );
+  document.addEventListener('astro:page-load', () =>
+    document.querySelectorAll<HTMLElement>('[data-fit]').forEach((el) => {
+      fit(el);
+      resized.observe(el.parentElement!);
+    }),
+  );
+
+  // "Try it live": load the real web app into the phone, keeping the screenshot until it has painted.
+  document.addEventListener('astro:page-load', () => {
+    document.querySelectorAll<HTMLElement>('[data-live-src]').forEach((wrap) => {
+      const button = wrap.querySelector<HTMLButtonElement>('[data-live-load]');
+      if (!button || button.dataset.bound) return;
+      button.dataset.bound = '1';
+      button.addEventListener('click', () => {
+        const cta = wrap.querySelector<HTMLElement>('[data-live-cta]');
+        const content = cta?.parentElement;
+        if (!content || content.querySelector('iframe')) return;
+        const frame = document.createElement('iframe');
+        frame.src = wrap.dataset.liveSrc!;
+        frame.title = 'Live app';
+        frame.className = 'absolute inset-0 z-[5] size-full border-0 bg-white opacity-0 transition-opacity duration-300';
+        frame.allow = 'clipboard-write; geolocation';
+        content.appendChild(frame);
+        button.lastChild!.textContent = ' Loading…';
+        frame.addEventListener('load', () => {
+          frame.classList.remove('opacity-0');
+          content.querySelector('[data-live-poster]')?.remove();
+          cta?.remove();
+        });
+      });
+    });
+  });
+</script>

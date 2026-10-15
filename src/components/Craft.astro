@@ -1,0 +1,510 @@
+---
+import AppIcon from './AppIcon.astro';
+import type { Project } from '../data/projects';
+
+// The mobile details that don't show up in a screenshot, each with a small live demo and the apps it shipped in.
+
+interface Props {
+  projects: Project[];
+}
+
+const { projects } = Astro.props;
+const pick = (...ids: string[]) => ids.map((id) => projects.find((p) => p.id === id)).filter((p) => p !== undefined);
+
+const tiles = [
+  {
+    key: 'push',
+    title: 'Notifications that land at the right moment',
+    text: 'Push through FCM and Web Push, scheduled reminders, per-topic mutes, and deep links that open the right screen.',
+    apps: pick('food-delivery-platform', 'pabili', 'clinic-platform'),
+  },
+  {
+    key: 'offline',
+    title: 'Built for bad Wi-Fi',
+    text: "Clients that tell 'no internet' apart from 'our servers are down', pause polling while offline and resync the moment you're back.",
+    apps: pick('food-delivery-platform'),
+  },
+  {
+    key: 'track',
+    title: 'Live tracking that keeps up',
+    text: 'Rider location over real-time GraphQL subscriptions, with a watchdog that repairs silent sockets and polling and push fallbacks.',
+    apps: pick('food-delivery-platform'),
+  },
+  {
+    key: 'money',
+    title: 'Payments, to the cent',
+    text: 'Split tender across meal plans and cards in integer cents, Stripe Connect payouts, deposit holds, and refunds that prove they happened.',
+    apps: pick('food-delivery-platform', 'pabili'),
+  },
+  {
+    key: 'release',
+    title: 'One command to the stores',
+    text: 'fastlane and EAS pipelines that ship four apps to TestFlight, the App Store and Google Play, with dry runs and recovery.',
+    apps: pick('food-delivery-platform', 'pabili'),
+  },
+  {
+    key: 'adaptive',
+    title: 'One codebase, every screen',
+    text: 'React Native and Expo for iOS, Android and the web, and Flutter for native fleets. Layouts adapt from phone to tablet to desktop.',
+    apps: pick('pabili', 'clinic-platform', 'presyo'),
+  },
+];
+---
+
+<section id="craft" class="wrap scroll-mt-24 py-20">
+  <div class="max-w-2xl">
+    <p class="eyebrow">Mobile craft</p>
+    <h2 class="h-display mt-3 text-4xl sm:text-5xl">The details people feel.</h2>
+    <p class="mt-4 text-lg text-muted">
+      Most of mobile is the hard part a screenshot can't show. These are the ones I've shipped to real users.
+    </p>
+  </div>
+
+  <ul class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    {
+      tiles.map((t) => (
+        <li class="flex flex-col overflow-hidden rounded-[28px] border border-line bg-card">
+          <div class:list={['craft-visual relative h-44 overflow-hidden border-b border-line', `v-${t.key}`]} aria-hidden="true">
+            {t.key === 'push' && (
+              <div class="stack">
+                <div class="banner b1">
+                  <i style="background:#c2410c" />
+                  <p>
+                    <b>Campus Food</b>Your order is on its way 🛵
+                  </p>
+                </div>
+                <div class="banner b2">
+                  <i style="background:#0f766e" />
+                  <p>
+                    <b>D-Touch</b>Cleaning tomorrow, 11:15 AM
+                  </p>
+                </div>
+                <div class="banner b3">
+                  <i style="background:#f43f5e" />
+                  <p>
+                    <b>Pabili</b>Back in stock: your liked item
+                  </p>
+                </div>
+              </div>
+            )}
+            {t.key === 'offline' && (
+              <div class="net">
+                <div class="net-bar">
+                  <span>9:41</span>
+                  <span class="wifi">
+                    <svg viewBox="0 0 16 12" fill="currentColor">
+                      <path d="M8 2.6c2.3 0 4.4.9 6 2.4l1.2-1.3A10.2 10.2 0 0 0 8 .8 10.2 10.2 0 0 0 .8 3.7L2 5c1.6-1.5 3.7-2.4 6-2.4Zm0 3.6c1.3 0 2.5.5 3.4 1.3l1.2-1.3A6.6 6.6 0 0 0 8 4.4c-1.8 0-3.4.7-4.6 1.8l1.2 1.3c.9-.8 2.1-1.3 3.4-1.3Zm0 3.6c.4 0 .8.2 1.1.4L8 11.6 6.9 10.2c.3-.2.7-.4 1.1-.4Z" />
+                    </svg>
+                  </span>
+                </div>
+                <p class="toast off">You're offline. Tracking resumes when you're back.</p>
+                <p class="toast on">Back online · synced ✓</p>
+                <div class="skeleton">
+                  <i />
+                  <i />
+                  <i />
+                </div>
+              </div>
+            )}
+            {t.key === 'track' && (
+              <svg viewBox="0 0 320 176" class="size-full" preserveAspectRatio="xMidYMid slice">
+                <rect width="320" height="176" class="map-bg" />
+                <path d="M-10 50h340M-10 120h340M60-10v200M170-10v200M260-10v200" class="map-road" stroke-width="12" />
+                <path d="M40 140 H170 V70 H280 V30" fill="none" stroke="#c2410c" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+                <circle cx="40" cy="140" r="7" fill="#fff" stroke="#c2410c" stroke-width="3" />
+                <circle cx="280" cy="30" r="7" fill="#c2410c" />
+                <g>
+                  <circle r="14" fill="#c2410c" opacity=".2">
+                    <animate attributeName="r" values="10;18;10" dur="1.6s" repeatCount="indefinite" />
+                  </circle>
+                  <circle r="7" fill="#c2410c" stroke="#fff" stroke-width="3" />
+                  <animateMotion dur="6s" repeatCount="indefinite" path="M40 140 H170 V70 H280 V30" />
+                </g>
+              </svg>
+            )}
+            {t.key === 'money' && (
+              <div class="receipt">
+                <p>
+                  <span>Meal plan</span>
+                  <b>$9.50</b>
+                </p>
+                <p>
+                  <span>Card ···· 4242</span>
+                  <b>$4.25</b>
+                </p>
+                <p class="total">
+                  <span>Total</span>
+                  <b>$13.75</b>
+                </p>
+                <p class="cents">950 + 425 = 1375 ¢ ✓</p>
+              </div>
+            )}
+            {t.key === 'release' && (
+              <ol class="pipe">
+                {['Build', 'TestFlight', 'App Store', 'Google Play'].map((s, i) => (
+                  <li style={`--i:${i}`}>
+                    <span class="dot" />
+                    {s}
+                  </li>
+                ))}
+                <li class="cmd">$ ./release.sh --all</li>
+              </ol>
+            )}
+            {t.key === 'adaptive' && (
+              <div class="devices">
+                <span class="d-desk">
+                  <i />
+                  <i />
+                  <i />
+                </span>
+                <span class="d-tab">
+                  <i />
+                  <i />
+                </span>
+                <span class="d-phone">
+                  <i />
+                </span>
+              </div>
+            )}
+          </div>
+          <div class="flex flex-1 flex-col p-5">
+            <h3 class="font-display text-lg leading-snug font-semibold">{t.title}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-muted">{t.text}</p>
+            <p class="mt-auto flex flex-wrap items-center gap-2 pt-4 text-xs text-muted">
+              Shipped in
+              {t.apps.map((p) => (
+                <a href={`/projects/${p.id}`} class="inline-flex items-center gap-1.5 rounded-full border border-line py-0.5 pr-2.5 pl-0.5 font-medium text-ink hover:border-ink">
+                  <AppIcon project={p} size={20} />
+                  {p.data.shortName}
+                </a>
+              ))}
+            </p>
+          </div>
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<style>
+  .craft-visual {
+    background:
+      radial-gradient(70% 90% at 50% 0%, color-mix(in oklab, var(--color-accent) 12%, transparent), transparent),
+      var(--color-paper);
+  }
+
+  /* Push */
+  .stack {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+  }
+  .banner {
+    grid-area: 1 / 1;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    width: 78%;
+    padding: 10px 12px;
+    border-radius: 16px;
+    background: var(--color-card);
+    box-shadow:
+      0 0 0 1px var(--color-line),
+      0 12px 24px -16px rgb(0 0 0 / 0.4);
+    font-size: 12px;
+    opacity: 0;
+    animation: drop 9s ease-in-out infinite;
+  }
+  .banner i {
+    width: 26px;
+    height: 26px;
+    flex: none;
+    border-radius: 7px;
+  }
+  .banner b {
+    display: block;
+    font-size: 11px;
+  }
+  .b2 {
+    animation-delay: 3s;
+  }
+  .b3 {
+    animation-delay: 6s;
+  }
+  @keyframes drop {
+    0% {
+      opacity: 0;
+      transform: translateY(-40px) scale(0.95);
+    }
+    6%,
+    30% {
+      opacity: 1;
+      transform: none;
+    }
+    36%,
+    100% {
+      opacity: 0;
+      transform: translateY(12px) scale(0.92);
+    }
+  }
+
+  /* Offline */
+  .net {
+    position: absolute;
+    inset: 16px 22% 0;
+    border-radius: 22px 22px 0 0;
+    background: var(--color-card);
+    box-shadow: 0 0 0 1px var(--color-line);
+    padding: 10px 14px;
+  }
+  .net-bar {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .wifi svg {
+    width: 14px;
+    animation: wifi 6s steps(1) infinite;
+  }
+  @keyframes wifi {
+    0%,
+    45% {
+      opacity: 0.2;
+    }
+    46%,
+    100% {
+      opacity: 1;
+    }
+  }
+  .toast {
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    top: 38px;
+    padding: 8px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 500;
+    opacity: 0;
+  }
+  .toast.off {
+    background: #27272a;
+    color: #fafafa;
+    animation: off 6s infinite;
+  }
+  .toast.on {
+    background: #dcfce7;
+    color: #166534;
+    animation: on 6s infinite;
+  }
+  @keyframes off {
+    0%,
+    4% {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+    8%,
+    42% {
+      opacity: 1;
+      transform: none;
+    }
+    46%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes on {
+    0%,
+    48% {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+    52%,
+    82% {
+      opacity: 1;
+      transform: none;
+    }
+    88%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .skeleton {
+    display: grid;
+    gap: 8px;
+    margin-top: 58px;
+  }
+  .skeleton i {
+    height: 10px;
+    border-radius: 6px;
+    background: var(--color-line);
+  }
+  .skeleton i:nth-child(2) {
+    width: 70%;
+  }
+  .skeleton i:nth-child(3) {
+    width: 85%;
+  }
+
+  /* Tracking */
+  .map-bg {
+    fill: color-mix(in oklab, var(--color-line) 55%, var(--color-paper));
+  }
+  .map-road {
+    stroke: var(--color-card);
+  }
+
+  /* Money */
+  .receipt {
+    position: absolute;
+    inset: 18px 18% auto;
+    padding: 14px 16px;
+    border-radius: 16px;
+    background: var(--color-card);
+    box-shadow: 0 0 0 1px var(--color-line);
+    font-size: 13px;
+  }
+  .receipt p {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+  }
+  .receipt span {
+    color: var(--color-muted);
+  }
+  .receipt .total {
+    margin-top: 4px;
+    padding-top: 8px;
+    border-top: 1px dashed var(--color-line);
+  }
+  .receipt .total span {
+    color: var(--color-ink);
+    font-weight: 600;
+  }
+  .cents {
+    justify-content: center !important;
+    margin-top: 6px;
+    font: 500 11px 'JetBrains Mono', monospace;
+    color: #16a34a;
+    animation: blink 3s ease-in-out infinite;
+  }
+  @keyframes blink {
+    50% {
+      opacity: 0.45;
+    }
+  }
+
+  /* Release */
+  .pipe {
+    position: absolute;
+    inset: 22px 14% auto;
+    display: grid;
+    gap: 9px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .pipe li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .pipe .dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid var(--color-line);
+    animation: step 6s infinite;
+    animation-delay: calc(var(--i) * 0.9s);
+  }
+  @keyframes step {
+    0%,
+    5% {
+      background: transparent;
+      border-color: var(--color-line);
+    }
+    12%,
+    85% {
+      background: #22c55e;
+      border-color: #22c55e;
+      box-shadow: inset 0 0 0 3px var(--color-card);
+    }
+    100% {
+      background: transparent;
+    }
+  }
+  .pipe .cmd {
+    margin-top: 4px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    background: #18181b;
+    color: #a7f3d0;
+    font: 500 11px 'JetBrains Mono', monospace;
+  }
+
+  /* Adaptive */
+  .devices {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 10px;
+    padding-bottom: 22px;
+  }
+  .devices span {
+    display: grid;
+    gap: 5px;
+    align-content: start;
+    padding: 8px;
+    border: 3px solid var(--color-ink);
+    background: var(--color-card);
+    animation: float 4s ease-in-out infinite;
+  }
+  .devices i {
+    height: 7px;
+    border-radius: 3px;
+    background: color-mix(in oklab, var(--color-accent) 35%, var(--color-line));
+  }
+  .devices i:first-child {
+    background: var(--color-accent);
+  }
+  .d-desk {
+    width: 130px;
+    height: 86px;
+    border-radius: 8px;
+  }
+  .d-tab {
+    width: 82px;
+    height: 104px;
+    border-radius: 10px;
+    animation-delay: 0.4s !important;
+  }
+  .d-phone {
+    width: 44px;
+    height: 86px;
+    border-radius: 10px;
+    animation-delay: 0.8s !important;
+  }
+  @keyframes float {
+    50% {
+      transform: translateY(-5px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .banner,
+    .wifi svg,
+    .toast,
+    .cents,
+    .pipe .dot,
+    .devices span {
+      animation: none;
+    }
+    .b1,
+    .toast.off {
+      opacity: 1;
+    }
+  }
+</style>

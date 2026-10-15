@@ -19,7 +19,7 @@ npx astro check    # type check
 |---|---|
 | Name, headline, email, GitHub, LinkedIn, PDF links | `src/data/site.ts` |
 | Work history and education | `src/data/experience.ts` |
-| Team members | `src/data/team.ts` |
+| Team members (the Team section is off the home page while it's one person; add `<Team />` back in `src/pages/index.astro`) | `src/data/team.ts` |
 | A project's case study | `src/content/projects/<slug>.md` (file name = URL) |
 | Skills list and their groups | `src/data/projects.ts` (`SKILL_GROUPS`) |
 | Colours and fonts | `src/styles/global.css` |
@@ -27,17 +27,20 @@ npx astro check    # type check
 
 ### Adding a project
 
-Copy one of the files in `src/content/projects/`, change the frontmatter, and write the story below it. The schema is in `src/content.config.ts`. `demo.kind` picks how it is shown:
+Copy one of the files in `src/content/projects/`, change the frontmatter, and write the story below it. The schema is in `src/content.config.ts`. Each project is shown like an app:
 
-- `phone` with a `url`: the live app in a phone frame, behind a "Try it live" button. Add a `screenshot` (390×844 at 2×, in `src/assets/projects/`) for the poster.
-- `layers`: an architecture diagram, one row per layer (see `food-delivery-platform.md`).
-- `clinic-mock` / `agent-graph`: drawn visuals for projects that can't be embedded.
+- **Icon:** `iconImage` (a real app icon) or `glyph` (a drawn symbol on the `accent` colour). `shortName` is the label under it on the home-screen phone.
+- **Screens:** `device` is `phone`, `tablet` or `browser`, and `screens` lists real screenshots (`image`, 390×844 at 2×, in `src/assets/projects/`) or drawn mocks (`mock`, from `src/components/mocks`). A screen can override `device`. For screenshots, `bar` sets the phone status bar colour so it blends into the top of the image.
+- **Live demo:** `embed: true` with a `live` URL adds "Try it live" (case page) and "Run live" (hero phone), which load the real web build in the frame.
+- **Store page details:** `category`, `platforms`, `stats` (the info strip), `highlights`, `stack`, and optional `architecture` rows.
 
 A project's `skills` must use the names in `SKILL_GROUPS` to show up under that skill. `team` lists member ids from `src/data/team.ts`.
 
+Drawn tablet and desktop screens are laid out at 1024px wide and scaled to their frame, so they look like real screenshots at any size.
+
 ### Health platform data
 
-The Clinic Platform is shown with a drawn mock-up (`src/components/ClinicMock.astro`). Every name and record in it is made up. Never put screenshots of the live system here.
+D-Touch and the campus food platform are shown with drawn mocks (`src/components/mocks/`). Every name, order and record in them is made up. Never put screenshots of the live systems here.
 
 ### Résumé and portfolio PDFs
 

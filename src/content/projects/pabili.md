@@ -1,16 +1,24 @@
 ---
 title: Pabili
+shortName: Pabili
+category: Shopping · Social commerce
+platforms: [iOS, Android, Web]
+iconImage: ../../assets/projects/pabili-icon.png
+device: phone
+embed: true
+screens:
+  - { image: ../../assets/projects/pabili-home.png, caption: Home with deals and games, bar: 'linear-gradient(90deg,#f43f5d,#f75c4d,#fa793c)', barText: light }
+  - { image: ../../assets/projects/pabili-live.png, caption: Live selling, bar: '#ffffff', barText: dark }
+  - { image: ../../assets/projects/pabili-slash.png, caption: Slash It, bar: 'linear-gradient(90deg,#f43f5d,#f75c4d,#fa793c)', barText: light }
+  - { image: ../../assets/projects/pabili-spin.png, caption: Spin and win coins, bar: '#4c1d94', barText: light }
+  - { image: ../../assets/projects/pabili-wrapped.png, caption: Monthly Wrapped, bar: 'linear-gradient(90deg,#7c3aec,#913ad3)', barText: light }
 tagline: A pretend shopping app with the features people love about Shopee and Lazada
 summary: A complete shopping app (browse, cart, vouchers, checkout, order tracking) plus the games and social features that keep people coming back. Everything is pretend; no real payments are taken.
 year: 2026
 status: Live
 order: 4
 featured: true
-demo:
-  kind: phone
-  url: https://pabili.pages.dev
 accent: '#f43f5e'
-screenshot: ../../assets/projects/pabili.png
 live: https://pabili.pages.dev
 repo: https://github.com/kdgbduyu28/Pabili
 role: Sole engineer. Product design and development.

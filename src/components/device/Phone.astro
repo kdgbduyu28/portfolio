@@ -1,0 +1,131 @@
+---
+import StatusBar from './StatusBar.astro';
+
+// A modern phone: bezel, Dynamic Island, side buttons and a status bar.
+// Everything is sized in cqw, so the phone scales cleanly to whatever width it's given.
+// The screen is itself a size container: drawn mocks size their text from it (1em = 16px at 390px wide).
+
+interface Props {
+  class?: string;
+  /** Status bar colours; set `statusBar={false}` when the screen draws its own. */
+  statusBar?: boolean;
+  sbBg?: string;
+  sbFg?: string;
+  /** Adds a soft coloured glow behind the phone. */
+  glow?: string;
+  /** Let the screen content run under the status bar (e.g. a wallpaper). */
+  overlay?: boolean;
+}
+
+const { class: className, statusBar = true, sbBg = '#ffffff', sbFg = '#0b0b0c', glow, overlay = false } = Astro.props;
+---
+
+<div class:list={['phone', className]} style={glow ? `--phone-glow:${glow}` : undefined}>
+  <div class="phone-frame">
+    <div class="phone-screen">
+      {
+        statusBar && (
+          <StatusBar bg={sbBg} fg={sbFg} />
+        )
+      }
+      <div class:list={['phone-content', { 'phone-content--full': overlay }]}>
+        <slot />
+      </div>
+      <div class="phone-home" aria-hidden="true"></div>
+    </div>
+    <div class="phone-island" aria-hidden="true"></div>
+  </div>
+</div>
+
+<style>
+  .phone {
+    container-type: inline-size;
+    position: relative;
+    width: 100%;
+  }
+  .phone::before {
+    content: '';
+    position: absolute;
+    inset: 8% -6% -2%;
+    z-index: -1;
+    border-radius: 30%;
+    background: var(--phone-glow, transparent);
+    filter: blur(14cqw);
+    opacity: 0.35;
+  }
+  .phone-frame {
+    position: relative;
+    padding: 3.2cqw;
+    border-radius: 15.5cqw;
+    background: linear-gradient(145deg, #3a3a3e, #121214 40%, #1d1d20 70%, #3b3b40);
+    box-shadow:
+      inset 0 0 0 0.5cqw #4a4a50,
+      inset 0 0 0 1.1cqw #101012,
+      0 4cqw 9cqw -3cqw rgb(0 0 0 / 0.55),
+      0 1cqw 2cqw rgb(0 0 0 / 0.25);
+  }
+  /* Side buttons */
+  .phone-frame::before,
+  .phone-frame::after {
+    content: '';
+    position: absolute;
+    width: 1cqw;
+    border-radius: 1cqw;
+    background: #2a2a2e;
+  }
+  .phone-frame::before {
+    left: -0.7cqw;
+    top: 22%;
+    height: 14%;
+    box-shadow: 0 -10cqw 0 #2a2a2e;
+  }
+  .phone-frame::after {
+    right: -0.7cqw;
+    top: 28%;
+    height: 20%;
+  }
+  .phone-screen {
+    container-type: inline-size;
+    position: relative;
+    aspect-ratio: 390 / 844;
+    overflow: hidden;
+    border-radius: 12.4cqw;
+    background: #fff;
+    isolation: isolate;
+  }
+  .phone-content {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+  :global(.phone-status) + .phone-content {
+    top: 12.8cqw;
+  }
+  .phone-content--full {
+    top: 0 !important;
+  }
+  .phone-home {
+    position: absolute;
+    z-index: 3;
+    left: 50%;
+    bottom: 2cqw;
+    width: 35cqw;
+    height: 1.3cqw;
+    translate: -50% 0;
+    border-radius: 1cqw;
+    background: rgb(0 0 0 / 0.55);
+    pointer-events: none;
+  }
+  .phone-island {
+    position: absolute;
+    z-index: 4;
+    left: 50%;
+    top: 5.6cqw;
+    width: 29cqw;
+    height: 8.4cqw;
+    translate: -50% 0;
+    border-radius: 6cqw;
+    background: #000;
+    pointer-events: none;
+  }
+</style>

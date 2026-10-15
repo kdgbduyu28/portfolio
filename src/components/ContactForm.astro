@@ -60,8 +60,6 @@ const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as string | undefined;
   )
 }
 
-{siteKey && <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer />}
-
 <style>
   @reference '../styles/global.css';
   .field {
@@ -73,8 +71,35 @@ const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as string | undefined;
 </style>
 
 <script>
-  const form = document.querySelector<HTMLFormElement>('[data-contact]');
-  if (form) {
+  type Turnstile = { render: (el: HTMLElement, opts: Record<string, string>) => void; reset: () => void };
+
+  function setup() {
+    const form = document.querySelector<HTMLFormElement>('[data-contact]');
+    if (!form || form.dataset.ready) return;
+    form.dataset.ready = '1';
+
+    // Load Turnstile once, then render the widget explicitly. That works the same on a full page load
+    // and after an in-app page transition.
+    const widget = form.querySelector<HTMLElement>('.cf-turnstile');
+    if (widget) {
+      const render = () => {
+        const ts = (window as unknown as { turnstile?: Turnstile }).turnstile;
+        if (!ts) return void setTimeout(render, 150);
+        if (!widget.dataset.rendered) {
+          widget.dataset.rendered = '1';
+          ts.render(widget, { sitekey: widget.dataset.sitekey!, theme: 'auto', size: 'flexible' });
+        }
+      };
+      if (!document.querySelector('script[data-turnstile]')) {
+        const script = document.createElement('script');
+        script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+        script.async = true;
+        script.dataset.turnstile = '';
+        document.head.appendChild(script);
+      }
+      render();
+    }
+
     const status = form.querySelector<HTMLElement>('[data-status]')!;
     const submit = form.querySelector<HTMLButtonElement>('[data-submit]')!;
     const loadedAt = Date.now();
@@ -121,8 +146,10 @@ const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as string | undefined;
       } finally {
         submit.disabled = false;
         // A Turnstile token works once; get a fresh one for the next try.
-        (window as unknown as { turnstile?: { reset: () => void } }).turnstile?.reset();
+        (window as unknown as { turnstile?: Turnstile }).turnstile?.reset();
       }
     });
   }
+
+  document.addEventListener('astro:page-load', setup);
 </script>

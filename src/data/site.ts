@@ -42,8 +42,8 @@ export const SITE: Record<SiteKey, string> = {
 };
 
 export const NAV = [
-  { href: '/projects', label: 'Projects' },
+  { href: '/projects', label: 'Apps' },
+  { href: '/#craft', label: 'Craft' },
   { href: '/#experience', label: 'Experience' },
-  { href: '/#skills', label: 'Skills' },
   { href: '/contact', label: 'Contact' },
 ] as const;

@@ -1,0 +1,40 @@
+---
+import { Image } from 'astro:assets';
+import type { Project } from '../data/projects';
+import FoodTracking from './mocks/FoodTracking.astro';
+import FoodRider from './mocks/FoodRider.astro';
+import FoodMerchant from './mocks/FoodMerchant.astro';
+import ClinicPatient from './mocks/ClinicPatient.astro';
+import GroundworkChat from './mocks/GroundworkChat.astro';
+
+// What fills a phone screen (below the status bar): a real screenshot or a drawn mock.
+
+type ScreenEntry = Project['data']['screens'][number];
+
+interface Props {
+  project: Project;
+  screen: ScreenEntry;
+  eager?: boolean;
+}
+
+const { project, screen, eager = false } = Astro.props;
+---
+
+{
+  screen.image && (
+    <Image
+      src={screen.image}
+      alt={`${project.data.title}: ${screen.caption}`}
+      widths={[320, 640]}
+      sizes="(max-width: 640px) 70vw, 320px"
+      loading={eager ? 'eager' : 'lazy'}
+      class="absolute inset-0 size-full object-cover object-top"
+      data-live-poster
+    />
+  )
+}
+{screen.mock === 'food-tracking' && <FoodTracking />}
+{screen.mock === 'food-rider' && <FoodRider />}
+{screen.mock === 'food-merchant' && <FoodMerchant />}
+{screen.mock === 'clinic-patient' && <ClinicPatient />}
+{screen.mock === 'groundwork-chat' && <GroundworkChat />}

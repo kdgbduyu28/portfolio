@@ -1,13 +1,13 @@
 ---
-// A drawn mock-up of the Clinic Platform's doctor app, not a screenshot.
+// A drawn mock-up of the D-Touch doctor app, not a screenshot.
 // Every name, time and record below is made up: no real patient data appears on this site.
 
 interface Props {
-  variant?: 'cover' | 'full';
+  variant?: 'cover' | 'full' | 'tablet';
 }
 
 const { variant = 'full' } = Astro.props;
-const full = variant === 'full';
+const full = variant !== 'cover';
 
 type Status = 'Done' | 'In the chair' | 'Waiting' | 'Booked';
 const visits: { time: string; name: string; service: string; status: Status }[] = [
@@ -39,7 +39,10 @@ const marks: Record<number, string> = {
 ---
 
 <div
-  class="clinic-mock @container overflow-hidden rounded-xl border border-stone-200 bg-white text-stone-800 shadow-sm select-none"
+  class:list={[
+    'clinic-mock @container overflow-hidden bg-white text-stone-800 select-none',
+    variant === 'tablet' ? 'absolute inset-0' : 'rounded-xl border border-stone-200 shadow-sm',
+  ]}
   role="img"
   aria-label="Mock-up of the Clinic Platform doctor app showing today's appointments, with sample data"
 >

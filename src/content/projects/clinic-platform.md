@@ -1,13 +1,20 @@
 ---
 title: D-Touch Health Platform
+shortName: D-Touch
+category: Medical · Clinic management
+platforms: [Web]
+glyph: tooth
+device: tablet
+screens:
+  - { mock: clinic-day, caption: Doctor's day and dental chart }
+  - { mock: clinic-patient, caption: Patient booking, device: phone }
+  - { mock: clinic-board, caption: Front-desk status board }
 tagline: Clinic management SaaS for many independent clinics, with every authorization rule enforced in PostgreSQL
 summary: Four React Native Web apps (patient, doctor, front desk, admin) on one Supabase Postgres backend, serving any number of clinics. There is no custom application server; tenant isolation, roles and privacy all live in the database. D-Touch Dental is the first clinic, running on test data ahead of launch.
 year: 2024
 status: Pre-launch
 order: 2
 featured: true
-demo:
-  kind: clinic-mock
 accent: '#0f766e'
 repo: https://github.com/kdgbduyu28/health-platform-fe
 links:

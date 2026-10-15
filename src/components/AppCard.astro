@@ -1,0 +1,87 @@
+---
+import AppIcon from './AppIcon.astro';
+import Screen from './Screen.astro';
+import StatusBadge from './StatusBadge.astro';
+import Platforms from './Platforms.astro';
+import type { Project } from '../data/projects';
+import { deviceOf } from '../data/screens';
+
+// A project as an App Store listing: icon, name, subtitle, a metrics strip and a swipeable row of screens.
+
+interface Props {
+  project: Project;
+  maxScreens?: number;
+}
+
+const { project, maxScreens = 3 } = Astro.props;
+const { data } = project;
+const href = `/projects/${project.id}`;
+const screens = data.screens.slice(0, maxScreens);
+---
+
+<article
+  class="group relative flex flex-col overflow-hidden rounded-[28px] border border-line bg-card p-5 transition duration-300 hover:-translate-y-1 hover:shadow-[0_30px_60px_-35px_rgba(0,0,0,0.45)] sm:p-6"
+  data-skills={data.skills.join('|')}
+  style={`--accent:${data.accent}`}
+>
+  <div
+    class="pointer-events-none absolute inset-x-0 top-0 h-40 opacity-[0.09] transition-opacity group-hover:opacity-[0.16]"
+    style={`background: radial-gradient(70% 100% at 0% 0%, ${data.accent}, transparent)`}
+  >
+  </div>
+
+  <div class="relative flex items-start gap-4">
+    <AppIcon project={project} size={72} transitionName={`icon-${project.id}`} />
+    <div class="min-w-0 flex-1">
+      <h3 class="font-display text-[1.35rem] leading-tight font-semibold tracking-tight">
+        <a href={href} class="after:absolute after:inset-0 after:z-[1] focus-visible:outline-none">{data.title}</a>
+      </h3>
+      <p class="mt-1 line-clamp-2 text-sm text-muted">{data.tagline}</p>
+    </div>
+    <span
+      class="relative z-[2] hidden shrink-0 rounded-full bg-line/70 px-4 py-1.5 text-xs font-bold tracking-wide text-accent uppercase transition group-hover:bg-ink group-hover:text-paper sm:inline-block dark:bg-white/10"
+      aria-hidden="true">View</span
+    >
+  </div>
+
+  <dl class="relative mt-5 grid grid-cols-3 divide-x divide-line border-y border-line py-3 text-center">
+    {
+      data.stats.slice(0, 3).map((s) => (
+        <div class="px-2">
+          <dd class="font-display text-lg leading-tight font-semibold" style={`color:${data.accent}`}>
+            {s.value}
+          </dd>
+          <dt class="mt-0.5 line-clamp-2 text-[11px] leading-tight text-muted">{s.label}</dt>
+        </div>
+      ))
+    }
+  </dl>
+
+  <!-- Screens scroll sideways; they sit above the card link so swiping works on touch. -->
+  <div class="relative z-[2] -mx-5 mt-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-2 sm:-mx-6 sm:px-6 [scrollbar-width:none]">
+    {
+      screens.map((s) => {
+        const device = deviceOf(project, s);
+        return (
+          <a
+            href={href}
+            tabindex="-1"
+            class:list={[
+              'shrink-0 snap-start',
+              device === 'phone' ? 'w-[116px] sm:w-[124px]' : 'w-[270px] self-center sm:w-[300px]',
+            ]}
+            aria-label={`${data.title}: ${s.caption}`}
+          >
+            <Screen project={project} screen={s} />
+          </a>
+        );
+      })
+    }
+  </div>
+
+  <div class="relative mt-4 flex flex-wrap items-center gap-x-3 gap-y-2">
+    <StatusBadge status={data.status} />
+    <Platforms platforms={data.platforms} />
+    <span class="ml-auto text-xs text-muted">{data.category}</span>
+  </div>
+</article>

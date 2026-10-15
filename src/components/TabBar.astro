@@ -1,0 +1,94 @@
+---
+import { SITE } from '../data/site';
+
+// iOS-style floating tab bar, phones only. Replaces the top navigation below the md breakpoint.
+
+const path = Astro.url.pathname;
+const tabs = [
+  { href: '/', label: 'Home', match: (p: string) => p === '/', icon: 'M4 11.5 12 5l8 6.5V20a1 1 0 0 1-1 1h-4.5v-6h-5v6H5a1 1 0 0 1-1-1z' },
+  {
+    href: '/projects',
+    label: 'Apps',
+    match: (p: string) => p.startsWith('/projects'),
+    icon: 'M5 5h5.5v5.5H5zM13.5 5H19v5.5h-5.5zM5 13.5h5.5V19H5zM13.5 13.5H19V19h-5.5z',
+  },
+  { href: '/#experience', label: 'Work', match: () => false, icon: 'M4 8h16v11H4zM9 8V5.5h6V8M4 13h16' },
+  ...(SITE.resume
+    ? [{ href: SITE.resume, label: 'Résumé', match: () => false, icon: 'M7 3.5h7l4 4V20.5H7zM14 3.5V8h4M9.5 12h6M9.5 15.5h6', external: true }]
+    : []),
+  { href: '/contact', label: 'Contact', match: (p: string) => p.startsWith('/contact'), icon: 'M4 6h16v12H4zM4.5 6.5 12 13l7.5-6.5' },
+];
+---
+
+<nav class="tabbar" aria-label="Main">
+  {
+    tabs.map((t) => {
+      const active = t.match(path);
+      return (
+        <a
+          href={t.href}
+          class:list={['tab', { active }]}
+          aria-current={active ? 'page' : undefined}
+          {...('external' in t && t.external ? { target: '_blank', rel: 'noopener' } : {})}
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true">
+            <path d={t.icon} />
+          </svg>
+          <span>{t.label}</span>
+        </a>
+      );
+    })
+  }
+</nav>
+
+<style>
+  .tabbar {
+    position: fixed;
+    z-index: 50;
+    left: 12px;
+    right: 12px;
+    bottom: calc(10px + env(safe-area-inset-bottom));
+    display: flex;
+    justify-content: space-around;
+    padding: 6px;
+    border-radius: 26px;
+    background: color-mix(in oklab, var(--color-card) 78%, transparent);
+    backdrop-filter: saturate(1.6) blur(18px);
+    -webkit-backdrop-filter: saturate(1.6) blur(18px);
+    box-shadow:
+      0 0 0 1px var(--color-line),
+      0 18px 40px -18px rgb(0 0 0 / 0.45);
+    view-transition-name: tabbar;
+  }
+  .tab {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 6px 0 4px;
+    border-radius: 20px;
+    color: var(--color-muted);
+    font-size: 10.5px;
+    font-weight: 600;
+    transition:
+      color 0.2s,
+      background 0.2s;
+  }
+  .tab svg {
+    width: 22px;
+    height: 22px;
+  }
+  .tab.active {
+    color: var(--color-accent);
+    background: color-mix(in oklab, var(--color-accent) 12%, transparent);
+  }
+  .tab:active {
+    transform: scale(0.94);
+  }
+  @media (min-width: 768px) {
+    .tabbar {
+      display: none;
+    }
+  }
+</style>

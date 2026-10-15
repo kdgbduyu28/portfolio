@@ -60,47 +60,18 @@ const initials = SITE.name
         )
       }
       <a href="/contact" class="btn-primary hidden sm:inline-flex">Get in touch</a>
-      <details class="relative md:hidden" data-mobile-nav>
-        <summary
-          class="grid size-9 cursor-pointer list-none place-items-center rounded-full border border-line [&::-webkit-details-marker]:hidden"
-          aria-label="Menu"
-        >
-          <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"
-            ><path d="M4 7h16M4 12h16M4 17h16"></path></svg
-          >
-        </summary>
-        <nav
-          aria-label="Mobile"
-          class="absolute right-0 mt-2 flex w-52 flex-col rounded-2xl border border-line bg-card p-2 shadow-xl"
-        >
-          {
-            NAV.map((item) => (
-              <a href={item.href} class="rounded-xl px-3 py-2.5 text-sm font-medium hover:bg-line/60">
-                {item.label}
-              </a>
-            ))
-          }
-          {
-            SITE.resume && (
-              <a href={SITE.resume} target="_blank" rel="noopener" class="rounded-xl px-3 py-2.5 text-sm font-medium hover:bg-line/60">
-                Résumé (PDF) ↗
-              </a>
-            )
-          }
-        </nav>
-      </details>
     </div>
   </div>
 </header>
 
 <script>
-  document.querySelector('[data-theme-toggle]')?.addEventListener('click', () => {
-    const dark = document.documentElement.classList.toggle('dark');
-    try {
-      localStorage.setItem('theme', dark ? 'dark' : 'light');
-    } catch {}
+  // Bound on every page load: with page transitions, the header is swapped in fresh each time.
+  document.addEventListener('astro:page-load', () => {
+    document.querySelector('[data-theme-toggle]')?.addEventListener('click', () => {
+      const dark = document.documentElement.classList.toggle('dark');
+      try {
+        localStorage.setItem('theme', dark ? 'dark' : 'light');
+      } catch {}
+    });
   });
-  // Close the mobile menu after picking a link (including same-page #anchors).
-  const menu = document.querySelector<HTMLDetailsElement>('[data-mobile-nav]');
-  menu?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => (menu.open = false)));
 </script>

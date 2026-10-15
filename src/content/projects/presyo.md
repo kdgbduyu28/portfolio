@@ -1,16 +1,23 @@
 ---
 title: Presyo
+shortName: Presyo
+category: Utilities · Price tracker
+platforms: [iOS, Android, Web]
+glyph: peso
+device: phone
+embed: true
+screens:
+  - { image: ../../assets/projects/presyo-home.png, caption: Today's prices near you, bar: '#f5f5f0' }
+  - { image: ../../assets/projects/presyo-fuel.png, caption: Pump prices by brand, bar: '#f5f5f0' }
+  - { image: ../../assets/projects/presyo-basket.png, caption: Palengke basket by market, bar: '#f5f5f0' }
+  - { image: ../../assets/projects/presyo-rice.png, caption: Rice by wet market, bar: '#f5f5f0' }
 tagline: What things cost in the Philippines today, from official government data
 summary: A price tracker for rice, meat, vegetables, fuel, LPG, electricity, water, fares and exchange rates. A Python pipeline reads the government's PDF and CSV reports twice a day and publishes them as a fast app with no server to run.
 year: 2026
 status: Live
 order: 3
 featured: true
-demo:
-  kind: phone
-  url: https://presyo.pages.dev
 accent: '#15803d'
-screenshot: ../../assets/projects/presyo.png
 live: https://presyo.pages.dev
 repo: https://github.com/kdgbduyu28/Presyo
 role: Sole engineer. Data pipeline, app and automation.

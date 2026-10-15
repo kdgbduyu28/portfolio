@@ -1,6 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
-import ProjectCard from '../../components/ProjectCard.astro';
+import AppCard from '../../components/AppCard.astro';
 import { getProjects, SKILL_GROUPS } from '../../data/projects';
 
 const projects = await getProjects();
@@ -10,12 +10,12 @@ const skills = SKILL_GROUPS.flatMap((g) => g.skills.map((s) => s.name)).filter((
 );
 ---
 
-<Base title="Projects" description="Mobile apps, web platforms, serverless backends and data pipelines, with live demos and case studies.">
+<Base title="Apps" description="Mobile apps, web platforms, serverless backends and data pipelines, with live demos and case studies.">
   <section class="wrap pt-14 pb-6 lg:pt-20">
-    <p class="eyebrow">Projects</p>
-    <h1 class="h-display mt-3 text-5xl sm:text-6xl">Everything I've built.</h1>
+    <p class="eyebrow">Apps</p>
+    <h1 class="h-display mt-3 text-5xl sm:text-6xl">Everything I've shipped.</h1>
     <p class="mt-5 max-w-2xl text-lg text-muted">
-      Each project has a case study: the problem, what I built, how it works, and a live demo or the source code.
+      Each one opens like an App Store page: screens, the numbers that matter, how it's built, and a live demo or the source.
     </p>
 
     <div class="mt-10 flex flex-wrap gap-2" role="group" aria-label="Filter by skill" data-filters>
@@ -32,7 +32,7 @@ const skills = SKILL_GROUPS.flatMap((g) => g.skills.map((s) => s.name)).filter((
 
   <section class="wrap pb-10">
     <div class="grid gap-6 md:grid-cols-2" data-grid>
-      {projects.map((p) => <ProjectCard project={p} />)}
+      {projects.map((p) => <AppCard project={p} />)}
     </div>
     <p class="mt-6 text-sm text-muted" aria-live="polite" data-count></p>
   </section>
@@ -49,21 +49,24 @@ const skills = SKILL_GROUPS.flatMap((g) => g.skills.map((s) => s.name)).filter((
 </style>
 
 <script>
-  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-filters] button');
-  const cards = document.querySelectorAll<HTMLElement>('[data-grid] > article');
-  const count = document.querySelector('[data-count]')!;
+  document.addEventListener('astro:page-load', () => {
+    const buttons = document.querySelectorAll<HTMLButtonElement>('[data-filters] button');
+    const cards = document.querySelectorAll<HTMLElement>('[data-grid] > article');
+    const count = document.querySelector('[data-count]');
+    if (!count) return;
 
-  buttons.forEach((btn) =>
-    btn.addEventListener('click', () => {
-      const skill = btn.dataset.skill ?? '';
-      buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
-      let shown = 0;
-      cards.forEach((card) => {
-        const match = !skill || card.dataset.skills!.split('|').includes(skill);
-        card.hidden = !match;
-        if (match) shown++;
-      });
-      count.textContent = skill ? `${shown} project${shown === 1 ? '' : 's'} using ${skill}` : '';
-    }),
-  );
+    buttons.forEach((btn) =>
+      btn.addEventListener('click', () => {
+        const skill = btn.dataset.skill ?? '';
+        buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+        let shown = 0;
+        cards.forEach((card) => {
+          const match = !skill || card.dataset.skills!.split('|').includes(skill);
+          card.hidden = !match;
+          if (match) shown++;
+        });
+        count.textContent = skill ? `${shown} app${shown === 1 ? '' : 's'} using ${skill}` : '';
+      }),
+    );
+  });
 </script>

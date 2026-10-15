@@ -2,6 +2,8 @@
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import TabBar from '../components/TabBar.astro';
+import { ClientRouter } from 'astro:transitions';
 import { SITE } from '../data/site';
 
 interface Props {
@@ -42,19 +44,26 @@ const ogImage = new URL('/og.png', Astro.site);
       href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..700&family=Inter:wght@400..700&family=JetBrains+Mono:wght@400;500&display=swap"
     />
 
-    <!-- Runs before paint so the page never flashes the wrong theme. -->
+    <!-- Runs before paint so the page never flashes the wrong theme, and again after each page transition. -->
     <script is:inline>
       (() => {
-        let saved = null;
-        try {
-          saved = localStorage.getItem('theme');
-        } catch {}
-        const dark = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
-        document.documentElement.classList.toggle('dark', dark);
+        const apply = (doc) => {
+          let saved = null;
+          try {
+            saved = localStorage.getItem('theme');
+          } catch {}
+          const dark = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+          doc.documentElement.classList.toggle('dark', dark);
+        };
+        apply(document);
+        document.addEventListener('astro:before-swap', (e) => apply(e.newDocument));
       })();
     </script>
+
+    <!-- App-like page transitions; icons morph between the app list and each app's page. -->
+    <ClientRouter />
   </head>
-  <body class="flex min-h-dvh flex-col">
+  <body class="flex min-h-dvh flex-col pb-24 md:pb-0">
     <a
       href="#main"
       class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:text-paper"
@@ -65,5 +74,6 @@ const ogImage = new URL('/og.png', Astro.site);
       <slot />
     </main>
     <Footer />
+    <TabBar />
   </body>
 </html>

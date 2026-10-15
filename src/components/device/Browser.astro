@@ -1,0 +1,35 @@
+---
+// A desktop browser window around a web app.
+
+interface Props {
+  class?: string;
+  url?: string;
+  dark?: boolean;
+}
+
+const { class: className, url = 'localhost:3000', dark = false } = Astro.props;
+---
+
+<div
+  class:list={[
+    'overflow-hidden rounded-xl border shadow-[0_24px_50px_-28px_rgba(0,0,0,0.5)]',
+    dark ? 'border-white/10 bg-[#14122b]' : 'border-stone-200 bg-white',
+    className,
+  ]}
+>
+  <div class:list={['flex items-center gap-1.5 border-b px-3 py-2', dark ? 'border-white/10 bg-white/5' : 'border-stone-200 bg-stone-50']}>
+    <span class="size-2.5 rounded-full bg-[#ff5f57]"></span>
+    <span class="size-2.5 rounded-full bg-[#febc2e]"></span>
+    <span class="size-2.5 rounded-full bg-[#28c840]"></span>
+    <span
+      class:list={[
+        'mx-auto max-w-[60%] truncate rounded-md px-3 py-0.5 font-mono text-[10px]',
+        dark ? 'bg-white/10 text-indigo-200/70' : 'bg-white text-stone-400 ring-1 ring-stone-200',
+      ]}>{url}</span
+    >
+    <span class="w-[38px]"></span>
+  </div>
+  <div class="@container relative">
+    <slot />
+  </div>
+</div>
