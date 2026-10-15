@@ -5,7 +5,7 @@
 # Pages Functions in functions/ (the contact form) are deployed with it.
 set -euo pipefail
 
-PROJECT="${PAGES_PROJECT:-tim-borja}"
+PROJECT="${PAGES_PROJECT:-timothy-borja}"
 # Pinned to a major so a new wrangler cannot change the deploy under us.
 WRANGLER=(npx --yes wrangler@4)
 # Without this, wrangler can stop to ask about usage metrics and hang.

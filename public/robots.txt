@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://tim-borja.pages.dev/sitemap-index.xml
+Sitemap: https://timothy-borja.pages.dev/sitemap-index.xml

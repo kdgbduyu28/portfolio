@@ -20,7 +20,7 @@ type SiteKey =
 
 export const SITE: Record<SiteKey, string> = {
   // Change after the first Cloudflare deploy (or when a custom domain is added).
-  url: 'https://tim-borja.pages.dev',
+  url: 'https://timothy-borja.pages.dev',
   name: 'Tim Borja',
   fullName: 'Timothy Maersk M. Borja',
   role: 'Full-stack engineer',

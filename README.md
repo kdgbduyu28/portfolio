@@ -70,4 +70,4 @@ To test the function locally: `npm run build && npx wrangler pages dev dist` (pu
 ./scripts/release.sh --no-deploy  # build only
 ```
 
-The Pages project is `tim-borja` (override with `PAGES_PROJECT=…`), served at https://tim-borja.pages.dev. If you rename it or add a custom domain, update `url` in `src/data/site.ts` and the sitemap line in `public/robots.txt`.
+The Pages project is `timothy-borja` (override with `PAGES_PROJECT=…`), served at https://timothy-borja.pages.dev. If you rename it or add a custom domain, update `url` in `src/data/site.ts` and the sitemap line in `public/robots.txt`.
