@@ -49,19 +49,38 @@ The Experience section on the home page (`src/data/experience.ts`) is copied fro
 
 ## Contact form
 
-Without a Turnstile site key the contact page shows an email button instead of the form. To turn the form on:
+Spam protection, checked on the server in this order (`functions/api/contact.ts`):
 
-1. **Turnstile:** in the Cloudflare dashboard, add a Turnstile widget for the site's domain (and `localhost`). Put the site key in `.env` as `PUBLIC_TURNSTILE_SITE_KEY` (see `.env.example`). It's read at build time.
-2. **Resend:** create an API key at [resend.com](https://resend.com). To send from your own address, verify a domain there. Without one, `onboarding@resend.dev` can only send to your Resend account's email.
-3. **Cloudflare Pages → Settings → Variables and secrets**, add:
-   - `TURNSTILE_SECRET_KEY`
-   - `RESEND_API_KEY`
-   - `CONTACT_TO` (your inbox)
-   - `CONTACT_FROM` (e.g. `Portfolio <onboarding@resend.dev>`)
+1. **Honeypot:** a hidden field only bots fill in.
+2. **Time on the form:** anything sent under 3 seconds after the page loaded is dropped.
+3. **Cloudflare Turnstile:** the "Verify you are human" check, re-verified with Cloudflare on every message.
+
+Messages caught by 1 or 2 get a fake "sent" reply, so bots learn nothing. If sending fails, the visitor keeps their text and gets an "Email it instead" button that opens their mail app with the message filled in.
+
+Until a Turnstile site key is set, the contact page shows an email button instead of the form.
+
+### Turning it on
+
+1. **Turnstile widget.** Cloudflare dashboard → Turnstile → Add widget. Hostnames: `timothy-borja.pages.dev` and `localhost`. Widget mode: **Managed**. You get a site key and a secret key.
+2. **Resend.** Sign up at [resend.com](https://resend.com) with the inbox that should receive messages, and create an API key (sending access is enough). Without a verified domain, Resend only sends to that sign-up address, which is all this form needs.
+3. **Site key** (public; it ends up in the page HTML): put it in `.env` as `PUBLIC_TURNSTILE_SITE_KEY=…` (see `.env.example`).
+4. **Secrets**, stored in Cloudflare. Run each and paste the value when asked:
+
+   ```bash
+   npx wrangler pages secret put TURNSTILE_SECRET_KEY --project-name timothy-borja
+   npx wrangler pages secret put RESEND_API_KEY --project-name timothy-borja
+   npx wrangler pages secret put CONTACT_TO --project-name timothy-borja
+   npx wrangler pages secret put CONTACT_FROM --project-name timothy-borja
+   ```
+
+   `CONTACT_TO` is your Resend sign-up email. `CONTACT_FROM` is `Portfolio <onboarding@resend.dev>`, or an address on your own domain once it's verified in Resend.
+5. **Redeploy:** `./scripts/release.sh`.
 
 Messages arrive with Reply-To set to the visitor, so hitting reply answers them.
 
-To test the function locally: `npm run build && npx wrangler pages dev dist` (put the secrets in `.dev.vars`).
+### Testing locally
+
+Cloudflare's test keys always pass: build with `PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA npm run build`, put `TURNSTILE_SECRET_KEY=1x0000000000000000000000000000000AA` and the other three values in `.dev.vars`, then run `npx wrangler pages dev dist`.
 
 ## Deploy
 

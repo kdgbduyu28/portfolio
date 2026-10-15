@@ -8,7 +8,7 @@ const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as string | undefined;
 
 {
   siteKey ? (
-    <form class="space-y-5" data-contact novalidate>
+    <form class="space-y-5" data-contact data-email={SITE.email} novalidate>
       <div class="grid gap-5 sm:grid-cols-2">
         <label class="block">
           <span class="text-sm font-medium">Your name</span>
@@ -44,6 +44,10 @@ const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as string | undefined;
         </button>
         <p class="text-sm" role="status" aria-live="polite" data-status />
       </div>
+      {/* Shown only when sending fails, so the visitor's message isn't lost. */}
+      <div hidden data-fallback>
+        <a class="btn-ghost" data-fallback-link>Email it instead</a>
+      </div>
     </form>
   ) : (
     <div class="rounded-2xl border border-line bg-card p-6">
@@ -73,6 +77,9 @@ const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as string | undefined;
   if (form) {
     const status = form.querySelector<HTMLElement>('[data-status]')!;
     const submit = form.querySelector<HTMLButtonElement>('[data-submit]')!;
+    const loadedAt = Date.now();
+    const fallback = form.querySelector<HTMLElement>('[data-fallback]')!;
+    const fallbackLink = form.querySelector<HTMLAnchorElement>('[data-fallback-link]')!;
     const say = (text: string, ok: boolean) => {
       status.textContent = text;
       status.className = `text-sm ${ok ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}`;
@@ -88,7 +95,10 @@ const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as string | undefined;
       });
       if (!valid) return say('Please fill in your name, a valid email and a message.', false);
 
-      const body = Object.fromEntries(new FormData(form));
+      const body = Object.fromEntries(new FormData(form)) as Record<string, string>;
+      // How long the visitor spent on the form. Bots submit instantly; the server drops those.
+      body.elapsed = String(Date.now() - loadedAt);
+      fallback.hidden = true;
       submit.disabled = true;
       say('Sending…', true);
       try {
@@ -102,7 +112,12 @@ const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as string | undefined;
         form.reset();
         say("Thanks! Your message is on its way. I'll reply by email.", true);
       } catch (err) {
-        say(`${(err as Error).message} You can also email me directly.`, false);
+        say(`${(err as Error).message} Your message is still here; you can email it instead.`, false);
+        // Open the visitor's mail app with their message already written.
+        const subject = `Portfolio: ${body.topic} from ${body.name}`;
+        const text = `${body.message}\n\n— ${body.name} <${body.email}>`;
+        fallbackLink.href = `mailto:${form.dataset.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(text)}`;
+        fallback.hidden = false;
       } finally {
         submit.disabled = false;
         // A Turnstile token works once; get a fresh one for the next try.

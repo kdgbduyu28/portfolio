@@ -1,9 +1,10 @@
 // Cloudflare Pages Function: POST /api/contact
 //
-// Checks the Turnstile token, then emails the message through Resend with Reply-To set to the
-// visitor, so replying from your inbox answers them directly.
+// Spam protection, in order: a hidden honeypot field, a minimum time on the form, and a
+// Cloudflare Turnstile token verified server-side. Then the message goes out through Resend
+// with Reply-To set to the visitor, so replying from your inbox answers them directly.
 //
-// Set these in Cloudflare (Pages project → Settings → Variables and secrets):
+// Set these as secrets on the Pages project (README → Contact form → Turning it on):
 //   TURNSTILE_SECRET_KEY  secret from the Turnstile widget
 //   RESEND_API_KEY        from resend.com
 //   CONTACT_TO            where messages go, e.g. you@gmail.com
@@ -24,6 +25,7 @@ type Body = {
   topic?: unknown;
   message?: unknown;
   website?: unknown; // honeypot
+  elapsed?: unknown; // ms between page load and submit
   'cf-turnstile-response'?: unknown;
 };
 
@@ -33,6 +35,9 @@ const json = (data: unknown, status = 200) =>
 const str = (v: unknown, max: number) => (typeof v === 'string' ? v.trim().slice(0, max) : '');
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+// Nobody writes a real message in under 3 seconds.
+const MIN_FILL_MS = 3000;
 
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   const { TURNSTILE_SECRET_KEY, RESEND_API_KEY, CONTACT_TO, CONTACT_FROM } = env;
@@ -47,12 +52,15 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     return json({ error: 'Invalid request.' }, 400);
   }
 
-  // Bots fill the hidden field. Pretend it worked so they don't learn anything.
-  if (str(body.website, 200)) return json({ ok: true });
+  // Bots fill the hidden field, or submit faster than anyone can type.
+  // Pretend it worked so they don't learn anything.
+  const elapsed = Number(body.elapsed);
+  if (str(body.website, 200) || !Number.isFinite(elapsed) || elapsed < MIN_FILL_MS) return json({ ok: true });
 
-  const name = str(body.name, 100);
+  // No line breaks in anything that ends up in the subject line.
+  const name = str(body.name, 100).replace(/\s+/g, ' ');
   const email = str(body.email, 200);
-  const topic = str(body.topic, 100) || 'General';
+  const topic = str(body.topic, 100).replace(/\s+/g, ' ') || 'General';
   const message = str(body.message, 5000);
   if (!name || !EMAIL.test(email) || message.length < 10) {
     return json({ error: 'Please fill in your name, a valid email and a message.' }, 400);
