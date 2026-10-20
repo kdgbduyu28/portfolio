@@ -12,9 +12,14 @@ export const MOCKS = [
   'clinic-board',
   'groundwork-chat',
   'groundwork-graph',
+  'tugma-speakers',
+  'tugma-pair',
+  'tugma-eq',
+  'sine-home',
+  'sine-player',
 ] as const;
 
-export const GLYPHS = ['food', 'tooth', 'peso', 'bag', 'graph'] as const;
+export const GLYPHS = ['food', 'tooth', 'peso', 'bag', 'graph', 'speakers', 'play'] as const;
 
 // One Markdown file per project in src/content/projects. The file name is the URL.
 const projects = defineCollection({
@@ -30,7 +35,7 @@ const projects = defineCollection({
       status: z.enum(['In production', 'Live', 'Pre-launch', 'In progress', 'Source only']),
       order: z.number(),
       featured: z.boolean().default(false),
-      platforms: z.array(z.enum(['iOS', 'Android', 'Web'])),
+      platforms: z.array(z.enum(['iOS', 'Android', 'Android TV', 'Web'])),
 
       // App icon: a real image, or a drawn glyph on the accent colour.
       iconImage: image().optional(),
@@ -38,13 +43,13 @@ const projects = defineCollection({
       accent: z.string(), // CSS colour: icon, cover and highlights
 
       // What the screens are shown in, and the screens themselves (real screenshots or drawn mocks).
-      device: z.enum(['phone', 'tablet', 'browser']),
+      device: z.enum(['phone', 'tablet', 'browser', 'tv']),
       screens: z.array(
         z.object({
           image: image().optional(),
           mock: z.enum(MOCKS).optional(),
           caption: z.string(),
-          device: z.enum(['phone', 'tablet', 'browser']).optional(), // overrides the project's device
+          device: z.enum(['phone', 'tablet', 'browser', 'tv']).optional(), // overrides the project's device
           // Phone status bar behind a screenshot: a CSS background matching the screenshot's top edge.
           bar: z.string().optional(),
           barText: z.enum(['light', 'dark']).default('dark'),

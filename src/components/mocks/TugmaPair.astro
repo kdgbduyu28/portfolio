@@ -1,0 +1,191 @@
+---
+// Drawn Tugma stereo-pair confirmation: two different Sonos models and the exact command. Made-up data.
+---
+
+<div class="t" role="img" aria-label="Illustration of Tugma confirming a stereo pair of a Sonos One and an Era 100, sample data">
+  <header>
+    <span class="back" aria-hidden="true">‹</span>
+    <p class="title">New stereo pair</p>
+  </header>
+
+  <div class="pair">
+    <div class="spk">
+      <span class="box tall"><i></i><i class="s"></i></span>
+      <b>One</b>
+      <span>Kitchen · Left</span>
+    </div>
+    <span class="link" aria-hidden="true"></span>
+    <div class="spk">
+      <span class="box"><i></i></span>
+      <b>Era 100</b>
+      <span>Den · Right</span>
+    </div>
+  </div>
+
+  <p class="note">Different models. The Sonos app won't pair these, but the speakers accept it.</p>
+
+  <div class="plan">
+    <p class="k">What Tugma will send</p>
+    <code>
+      <span>DeviceProperties#AddBondedZones</span>
+      <span>→ One (192.168.1.30)</span>
+      <span>ChannelMapSet = L:LF,LF;R:RF,RF</span>
+    </code>
+  </div>
+
+  <p class="snap"><i aria-hidden="true">✓</i> Snapshot saved. You can undo this from Snapshots.</p>
+
+  <div class="actions">
+    <span class="ghost">Cancel</span>
+    <span class="go">Pair speakers</span>
+  </div>
+  <span class="tag">Sample data</span>
+</div>
+
+<style>
+  .t {
+    position: absolute;
+    inset: 0;
+    font-size: 4.1026cqw;
+    font-family: 'Inter', system-ui, sans-serif;
+    color: #1b1a17;
+    background: #fbf8f3;
+  }
+  header {
+    display: flex;
+    align-items: center;
+    gap: 0.6em;
+    padding: 0.5em 1.25em 0.4em;
+  }
+  .back {
+    font-size: 1.6em;
+    line-height: 1;
+    color: #0f5e54;
+  }
+  .title {
+    font-size: 1.3em;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .pair {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 0.9em;
+    margin: 1.2em 1.25em 0;
+    padding: 1.4em 1em 1.1em;
+    border-radius: 1.2em;
+    background: #fff;
+  }
+  .spk {
+    display: grid;
+    justify-items: center;
+    gap: 0.15em;
+  }
+  .spk b {
+    margin-top: 0.5em;
+  }
+  .spk > span:last-child {
+    font-size: 0.75em;
+    color: #6f6a61;
+  }
+  .box {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 3.6em;
+    height: 4.4em;
+    border-radius: 0.7em;
+    background: #f1ece3;
+    box-shadow: inset 0 0 0 1px #e3ddd2;
+  }
+  .box.tall {
+    height: 6em;
+  }
+  .box i {
+    width: 1.8em;
+    height: 1.8em;
+    border-radius: 50%;
+    background: #0f5e54;
+  }
+  .box i.s {
+    position: absolute;
+    top: 0.9em;
+    width: 0.8em;
+    height: 0.8em;
+  }
+  .link {
+    width: 3em;
+    height: 1.6em;
+    margin-bottom: 4em;
+    border: 0.18em solid #f2b84b;
+    border-bottom: 0;
+    border-radius: 3em 3em 0 0;
+  }
+  .note {
+    margin: 0.8em 1.5em 0;
+    font-size: 0.8em;
+    line-height: 1.45;
+    color: #6f6a61;
+  }
+  .plan {
+    margin: 1em 1.25em 0;
+    padding: 0.85em 1em;
+    border-radius: 1em;
+    color: #e8f3ef;
+    background: #12302b;
+  }
+  .k {
+    font-size: 0.68em;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #f2b84b;
+  }
+  code {
+    display: grid;
+    gap: 0.25em;
+    margin-top: 0.5em;
+    font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+    font-size: 0.7em;
+    word-break: break-all;
+  }
+  .snap {
+    display: flex;
+    gap: 0.5em;
+    margin: 0.9em 1.5em 0;
+    font-size: 0.78em;
+    color: #0f5e54;
+  }
+  .snap i {
+    font-style: normal;
+    font-weight: 700;
+  }
+  .actions {
+    position: absolute;
+    inset: auto 1.25em 2.2em;
+    display: flex;
+    gap: 0.6em;
+    font-weight: 600;
+  }
+  .actions span {
+    flex: 1;
+    padding: 0.8em 0;
+    border-radius: 999px;
+    text-align: center;
+  }
+  .ghost {
+    color: #0f5e54;
+    box-shadow: inset 0 0 0 1px #c9d9d4;
+  }
+  .go {
+    color: #fff;
+    background: #0f5e54;
+  }
+  .tag {
+    position: absolute;
+    right: 1.25em;
+    top: 0.9em;
+    font-size: 0.65em;
+    color: #a39c90;
+  }
+</style>

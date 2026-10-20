@@ -142,6 +142,7 @@ const info = [
                   device === 'phone' && 'w-[220px] sm:w-[250px]',
                   device === 'tablet' && 'w-[min(86vw,620px)]',
                   device === 'browser' && 'w-[min(86vw,680px)]',
+                  device === 'tv' && 'w-[min(86vw,720px)]',
                 ]}
               >
                 <Screen project={project} screen={s} live={i === firstPhone} eager={i < 2} glow={i === 0} />
@@ -154,7 +155,9 @@ const info = [
       {
         data.screens.some((s) => s.mock) && (
           <p class="wrap mt-2 text-xs text-muted">
-            Drawn screens use made-up sample data. The client's and clinics' real data never appears on this site.
+            Drawn screens use made-up sample data.
+            {['food-delivery-platform', 'clinic-platform'].includes(project.id) &&
+              " The client's and clinics' real data never appears on this site."}
           </p>
         )
       }

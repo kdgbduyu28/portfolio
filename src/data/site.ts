@@ -29,7 +29,7 @@ export const SITE: Record<SiteKey, string> = {
     'Full-stack engineer in the Philippines building production mobile apps, web platforms and AWS serverless backends. Case studies, live demos, résumé and contact.',
   headline: 'Production apps, from the phone to the database.',
   intro:
-    "Full-stack engineer with 4+ years shipping web and mobile systems: Flutter and React Native clients, AWS serverless and Postgres backends, payments, and the release pipeline. Most of what's here is live, so you can try it before you read about it.",
+    "Full-stack engineer with 4+ years shipping web and mobile systems: Flutter, React Native and native Android clients, AWS serverless and Postgres backends, payments, and the release pipeline. Most of what's here is live, so you can try it before you read about it.",
   location: 'Cavite, Philippines',
   availability: 'Available for contract or direct work · remote worldwide',
   email: 'timothyborja28@gmail.com',

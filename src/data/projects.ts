@@ -15,6 +15,7 @@ export const SKILL_GROUPS: { title: string; skills: { name: string; blurb: strin
     skills: [
       { name: 'Flutter & Dart', blurb: 'Native iOS and Android apps in production, with Riverpod, Provider and BLoC.' },
       { name: 'React Native & Expo', blurb: 'One codebase for web, Android and iOS, with Expo Router.' },
+      { name: 'Native Android (Kotlin)', blurb: 'Jetpack Compose, Media3 and raw network protocols, for phones and TVs.' },
       { name: 'TypeScript', blurb: 'Typed end to end, from database rows to screens.' },
       { name: 'Product design', blurb: 'Flows, layouts and copy that work on a phone, a tablet and a desktop.' },
     ],

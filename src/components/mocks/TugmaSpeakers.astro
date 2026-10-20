@@ -1,0 +1,189 @@
+---
+// Drawn Tugma speaker list: rooms from several brands with volume. Illustration with made-up rooms.
+
+const rooms = [
+  { name: 'Living room', what: 'Stereo pair · One + Era 100', brand: 'Sonos', vol: 34, playing: 'Playing · Spotify' },
+  { name: 'TV room', what: 'Arc · Sub · 2 surrounds', brand: 'Sonos', vol: 22, playing: 'TV audio' },
+  { name: 'Kitchen', what: 'Nest Audio', brand: 'Cast', vol: 45, playing: 'Paused' },
+  { name: 'Bedroom', what: 'Wi-Fi speaker', brand: 'DLNA', vol: 18, playing: 'Idle' },
+];
+const tabs = ['Speakers', 'Headphones', 'Snapshots', 'Debug'];
+---
+
+<div class="t" role="img" aria-label="Illustration of the Tugma speaker list with Sonos, Google Cast and DLNA rooms, sample data">
+  <header>
+    <p class="title">Speakers</p>
+    <p class="muted">4 rooms · 7 speakers on this Wi-Fi</p>
+  </header>
+  <nav>
+    <span class="on">All</span><span>Sonos</span><span>Cast</span><span>DLNA</span>
+  </nav>
+  <ul>
+    {
+      rooms.map((r) => (
+        <li>
+          <div class="row">
+            <b>{r.name}</b>
+            <span class:list={['brand', r.brand.toLowerCase()]}>{r.brand}</span>
+          </div>
+          <p class="what">{r.what}</p>
+          <div class="vol">
+            <span class="track">
+              <i style={`width:${r.vol}%`} />
+            </span>
+            <span class="n">{r.vol}</span>
+          </div>
+          <p class="playing">{r.playing}</p>
+        </li>
+      ))
+    }
+  </ul>
+  <footer>
+    {tabs.map((t, i) => <span class:list={[i === 0 && 'on']}>{t}</span>)}
+  </footer>
+  <span class="tag">Sample data</span>
+</div>
+
+<style>
+  .t {
+    position: absolute;
+    inset: 0;
+    font-size: 4.1026cqw;
+    font-family: 'Inter', system-ui, sans-serif;
+    color: #1b1a17;
+    background: #fbf8f3;
+  }
+  header {
+    padding: 0.5em 1.25em 0.6em;
+  }
+  .title {
+    font-size: 1.75em;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .muted {
+    font-size: 0.8em;
+    color: #6f6a61;
+  }
+  nav {
+    display: flex;
+    gap: 0.45em;
+    padding: 0 1.25em 0.8em;
+    font-size: 0.8em;
+  }
+  nav span {
+    padding: 0.35em 0.9em;
+    border-radius: 999px;
+    box-shadow: inset 0 0 0 1px #e3ddd2;
+  }
+  nav .on {
+    color: #fff;
+    background: #0f5e54;
+    box-shadow: none;
+  }
+  ul {
+    display: grid;
+    gap: 0.6em;
+    padding: 0 1em;
+  }
+  li {
+    padding: 0.8em 0.95em;
+    border-radius: 1em;
+    background: #fff;
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.06);
+  }
+  .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .brand {
+    padding: 0.15em 0.6em;
+    border-radius: 999px;
+    font-size: 0.68em;
+    font-weight: 600;
+  }
+  .sonos {
+    color: #0f5e54;
+    background: #dcefe9;
+  }
+  .cast {
+    color: #1d4ed8;
+    background: #e0e9ff;
+  }
+  .dlna {
+    color: #92400e;
+    background: #fdf0d5;
+  }
+  .what {
+    margin-top: 0.1em;
+    font-size: 0.8em;
+    color: #6f6a61;
+  }
+  .vol {
+    display: flex;
+    align-items: center;
+    gap: 0.7em;
+    margin-top: 0.6em;
+  }
+  .track {
+    flex: 1;
+    height: 0.35em;
+    border-radius: 1em;
+    background: #ece6db;
+  }
+  .track i {
+    position: relative;
+    display: block;
+    height: 100%;
+    border-radius: 1em;
+    background: #0f5e54;
+  }
+  .track i::after {
+    content: '';
+    position: absolute;
+    right: -0.45em;
+    top: 50%;
+    width: 0.9em;
+    height: 0.9em;
+    translate: 0 -50%;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 0 2px #0f5e54;
+  }
+  .n {
+    width: 1.5em;
+    text-align: right;
+    font-size: 0.8em;
+    font-variant-numeric: tabular-nums;
+  }
+  .playing {
+    margin-top: 0.45em;
+    font-size: 0.72em;
+    color: #8a8478;
+  }
+  footer {
+    position: absolute;
+    inset: auto 0 0;
+    display: flex;
+    justify-content: space-around;
+    padding: 0.8em 0.5em 1.9em;
+    font-size: 0.72em;
+    color: #6f6a61;
+    background: #f3eee5;
+  }
+  footer .on {
+    padding: 0.2em 0.8em;
+    border-radius: 999px;
+    font-weight: 600;
+    color: #0f5e54;
+    background: #dcefe9;
+  }
+  .tag {
+    position: absolute;
+    right: 1.25em;
+    top: 0.9em;
+    font-size: 0.65em;
+    color: #a39c90;
+  }
+</style>

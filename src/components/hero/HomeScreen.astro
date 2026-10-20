@@ -26,6 +26,7 @@ const banners = [
   { id: 'clinic-platform', when: '9:00 AM', text: 'Reminder: cleaning tomorrow at 11:15 AM.' },
   { id: 'pabili', when: 'now', text: 'You won 50 coins on Spin & Win 🎉' },
   { id: 'gawain', when: '4:22 PM', text: "Washer's done. Your call just ended, so go hang it up." },
+  { id: 'bayarin', when: '9:00 AM', text: 'Meralco is due in 3 days: ₱3,612.08 (scanned).' },
 ]
   .map((b) => ({ ...b, p: projects.find((p) => p.id === b.id) }))
   .filter((b): b is typeof b & { p: Project } => !!b.p);

@@ -4,11 +4,14 @@ import { deviceOf, statusBarFor, type ScreenEntry } from '../data/screens';
 import Phone from './device/Phone.astro';
 import Tablet from './device/Tablet.astro';
 import Browser from './device/Browser.astro';
+import TV from './device/TV.astro';
 import ScreenContent from './ScreenContent.astro';
 import ClinicDay from './mocks/ClinicDay.astro';
 import ClinicBoard from './mocks/ClinicBoard.astro';
 import GroundworkChat from './mocks/GroundworkChat.astro';
 import AgentGraph from './mocks/AgentGraph.astro';
+import SineHome from './mocks/SineHome.astro';
+import SinePlayer from './mocks/SinePlayer.astro';
 
 // One of a project's screens, inside the right device. With `live`, a "Try it live" button swaps the
 // screenshot for the running web app.
@@ -63,6 +66,16 @@ const liveUrl = live && project.data.embed ? project.data.live : undefined;
   )
 }
 {
+  device === 'tv' && (
+    <div class:list={['relative', className]}>
+      <TV glow={glow ? project.data.accent : undefined}>
+        {screen.mock === 'sine-home' && <SineHome />}
+        {screen.mock === 'sine-player' && <SinePlayer />}
+      </TV>
+    </div>
+  )
+}
+{
   device === 'browser' && (
     <div class:list={['relative', className]}>
       {screen.mock === 'groundwork-chat' && (
@@ -84,7 +97,7 @@ const liveUrl = live && project.data.embed ? project.data.live : undefined;
 }
 
 <script>
-  // Drawn tablet and desktop screens are laid out at real width (data-fit, in px) and scaled to their frame.
+  // Drawn tablet, TV and desktop screens are laid out at real width (data-fit, in px) and scaled to their frame.
   const fit = (el: HTMLElement) =>
     el.style.setProperty('--fit', String(el.parentElement!.clientWidth / Number(el.dataset.fit || 1024)));
   const resized = new ResizeObserver((entries) =>

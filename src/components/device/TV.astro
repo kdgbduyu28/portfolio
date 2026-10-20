@@ -1,0 +1,76 @@
+---
+// A TV on a stand. Drawn screens are laid out at 1024×576 and scaled to fit, like the tablet.
+
+interface Props {
+  class?: string;
+  glow?: string;
+}
+
+const { class: className, glow } = Astro.props;
+---
+
+<div class:list={['tv', className]} style={glow ? `--tv-glow:${glow}` : undefined}>
+  <div class="tv-frame">
+    <div class="tv-screen">
+      <div class="tv-canvas" data-fit="1024">
+        <slot />
+      </div>
+    </div>
+  </div>
+  <div class="tv-stand" aria-hidden="true"><i></i><i></i></div>
+</div>
+
+<style>
+  .tv {
+    container-type: inline-size;
+    position: relative;
+    width: 100%;
+  }
+  .tv::before {
+    content: '';
+    position: absolute;
+    inset: 8% 6% 10%;
+    z-index: -1;
+    border-radius: 6%;
+    background: var(--tv-glow, transparent);
+    filter: blur(8cqw);
+    opacity: 0.3;
+  }
+  .tv-frame {
+    position: relative;
+    padding: 0.9cqw;
+    border-radius: 1.2cqw;
+    background: linear-gradient(160deg, #2c2c30, #0c0c0e 50%, #1d1d21);
+    box-shadow:
+      inset 0 0 0 0.25cqw #3c3c42,
+      0 3cqw 6cqw -2.5cqw rgb(0 0 0 / 0.55);
+  }
+  .tv-screen {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: 0.4cqw;
+    background: #0e0d10;
+  }
+  .tv-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1024px;
+    height: 576px;
+    transform-origin: 0 0;
+    transform: scale(var(--fit, 0.5));
+  }
+  .tv-stand {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 14%;
+  }
+  .tv-stand i {
+    display: block;
+    width: 2.4cqw;
+    height: 2.4cqw;
+    background: linear-gradient(#26262a, #111113);
+    clip-path: polygon(30% 0, 70% 0, 100% 100%, 0 100%);
+  }
+</style>

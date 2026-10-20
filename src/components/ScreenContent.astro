@@ -6,6 +6,9 @@ import FoodRider from './mocks/FoodRider.astro';
 import FoodMerchant from './mocks/FoodMerchant.astro';
 import ClinicPatient from './mocks/ClinicPatient.astro';
 import GroundworkChat from './mocks/GroundworkChat.astro';
+import TugmaSpeakers from './mocks/TugmaSpeakers.astro';
+import TugmaPair from './mocks/TugmaPair.astro';
+import TugmaEq from './mocks/TugmaEq.astro';
 
 // What fills a phone screen (below the status bar): a real screenshot or a drawn mock.
 
@@ -38,3 +41,6 @@ const { project, screen, eager = false } = Astro.props;
 {screen.mock === 'food-merchant' && <FoodMerchant />}
 {screen.mock === 'clinic-patient' && <ClinicPatient />}
 {screen.mock === 'groundwork-chat' && <GroundworkChat />}
+{screen.mock === 'tugma-speakers' && <TugmaSpeakers />}
+{screen.mock === 'tugma-pair' && <TugmaPair />}
+{screen.mock === 'tugma-eq' && <TugmaEq />}

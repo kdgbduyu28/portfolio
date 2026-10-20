@@ -12,16 +12,17 @@ screens:
   - { image: ../../assets/projects/gawain-list.png, caption: Shopping list with run-out predictions, bar: '#f4f5f3' }
   - { image: ../../assets/projects/gawain-pantry.png, caption: Pantry that learns how long things last, bar: '#f4f5f3' }
 tagline: A chore app for working from home that fits housework into the gaps between your meetings
-summary: Chores repeat from the last time you actually did them, not on fixed dates. Gawain reads your calendar, suggests chores that fit before your next meeting, holds the washer reminder until your call ends, and keeps a pantry and grocery list that reminds you when you leave the house.
+summary: Chores repeat from the last time you actually did them, not on fixed dates. Gawain reads your calendar, suggests chores that fit before your next meeting, holds the washer reminder until your call ends, and keeps a pantry and grocery list that reminds you when you leave the house. It can sync a household across devices and take events from smart-home buttons and sensors.
 year: 2026
 status: Live
 order: 5
 featured: true
 accent: '#047857'
 live: https://gawain-ccn.pages.dev
+repo: https://github.com/kdgbduyu28/Gawain
 role: Sole engineer. Product design and development.
-stack: [Expo SDK 57, React Native, Expo Router, TypeScript, Zustand, expo-calendar, expo-location, expo-notifications, Service Worker, Cloudflare Pages Functions, Vitest]
-skills: [React Native & Expo, TypeScript, Product design, Testing, Cloudflare]
+stack: [Expo SDK 57, React Native, Expo Router, TypeScript, Zustand, Supabase, PostgreSQL, Supabase Realtime, expo-calendar, expo-location, expo-notifications, Service Worker, Cloudflare Pages Functions, Home Assistant, Vitest, PGlite]
+skills: [React Native & Expo, TypeScript, Supabase & PostgreSQL, Database security (RLS), Product design, Testing, Cloudflare]
 highlights:
   - Repeats from when you last did it, so doing a chore late moves the next one too, and nothing nags on the wrong day
   - Finds free time between meetings and suggests chores that fit, keeping work-hour breaks short and a buffer before each call
@@ -30,10 +31,12 @@ highlights:
   - Leave-home and arrive-at-store reminders through phone geofencing, with location kept on the device
   - Reads your calendar from the phone, or from a Google/Outlook iCal link with repeating meetings, time zones and moved or cancelled meetings
   - Installable web app that works offline, with browser reminders, desktop layout, dark mode and backup files
+  - Optional sign-in syncs a household across phones and browsers, and keeps working offline in between
+  - "Smart-home triggers: a Home Assistant sensor, an NFC tag or a button can mark a chore done or start the washer timer, and reminders can be spoken on a Sonos or Nest speaker"
 stats:
-  - { value: '28', label: 'unit tests' }
+  - { value: '107', label: 'automated tests' }
   - { value: '3', label: 'platforms, one codebase' }
-  - { value: '0', label: 'sign-ups; data stays on your device' }
+  - { value: '0', label: 'sign-ups needed; sync is optional' }
 ---
 
 ## The problem
@@ -56,8 +59,10 @@ The pantry side tracks what's running low. Mark something Low or Out and it goes
 - **Calendars:** on phones, `expo-calendar` reads busy times from every account on the device, read-only. Anywhere else, you paste a Google or Outlook iCal link. A small parser expands repeating meetings (daily, weekly, "second Tuesday"), applies time zones including Outlook's Windows zone names, and handles skipped, moved and cancelled meetings.
 - **Web:** a Cloudflare Pages Function fetches the calendar link for the browser, because calendar sites block cross-site requests. It only talks to known calendar hosts, and the link travels in the request body, so it never shows up in logs. A service worker makes the app open offline, and reminders arrive as browser notifications while the app is open.
 - **Location:** `expo-location` geofencing hands the watching to the phone's OS, so the app doesn't run in the background and battery use stays low. A small background task builds the "you're out, 6 items on your list" notification.
-- **No backend:** everything is stored on the device with Zustand. There's nothing to sign up for, and backup files cover the web version.
+- **Local first, sync optional:** everything is stored on the device with Zustand, and the app works fully without an account. Signing in (Supabase) syncs a household across devices. Each device keeps the server's last copy of every row plus its own unsent edits, and merges last-write-wins per row, so it works offline and catches up later. Row-level security keeps each household's rows to its members, and the sync is tested against a real Postgres (PGlite) with several simulated devices.
+- **Smart home:** anything that can send a web request (Home Assistant, an iPhone Shortcut on an NFC tag, `curl`) posts "washer finished" or "trash pressed" to the household's secret link. A Pages Function passes it to a Postgres function that only stores a hash of the link's token, and devices pick the event up over Realtime and apply it with the app's own rules: a button press counts as doing the chore, and a washer that finishes mid-meeting reminds you after it.
+- **Spoken reminders:** reminders can be announced on a speaker through your own Home Assistant. The address and token stay on the device and are left out of backups.
 
 ## Try it
 
-The web app is live. Use it in the phone frame on this page, or open [gawain-ccn.pages.dev](https://gawain-ccn.pages.dev) on your phone and add it to your home screen.
+The web app is live. Use it in the phone frame on this page, or open [gawain-ccn.pages.dev](https://gawain-ccn.pages.dev) on your phone and add it to your home screen. The code is on [GitHub](https://github.com/kdgbduyu28/Gawain).

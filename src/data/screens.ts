@@ -10,6 +10,9 @@ const MOCK_BARS: Record<string, [string, string]> = {
   'food-merchant': ['#ffffff', '#0b0b0c'],
   'clinic-patient': ['#fbfaf8', '#0b0b0c'],
   'groundwork-chat': ['#0f0d24', '#eef2ff'],
+  'tugma-speakers': ['#fbf8f3', '#1b1a17'],
+  'tugma-pair': ['#fbf8f3', '#1b1a17'],
+  'tugma-eq': ['#fbf8f3', '#1b1a17'],
 };
 
 /** Phone status bar [background, text] that blends into the top of a screen. */
@@ -21,7 +24,16 @@ export function statusBarFor(screen: ScreenEntry): [string, string] {
 export const deviceOf = (project: Project, screen: ScreenEntry): Device => screen.device ?? project.data.device;
 
 // Drawn screens that also work at phone size.
-const PHONE_MOCKS = new Set(['food-tracking', 'food-rider', 'food-merchant', 'clinic-patient', 'groundwork-chat']);
+const PHONE_MOCKS = new Set([
+  'food-tracking',
+  'food-rider',
+  'food-merchant',
+  'clinic-patient',
+  'groundwork-chat',
+  'tugma-speakers',
+  'tugma-pair',
+  'tugma-eq',
+]);
 
 /** The screen an app opens to on the hero phone. */
 export function phoneScreen(project: Project): ScreenEntry | undefined {

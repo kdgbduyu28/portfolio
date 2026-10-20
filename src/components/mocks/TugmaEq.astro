@@ -1,0 +1,222 @@
+---
+// Drawn Tugma headphone EQ: a per-device profile from an AutoEQ import. Illustration with made-up values.
+
+const bands = [
+  { f: '31', db: 4 },
+  { f: '62', db: 3 },
+  { f: '125', db: 1 },
+  { f: '250', db: -1 },
+  { f: '500', db: -2 },
+  { f: '1k', db: 0 },
+  { f: '2k', db: 2 },
+  { f: '4k', db: 3 },
+  { f: '8k', db: -1 },
+  { f: '16k', db: 1 },
+];
+const tabs = ['Speakers', 'Headphones', 'Snapshots', 'Debug'];
+---
+
+<div class="t" role="img" aria-label="Illustration of the Tugma headphone EQ with a 10-band profile for a Bluetooth headphone, sample data">
+  <header>
+    <p class="title">Headphones</p>
+  </header>
+
+  <div class="now">
+    <span class="dot" aria-hidden="true"></span>
+    <div>
+      <b>Life Q30</b>
+      <span>Bluetooth · AAC · playing now</span>
+    </div>
+    <span class="switch" aria-hidden="true"><i></i></span>
+  </div>
+
+  <div class="eq">
+    <div class="row">
+      <b>Profile for this device</b>
+      <span class="chip">AutoEQ · Harman</span>
+    </div>
+    <div class="bands">
+      {
+        bands.map((b) => (
+          <div class="band">
+            <span class="db">{b.db > 0 ? `+${b.db}` : b.db}</span>
+            <span class="slot">
+              <i style={`--y:${50 - b.db * 7}%`} />
+            </span>
+            <span class="f">{b.f}</span>
+          </div>
+        ))
+      }
+    </div>
+    <div class="row small">
+      <span>Preamp −4 dB</span>
+      <span>Limiter on</span>
+    </div>
+  </div>
+
+  <p class="hint">Switches to this profile when the Q30 connects, and back when it disconnects.</p>
+
+  <footer>
+    {tabs.map((t, i) => <span class:list={[i === 1 && 'on']}>{t}</span>)}
+  </footer>
+  <span class="tag">Sample data</span>
+</div>
+
+<style>
+  .t {
+    position: absolute;
+    inset: 0;
+    font-size: 4.1026cqw;
+    font-family: 'Inter', system-ui, sans-serif;
+    color: #1b1a17;
+    background: #fbf8f3;
+  }
+  header {
+    padding: 0.5em 1.25em 0.6em;
+  }
+  .title {
+    font-size: 1.75em;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .now {
+    display: flex;
+    align-items: center;
+    gap: 0.8em;
+    margin: 0 1em;
+    padding: 0.85em 1em;
+    border-radius: 1em;
+    background: #fff;
+  }
+  .now div {
+    display: grid;
+    flex: 1;
+  }
+  .now div span {
+    font-size: 0.75em;
+    color: #6f6a61;
+  }
+  .dot {
+    width: 0.6em;
+    height: 0.6em;
+    border-radius: 50%;
+    background: #16a34a;
+    box-shadow: 0 0 0 0.25em #dcfce7;
+  }
+  .switch {
+    position: relative;
+    width: 2.6em;
+    height: 1.5em;
+    border-radius: 999px;
+    background: #0f5e54;
+  }
+  .switch i {
+    position: absolute;
+    right: 0.2em;
+    top: 0.2em;
+    width: 1.1em;
+    height: 1.1em;
+    border-radius: 50%;
+    background: #fff;
+  }
+  .eq {
+    margin: 0.7em 1em 0;
+    padding: 0.9em 1em;
+    border-radius: 1em;
+    background: #fff;
+  }
+  .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .row b {
+    font-size: 0.9em;
+  }
+  .chip {
+    padding: 0.2em 0.6em;
+    border-radius: 999px;
+    font-size: 0.68em;
+    font-weight: 600;
+    color: #92400e;
+    background: #fdf0d5;
+  }
+  .bands {
+    display: flex;
+    justify-content: space-between;
+    margin: 0.9em 0 0.7em;
+  }
+  .band {
+    display: grid;
+    justify-items: center;
+    gap: 0.35em;
+    width: 1.9em;
+  }
+  .db,
+  .f {
+    font-size: 0.6em;
+    color: #6f6a61;
+    font-variant-numeric: tabular-nums;
+  }
+  .slot {
+    position: relative;
+    width: 0.3em;
+    height: 9em;
+    border-radius: 1em;
+    background: #ece6db;
+  }
+  .slot::before {
+    content: '';
+    position: absolute;
+    left: -0.4em;
+    right: -0.4em;
+    top: 50%;
+    height: 1px;
+    background: #d6cfc2;
+  }
+  .slot i {
+    position: absolute;
+    left: 50%;
+    top: var(--y);
+    width: 1.05em;
+    height: 1.05em;
+    translate: -50% -50%;
+    border-radius: 50%;
+    background: #0f5e54;
+    box-shadow: 0 0 0 0.2em #dcefe9;
+  }
+  .small {
+    font-size: 0.72em;
+    color: #6f6a61;
+  }
+  .hint {
+    margin: 0.8em 1.5em 0;
+    font-size: 0.78em;
+    line-height: 1.45;
+    color: #6f6a61;
+  }
+  footer {
+    position: absolute;
+    inset: auto 0 0;
+    display: flex;
+    justify-content: space-around;
+    padding: 0.8em 0.5em 1.9em;
+    font-size: 0.72em;
+    color: #6f6a61;
+    background: #f3eee5;
+  }
+  footer .on {
+    padding: 0.2em 0.8em;
+    border-radius: 999px;
+    font-weight: 600;
+    color: #0f5e54;
+    background: #dcefe9;
+  }
+  .tag {
+    position: absolute;
+    right: 1.25em;
+    top: 0.9em;
+    font-size: 0.65em;
+    color: #a39c90;
+  }
+</style>
