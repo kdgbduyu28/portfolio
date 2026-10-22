@@ -52,4 +52,4 @@ A "What this TV can play" screen lists the Dolby Vision profiles, HDR formats, d
 
 ## Where it stands
 
-Phases 1 and 2 are on GitHub. Music playback, a photo slideshow and screensaver, offline downloads and subtitle auto-sync are being built now. Sine hasn't been released yet; the next step is testing on real TVs and boxes.
+Phases 1 and 2 are on GitHub. Phases 3 to 12 are written and being compiled and tested before they go up: music, photos and a library screensaver, offline downloads, subtitle auto-sync, profiles with age limits, Trakt sync, Kodi `.nfo` metadata, Wake-on-LAN for a sleeping NAS and HDR tone-mapping for TVs without HDR. Sine hasn't been released yet; the next step is testing on real TVs and boxes.

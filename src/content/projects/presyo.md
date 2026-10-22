@@ -20,6 +20,8 @@ featured: true
 accent: '#15803d'
 live: https://presyo.pages.dev
 repo: https://github.com/kdgbduyu28/Presyo
+links:
+  - { label: Android APK, url: 'https://github.com/kdgbduyu28/Presyo/releases' }
 role: Sole engineer. Data pipeline, app and automation.
 stack: [Python, uv, httpx, pdfplumber, shapely, pytest, Expo, React Native Web, TypeScript, Zustand, GitHub Actions, Cloudflare Pages]
 skills: [Python data pipelines, React Native & Expo, TypeScript, CI/CD & automation, Cloudflare, Product design]
@@ -29,7 +31,7 @@ highlights:
   - Government price guides for common medicines, read from the DOH's PDF booklets
   - Star an item and get an alert in the app when its price drops below your target
   - 1,736 PSGC places and 39 geocoded wet markets, matched from messy place names like "Sta. Cruz" or "City of Cebu"
-  - Updates itself twice a day with GitHub Actions, then rebuilds and redeploys
+  - Updates itself twice a day with GitHub Actions, then rebuilds and redeploys; a version tag also builds the Android APK
   - "No backend: everything is precomputed, and the app picks the nearest place on the device"
   - Each source runs on its own, so one government site being down doesn't stop the update
   - Dark mode, saved preferences and a desktop layout as well as a phone layout
@@ -60,8 +62,8 @@ Each price shows where it came from and when it was last updated, so you can che
 - **Store prices:** Apple's own store pages embed their price data, the local Apple resellers run Shopify with a public product feed, and Samsung has a product-finder API. A price is stored only when it changes, so history stays small.
 - **Build:** precomputes small JSON files per source and place, with headline items and sparklines, so the app never filters large files.
 - **App (Expo / React Native):** resolves the nearest place on the device and fetches one small file per source. Hosting is static, so there is no server to run.
-- **Automation:** GitHub Actions runs test → fetch → commit → build → deploy at 12:00 and 20:00 Manila time. Failures are logged as warnings and the build still ships with the data that did arrive.
+- **Automation:** GitHub Actions runs test → fetch → commit → build → deploy at 12:00 and 20:00 Manila time. Failures are logged as warnings and the build still ships with the data that did arrive. A separate workflow builds the Android APK on each version tag; the APK reads the same published data, so it stays current without a new release.
 
 ## Try it
 
-The app is live. Use it in the phone frame on this page, or open [presyo.pages.dev](https://presyo.pages.dev) on your phone.
+The app is live. Use it in the phone frame on this page, or open [presyo.pages.dev](https://presyo.pages.dev) on your phone. For Android, download the APK from [GitHub Releases](https://github.com/kdgbduyu28/Presyo/releases).

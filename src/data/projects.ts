@@ -42,7 +42,7 @@ export const SKILL_GROUPS: { title: string; skills: { name: string; blurb: strin
     title: 'Delivery & operations',
     skills: [
       { name: 'App Store & Play releases', blurb: 'fastlane and EAS builds, TestFlight and store releases in one command.' },
-      { name: 'CI/CD & automation', blurb: 'GitHub Actions that test, fetch data and deploy on a schedule.' },
+      { name: 'CI/CD & automation', blurb: 'GitHub Actions that test, fetch data, deploy on a schedule and publish Android APKs.' },
       { name: 'Testing', blurb: 'Vitest, pytest and database test suites that run on every change.' },
       { name: 'Cloudflare', blurb: 'Pages hosting, Functions and Turnstile bot protection.' },
     ],

@@ -2,7 +2,7 @@
 title: D-Touch Health Platform
 shortName: D-Touch
 category: Medical · Clinic management
-platforms: [Web]
+platforms: [Web, Android]
 glyph: tooth
 device: tablet
 screens:
@@ -10,7 +10,7 @@ screens:
   - { mock: clinic-patient, caption: Patient booking, device: phone }
   - { mock: clinic-board, caption: Front-desk status board }
 tagline: Clinic management SaaS for many independent clinics, with every authorization rule enforced in PostgreSQL
-summary: Four React Native Web apps (patient, doctor, front desk, admin) on one Supabase Postgres backend, serving any number of clinics. There is no custom application server; tenant isolation, roles and privacy all live in the database. D-Touch Dental is the first clinic, running on test data ahead of launch.
+summary: Four React Native apps (patient, doctor, front desk, admin), on the web and as Android builds, on one Supabase Postgres backend, serving any number of clinics. There is no custom application server; tenant isolation, roles and privacy all live in the database. D-Touch Dental is the first clinic, running on test data ahead of launch.
 year: 2024
 status: Pre-launch
 order: 2
@@ -19,9 +19,10 @@ accent: '#0f766e'
 repo: https://github.com/kdgbduyu28/health-platform-fe
 links:
   - { label: Backend repo, url: 'https://github.com/kdgbduyu28/health-platform-be' }
+  - { label: Android APKs, url: 'https://github.com/kdgbduyu28/health-platform-fe/releases' }
 role: Sole engineer. Product, front end, database and deployment.
-stack: [React Native for Web, Expo Router, React 19, TypeScript, TanStack Query, Supabase, PostgreSQL 17, Row Level Security, PL/pgSQL, Deno Edge Functions, Web Push, Cloudflare Pages, Turnstile, Vitest]
-skills: [React Native & Expo, TypeScript, Supabase & PostgreSQL, Database security (RLS), Product design, Testing, Cloudflare]
+stack: [React Native for Web, Expo Router, React 19, TypeScript, TanStack Query, Supabase, PostgreSQL 17, Row Level Security, PL/pgSQL, Deno Edge Functions, Web Push, Cloudflare Pages, Turnstile, Vitest, GitHub Actions]
+skills: [React Native & Expo, TypeScript, Supabase & PostgreSQL, Database security (RLS), Product design, Testing, CI/CD & automation, Cloudflare]
 highlights:
   - 77 Row Level Security policies across 28 tables; tables deny by default
   - 660+ database checks verify tenant isolation and every role's access
@@ -30,6 +31,7 @@ highlights:
   - An audit log written by database triggers, so no client can skip it
   - Consent recorded per Privacy Policy version and per clinic, under the Data Privacy Act (RA 10173)
   - Rewritten from Flutter to React Native for Web, about 30,600 lines and 78 routes, with 187 Vitest tests
+  - The same code builds Android APKs of all four apps, which GitHub Actions publishes as one release per version
 stats:
   - { value: '77', label: 'RLS policies' }
   - { value: '660+', label: 'database checks' }

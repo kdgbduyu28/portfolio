@@ -21,16 +21,18 @@ featured: true
 accent: '#f43f5e'
 live: https://pabili.pages.dev
 repo: https://github.com/kdgbduyu28/Pabili
+links:
+  - { label: Android APK, url: 'https://github.com/kdgbduyu28/Pabili/releases' }
 role: Sole engineer. Product design and development.
-stack: [Expo SDK 57, React Native, Expo Router, TypeScript, Zustand, Reanimated, Vitest, EAS, Cloudflare Pages]
-skills: [React Native & Expo, TypeScript, Product design, Testing, App Store & Play releases, Cloudflare]
+stack: [Expo SDK 57, React Native, Expo Router, TypeScript, Zustand, Reanimated, Vitest, GitHub Actions, Cloudflare Pages]
+skills: [React Native & Expo, TypeScript, Product design, Testing, CI/CD & automation, Cloudflare]
 highlights:
   - Full shopping flow, from search and categories to cart, vouchers, checkout and order tracking
   - Engagement features modelled on the big apps (daily coins, spin the wheel, Slash It, group buys, live selling, a virtual garden)
   - Shop pages, chat with sellers, ratings with photos, likes and following
   - Yearly "Wrapped" summary and achievements
   - Dark mode, Filipino/English toggle and local phone notifications
-  - Installable as a web app, with EAS profiles ready for Android and iOS builds
+  - Installable as a web app, and as an Android APK that GitHub Actions builds and publishes for every version
 stats:
   - { value: '37', label: 'screens' }
   - { value: '3', label: 'platforms, one codebase' }
@@ -58,8 +60,8 @@ Pabili is one **Expo / React Native** codebase that runs on the web, Android and
 - **A notification feed derived from state.** One function builds the feed from orders, cart, restock alerts, group buys and check-ins, and schedules local phone notifications that deep-link to the right screen.
 - **Expo web on Cloudflare Pages.** Wrangler never uploads folders named `node_modules`, so the icon fonts Expo exports there returned 404 and every icon broke. The release script moves them and rewrites the bundle paths before deploying.
 
-The web build is deployed to Cloudflare Pages. EAS build profiles are set up for an installable Android APK and store builds.
+The web build is deployed to Cloudflare Pages. Pushing a version tag has GitHub Actions generate the native Android project, build a release APK and attach it to a GitHub Release, so there is nothing to build on my machine.
 
 ## Try it
 
-The app is live. Use it in the phone frame on this page, or open [pabili.pages.dev](https://pabili.pages.dev) on your phone and add it to your home screen.
+The app is live. Use it in the phone frame on this page, or open [pabili.pages.dev](https://pabili.pages.dev) on your phone and add it to your home screen. For Android, download the APK from [GitHub Releases](https://github.com/kdgbduyu28/Pabili/releases).

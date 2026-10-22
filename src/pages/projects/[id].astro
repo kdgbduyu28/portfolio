@@ -29,8 +29,8 @@ const { data } = project;
 const { Content } = await render(project);
 const team = data.team.map(memberById).filter((m) => m !== undefined);
 
-// The main button: the live app, else a store listing, else the source.
-const isStore = (label: string) => /app store|google play/i.test(label);
+// The main button: the live app, else a store listing or APK download, else the source.
+const isStore = (label: string) => /app store|google play|apk/i.test(label);
 const actions = [
   ...(data.live ? [{ label: 'Open', url: data.live }] : []),
   ...data.links.filter((l) => isStore(l.label)),
