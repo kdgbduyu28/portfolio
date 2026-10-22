@@ -3,7 +3,7 @@ title: Presyo
 shortName: Presyo
 category: Utilities · Price tracker
 platforms: [iOS, Android, Web]
-glyph: peso
+iconImage: ../../assets/projects/presyo-icon.png
 device: phone
 embed: true
 screens:

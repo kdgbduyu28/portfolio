@@ -31,7 +31,7 @@ highlights:
   - An audit log written by database triggers, so no client can skip it
   - Consent recorded per Privacy Policy version and per clinic, under the Data Privacy Act (RA 10173)
   - Rewritten from Flutter to React Native for Web, about 30,600 lines and 78 routes, with 187 Vitest tests
-  - The same code builds Android APKs of all four apps, which GitHub Actions publishes as one release per version
+  - "The same code runs on Android: GitHub Actions builds an APK of each app per version, with phone versions of the web-only controls (pickers, calendar taps) and room for the system bars"
 stats:
   - { value: '77', label: 'RLS policies' }
   - { value: '660+', label: 'database checks' }
@@ -60,6 +60,6 @@ There is no custom application server and no role logic in client queries. The a
 
 ## Privacy
 
-The platform is **pre-launch and runs on test data**. The picture on this page is a drawn mock-up with made-up patients and visits; no real patient information appears on this site.
+The platform is **pre-launch and runs on test data**. The Android apps are early builds for testing, installed from GitHub Releases. The picture on this page is a drawn mock-up with made-up patients and visits; no real patient information appears on this site.
 
 Sign-up records which version of the Privacy Policy and Terms each person was shown. Consent to process health information is collected separately, per clinic, as the National Privacy Commission recommends.
