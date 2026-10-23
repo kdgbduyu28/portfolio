@@ -19,9 +19,12 @@ order: 6
 featured: true
 accent: '#00695c'
 live: https://bayarin-3q5.pages.dev
+repo: https://github.com/kdgbduyu28/Bayarin
+links:
+  - { label: Android APK, url: 'https://github.com/kdgbduyu28/Bayarin/releases' }
 role: Sole engineer. Product design and development.
-stack: [Flutter 3.35, Dart, Material 3, Riverpod 3, go_router, Google ML Kit, flutter_local_notifications, fl_chart, shared_preferences, Cloudflare Pages]
-skills: [Flutter & Dart, Product design, Testing, Cloudflare]
+stack: [Flutter 3.35, Dart, Material 3, Riverpod 3, go_router, Google ML Kit, flutter_local_notifications, fl_chart, shared_preferences, GitHub Actions, Cloudflare Pages]
+skills: [Flutter & Dart, Product design, Testing, CI/CD & automation, Cloudflare]
 highlights:
   - Reads a photo of a bill on the device (Google ML Kit) and fills in the amount, due date, kWh, billing period and account number, for you to check before saving
   - Bills without a fixed amount (Meralco, water, credit cards) can be entered when they arrive, scanned, or estimated from your last three payments
@@ -59,4 +62,4 @@ The Renewals tab tracks passports, licenses, LTO registration, PRC, NBI and insu
 
 ## Try it
 
-The web app is live. Use it in the phone frame on this page and tap "Try with sample data", or open [bayarin-3q5.pages.dev](https://bayarin-3q5.pages.dev). Scanning and phone reminders need the Android or iOS app.
+The web app is live. Use it in the phone frame on this page and tap "Try with sample data", or open [bayarin-3q5.pages.dev](https://bayarin-3q5.pages.dev). Scanning and phone reminders need the phone app: for Android, download the APK from [GitHub Releases](https://github.com/kdgbduyu28/Bayarin/releases). The code is on [GitHub](https://github.com/kdgbduyu28/Bayarin).
