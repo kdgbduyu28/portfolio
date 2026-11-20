@@ -27,6 +27,7 @@ export const SKILL_GROUPS: { title: string; skills: { name: string; blurb: strin
       { name: 'React Native & Expo', blurb: 'One codebase for web, Android and iOS, with Expo Router.' },
       { name: 'Native Android (Kotlin)', blurb: 'Jetpack Compose, Media3 and raw network protocols, for phones and TVs.' },
       { name: 'App Store & Play releases', blurb: 'fastlane and EAS builds, TestFlight and store releases in one command.' },
+      { name: 'Game development (Godot)', blurb: '3D mobile and web games in Godot 4 and GDScript, with data-driven content and unit-tested game rules.' },
     ],
   },
   {
