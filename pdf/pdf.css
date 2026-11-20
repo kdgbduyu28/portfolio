@@ -148,6 +148,7 @@ b, strong { font-weight: 600; }
 .app .links { font-weight: 500; margin-top: 4px; line-height: 1.55; }
 .apps2 { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; border-top: 1px solid var(--line); margin-top: 14px; padding-top: 3px; }
 .apps2 .app h2 { justify-content: flex-start; gap: 11px; }
+.apps3 { grid-template-columns: repeat(3, 1fr); gap: 22px; font-size: 12px; }
 .foot { display: grid; grid-template-columns: 1.6fr 1fr; gap: 30px; border-top: 1px solid var(--line); margin-top: 14px; padding-top: 0; }
 .foot .label { margin: 13px 0 7px; }
 .foot .skills { grid-template-columns: 130px 1fr; row-gap: 2px; }
