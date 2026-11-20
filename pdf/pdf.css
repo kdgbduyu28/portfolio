@@ -1,0 +1,180 @@
+/* Shared styles for resume.html and portfolio.html (printed to PDF by scripts/build-pdfs.sh). */
+@font-face { font-family: Geist; font-weight: 400; src: url(fonts/geist-sans-latin-400-normal.woff2) format('woff2'); }
+@font-face { font-family: Geist; font-weight: 500; src: url(fonts/geist-sans-latin-500-normal.woff2) format('woff2'); }
+@font-face { font-family: Geist; font-weight: 600; src: url(fonts/geist-sans-latin-600-normal.woff2) format('woff2'); }
+
+@page { size: Letter; margin: 0; }
+
+:root {
+  --ink: #16181d;
+  --muted: #5b616b;
+  --line: #d9dce1;
+  --accent: #1a56b0;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+body {
+  font-family: Geist, system-ui, sans-serif;
+  font-size: 12.9px;
+  line-height: 1.46;
+  color: var(--ink);
+  background: #fff;
+}
+
+a { color: inherit; text-decoration: none; }
+
+.page {
+  width: 8.5in;
+  height: 11in;
+  padding: 0.62in 0.66in 0.55in;
+  overflow: hidden;
+  page-break-after: always;
+  break-after: page;
+  position: relative;
+}
+.page:last-child { page-break-after: auto; break-after: auto; }
+
+.label {
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.muted { color: var(--muted); }
+b, strong { font-weight: 600; }
+
+/* ---------- Résumé ---------- */
+
+.resume { padding-top: 0.6in; }
+.resume h1 { font-size: 29px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.15; }
+.resume .role { color: var(--accent); font-weight: 500; font-size: 15.5px; margin-top: 7px; }
+.resume .contact { margin-top: 11px; }
+.resume .rule { border: 0; border-top: 1px solid var(--line); margin: 19px 0 20px; }
+.resume .summary { font-size: 13.5px; }
+.resume section { margin-top: 19px; }
+.resume .label { display: block; margin-bottom: 9px; }
+.resume .label small { font-size: 12.9px; font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--muted); }
+
+.row { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
+.row > :last-child { white-space: nowrap; }
+.resume ul { margin: 5px 0 0 18px; }
+.resume li { margin-top: 1.5px; padding-left: 3px; }
+.resume .job + .job { margin-top: 12px; }
+.resume .proj { margin-top: 7px; }
+.resume .proj:first-of-type { margin-top: 0; }
+.resume .title { font-weight: 600; }
+.resume .title span { font-weight: 400; color: var(--muted); }
+
+.skills { display: grid; grid-template-columns: 138px 1fr; row-gap: 2px; }
+.skills dt { font-weight: 600; }
+
+/* ---------- Portfolio ---------- */
+
+.runhead {
+  display: flex; justify-content: space-between;
+  padding-bottom: 13px; border-bottom: 1px solid var(--line);
+  font-size: 12.6px; color: var(--muted);
+}
+.runhead b { color: var(--ink); }
+
+.portfolio h1 {
+  font-size: 26.5px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.2;
+  margin-top: 24px; display: flex; align-items: center; gap: 13px;
+}
+.portfolio h1 .link { margin-left: auto; font-size: 13.4px; font-weight: 500; letter-spacing: 0; }
+.badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11.6px; font-weight: 500; letter-spacing: 0;
+  padding: 2.5px 10px; border: 1px solid var(--ink); border-radius: 999px; white-space: nowrap;
+}
+.badge::before { content: ''; width: 5px; height: 5px; border-radius: 50%; border: 1px solid currentColor; }
+.badge.live { color: var(--accent); border-color: var(--accent); }
+.badge.live::before { background: currentColor; }
+.badge.plain::before { display: none; }
+
+.lede { font-size: 14px; margin-top: 10px; max-width: 6.15in; }
+.meta { color: var(--muted); font-size: 12.6px; margin-top: 7px; }
+
+.stats {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  margin-top: 22px; padding: 12px 0 14px;
+}
+.stats b { display: block; font-size: 42px; line-height: 1.1; color: var(--accent); letter-spacing: -0.02em; }
+.stats span { display: block; margin-top: 3px; }
+
+.portfolio .label { display: block; margin: 23px 0 13px; }
+
+.flow { display: flex; align-items: center; gap: 0; }
+.flow .box {
+  flex: 1; border: 1px solid var(--line); border-radius: 7px; padding: 9px 13px; font-size: 12.8px; line-height: 1.7;
+}
+.flow .box b { display: block; }
+.flow .box.key { border-color: var(--accent); }
+.flow .arrow { flex: none; width: 26px; text-align: center; color: var(--accent); font-size: 14px; }
+
+.stories3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; }
+.story h3 { font-size: 14.2px; font-weight: 600; margin-bottom: 7px; }
+.stories3 .k { display: block; font-size: 11.4px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-top: 8px; }
+
+.split { display: grid; grid-template-columns: 1fr 1.92in; gap: 0.3in; align-items: start; }
+.split.wide { grid-template-columns: 1fr 2.15in; }
+.storyrows .story { border-bottom: 1px solid var(--line); padding: 0 0 12px; margin-bottom: 13px; }
+.storyrows dl { display: grid; grid-template-columns: 74px 1fr; row-gap: 3px; }
+.storyrows dt { font-size: 11.4px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding-top: 2.5px; }
+
+.covers { margin: 0 0 0 18px; }
+.covers li { margin-top: 5px; padding-left: 3px; }
+
+.phone {
+  background: #0d0e10; border-radius: 22px; padding: 5px; overflow: hidden;
+}
+.phone img, .phone .screen { display: block; width: 100%; border-radius: 17px; }
+.caption { color: var(--muted); font-size: 12.2px; line-height: 1.45; margin-top: 8px; }
+
+.also { position: absolute; left: 0.66in; right: 0.66in; bottom: 0.6in; border-top: 1px solid var(--line); padding-top: 15px; }
+.also b { display: block; margin-bottom: 7px; }
+
+/* More apps */
+.apps4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; margin-top: 20px; font-size: 12.5px; }
+.app h2 { font-size: 16.5px; font-weight: 600; display: flex; justify-content: space-between; align-items: center; margin: 9px 0 5px; }
+.app p { line-height: 1.5; }
+.app .stack { color: var(--muted); margin-top: 5px; }
+.app .links { font-weight: 500; margin-top: 4px; line-height: 1.55; }
+.apps2 { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; border-top: 1px solid var(--line); margin-top: 14px; padding-top: 3px; }
+.apps2 .app h2 { justify-content: flex-start; gap: 11px; }
+.foot { display: grid; grid-template-columns: 1.6fr 1fr; gap: 30px; border-top: 1px solid var(--line); margin-top: 14px; padding-top: 0; }
+.foot .label { margin: 13px 0 7px; }
+.foot .skills { grid-template-columns: 130px 1fr; row-gap: 2px; }
+.foot .contact div { font-weight: 500; line-height: 1.5; }
+.foot .contact .muted { font-weight: 400; }
+
+/* Drawn clinic mock (made-up patients) */
+.mock { background: #f6f8f8; color: #1d2a2a; font-size: 6.6px; line-height: 1.35; padding: 9px 9px 12px; aspect-ratio: 9 / 19; }
+.mock .bar { display: flex; justify-content: space-between; font-weight: 600; font-size: 6.4px; padding: 0 4px 7px; }
+.mock .top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 7px; }
+.mock .top b { font-size: 9px; }
+.mock .pill { font-size: 5.6px; font-weight: 600; padding: 1.5px 5px; border-radius: 99px; background: #e4ecec; color: #48605f; white-space: nowrap; }
+.mock .pill.now { background: #0f766e; color: #fff; }
+.mock .pill.wait { background: #fdebc8; color: #8a5a00; }
+.mock .pill.book { background: #dbe9fb; color: #1a56b0; }
+.mock .appt { display: grid; grid-template-columns: 22px 1fr auto; align-items: center; gap: 5px; background: #fff; border: 1px solid #e3e8e8; border-radius: 5px; padding: 5px 6px; margin-bottom: 4px; }
+.mock .appt.cur { border-color: #0f766e; background: #eef8f6; }
+.mock .appt time { color: #6d7d7c; font-size: 5.8px; }
+.mock .appt b { display: block; font-size: 6.8px; }
+.mock .appt span { color: #6d7d7c; }
+.mock .sect { font-size: 5.4px; letter-spacing: 0.08em; text-transform: uppercase; color: #6d7d7c; margin: 9px 0 4px; }
+.mock .teeth { display: grid; grid-template-columns: repeat(16, 1fr); gap: 1.5px; margin-bottom: 2px; }
+.mock .teeth i { aspect-ratio: 1; background: #fff; border: 1px solid #d5dddd; border-radius: 1.5px; }
+.mock .teeth .f { background: #38a3e8; border-color: #38a3e8; }
+.mock .teeth .c { background: #f26b7a; border-color: #f26b7a; }
+.mock .teeth .w { background: #f5b83d; border-color: #f5b83d; }
+.mock .teeth .d { background: #3fbf8f; border-color: #3fbf8f; }
+.mock .legend { display: flex; gap: 7px; color: #6d7d7c; font-size: 5.4px; margin-top: 4px; }
+.mock .legend i { display: inline-block; width: 5px; height: 5px; border-radius: 1px; margin-right: 2px; vertical-align: -0.5px; }
+.mock .note { background: #fff; border: 1px solid #e3e8e8; border-radius: 4px; padding: 4px 6px; }

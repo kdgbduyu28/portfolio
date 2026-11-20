@@ -24,19 +24,19 @@ stack: [Kotlin, Jetpack Compose, Coroutines & Flow, OkHttp, UPnP / SOAP, UPnP GE
 skills: [Native Android (Kotlin), Testing, CI/CD & automation, Product design]
 highlights:
   - Stereo pairs from two different Sonos models, and any speaker as a soundbar's surrounds or sub, which the Sonos app doesn't allow
-  - "Sonos beyond pairing: multiroom groups, scenes with reminders, favorites, the queue, line-in and TV inputs, alarms and sleep timers"
+  - "Sonos beyond pairing: multiroom groups, scenes with reminders, favorites, playlists, the queue, shuffle and repeat, line-in and TV inputs, alarms and sleep timers"
   - Volume and playback for any brand's DLNA speaker, Linkplay speakers (groups, stereo pairs, presets) and Google Cast speakers, displays and groups
   - Live now-playing and volume from UPnP event subscriptions, falling back to slow polling when a speaker won't send events
   - Google Cast spoken directly (CASTV2 over TLS with hand-written protobuf frames), limited to private-network addresses
   - Every speaker-bonding write is planned, shown and confirmed before it's sent, with a snapshot saved for undo
   - 10-band EQ with a profile per output that switches when your headphones connect, plus AutoEQ import
-  - Soundcore and Redmi Buds settings (noise cancelling, the earbuds' own EQ, battery) ported from OpenSCQ30 and Gadgetbridge, including Redmi's challenge-response handshake
+  - Soundcore and Redmi Buds settings (noise cancelling, the earbuds' own EQ, touch controls, battery) ported from OpenSCQ30 and Gadgetbridge, including Redmi's challenge-response handshake
   - "A protocol lab for unknown devices: raw RFCOMM, BLE and USB explorers and Bluetooth log import with automatic framing analysis"
-  - "Everyday controls: a home-screen widget, a lock-screen remote that takes the volume buttons, a volume mixer across brands, and backup and restore"
+  - "Everyday controls: a home-screen widget, a Quick Settings tile, a lock-screen remote that takes the volume buttons, a seek bar, pause all and mute all, scenes that set volumes on every brand, and backup and restore"
   - Protocol code is plain Kotlin with no Android dependencies, tested against fake households and a desktop CLI
 stats:
   - { value: '6', label: 'brands and protocols, from Sonos to Redmi' }
-  - { value: '168', label: 'protocol, EQ and Bluetooth tests' }
+  - { value: '209', label: 'protocol, EQ and Bluetooth tests' }
   - { value: 'GPL-3', label: 'open source' }
 ---
 
@@ -50,9 +50,9 @@ I have speakers from several brands at home and wanted one app that controls all
 
 **Tugma** (Filipino for "match") finds every speaker on the Wi-Fi and groups them by brand. For Sonos it can bond a One with an Era 100 as a stereo pair, or add any speaker to a soundbar as a surround or sub. For other brands it gives you volume, mute and playback over the standards they already speak: UPnP/DLNA and Google Cast.
 
-Beyond pairing, Tugma covers what you'd use the official app for every day: Sonos groups, scenes, favorites, alarms and the queue; Linkplay speakers from WiiM, Arylic and Audio Pro, including stereo pairs across models; a volume mixer for every speaker in the house; and a home-screen widget and lock-screen remote.
+Beyond pairing, Tugma covers what you'd use the official app for every day: Sonos groups, scenes, favorites, playlists, alarms and the queue; Linkplay speakers from WiiM, Arylic and Audio Pro, including stereo pairs across models; a volume mixer for every speaker in the house; and a home-screen widget and lock-screen remote.
 
-There's also a Headphones tab for Bluetooth: a 10-band EQ with a separate profile for each pair of headphones, which switches by itself when they connect. It can import headphone corrections from the AutoEQ project. Soundcore headphones (ported from OpenSCQ30) and Redmi Buds (ported from Gadgetbridge) get their own settings: noise cancelling, the earbuds' built-in EQ and battery.
+There's also a Headphones tab for Bluetooth: a 10-band EQ with a separate profile for each pair of headphones, which switches by itself when they connect. It can import headphone corrections from the AutoEQ project. Soundcore headphones (ported from OpenSCQ30) and Redmi Buds (ported from Gadgetbridge) get their own settings: noise cancelling, the earbuds' built-in EQ, battery, and on Redmi Buds what each tap and long press does.
 
 ## How it works
 
@@ -67,6 +67,6 @@ There's also a Headphones tab for Bluetooth: a 10-band EQ with a separate profil
 
 ## Where it stands
 
-Phases 0–48 are on GitHub, with CI running the tests and lint on every push, and a debug-signed APK you can install from [Releases](https://github.com/kdgbduyu28/Tugma/releases). The protocol code is tested against fake households and real topology captures from SoCo's test suite, but the app hasn't been tried on real speakers yet. That's next, starting with the CLI's read-only checks and dry runs.
+Version 0.2.0 (phases 0–57) is on GitHub, with CI running the 209 tests and lint on every push, and an APK you can install from [Releases](https://github.com/kdgbduyu28/Tugma/releases). The protocol code is tested against fake households and real topology captures from SoCo's test suite, but the app hasn't been tried on real speakers yet. That's next, starting with the CLI's read-only checks and dry runs.
 
 Tugma is unofficial and not affiliated with Sonos, Google or any speaker maker.

@@ -23,13 +23,13 @@ export const SITE: Record<SiteKey, string> = {
   url: 'https://timothy-borja.pages.dev',
   name: 'Tim Borja',
   fullName: 'Timothy Maersk M. Borja',
-  role: 'Full-stack engineer',
-  title: 'Tim Borja · Full-stack engineer: mobile, web and serverless',
+  role: 'Full-stack web & mobile developer',
+  title: 'Tim Borja · Full-stack developer: web apps, mobile apps and the backends behind them',
   description:
-    'Full-stack engineer in the Philippines building production mobile apps, web platforms and AWS serverless backends. Case studies, live demos, résumé and contact.',
-  headline: 'Production apps, from the phone to the database.',
+    'Full-stack web and mobile developer in the Philippines building web apps, SaaS dashboards, iOS and Android apps, and the AWS and Postgres backends behind them. Case studies, live demos, résumé and contact.',
+  headline: 'Web and mobile apps, from the screen to the database.',
   intro:
-    "Full-stack engineer with 4+ years shipping web and mobile systems: Flutter, React Native and native Android clients, AWS serverless and Postgres backends, payments, and the release pipeline. Most of what's here is live, so you can try it before you read about it.",
+    "Full-stack developer with 4+ years shipping web and mobile products: React and TypeScript web apps and admin portals, Flutter, React Native and native Android apps, AWS serverless and Postgres backends, payments, and the release pipeline. Most of what's here is live, so you can try it before you read about it.",
   location: 'Cavite, Philippines',
   availability: 'Available for contract or direct work · remote worldwide',
   email: 'timothyborja28@gmail.com',
@@ -42,7 +42,7 @@ export const SITE: Record<SiteKey, string> = {
 };
 
 export const NAV = [
-  { href: '/projects', label: 'Apps' },
+  { href: '/projects', label: 'Projects' },
   { href: '/#craft', label: 'Craft' },
   { href: '/#experience', label: 'Experience' },
   { href: '/contact', label: 'Contact' },

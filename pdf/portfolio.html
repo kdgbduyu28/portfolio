@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Timothy Borja · Technical portfolio</title>
+<meta name="author" content="Timothy Maersk M. Borja">
+<link rel="stylesheet" href="pdf.css">
+</head>
+<body class="portfolio">
+
+<!-- 01 Campus food-ordering platform -->
+<section class="page">
+  <div class="runhead"><span><b>Timothy Borja</b> · Technical portfolio · timothy-borja.pages.dev</span><span>01 / 04</span></div>
+  <h1>Campus food-ordering platform <span class="badge live">In production</span></h1>
+  <p class="lede">Ordering, delivery and payments for university campuses. Live on the App Store and Google Play, with four native apps and two web portals on one AWS backend.</p>
+  <p class="meta">Sole engineer, independent contractor · Dec 2022 – present · Client kept confidential</p>
+
+  <div class="stats">
+    <div><b>9</b><span>campuses</span></div>
+    <div><b>15,000+</b><span>orders</span></div>
+    <div><b>219</b><span>merchants</span></div>
+  </div>
+
+  <h2 class="label">How it fits together</h2>
+  <div class="flow">
+    <div class="box"><b>Clients</b>Customer app<br>Rider app<br>Merchant app<br>Admin app<br>2 web portals</div>
+    <span class="arrow">→</span>
+    <div class="box"><b>API</b>REST<br>GraphQL</div>
+    <span class="arrow">→</span>
+    <div class="box key"><b>Lambda services</b>AWS Lambda<br>Step Functions<br>EventBridge</div>
+    <span class="arrow">→</span>
+    <div class="box"><b>Data and services</b>DynamoDB<br>Stripe Connect<br>Google Maps</div>
+  </div>
+
+  <h2 class="label">Engineering stories</h2>
+  <div class="stories3">
+    <div class="story">
+      <h3>The double charge</h3>
+      <span class="k">Problem</span>Retries created a new idempotency key, so some customers were charged twice.
+      <span class="k">Fix</span>Made every retry reuse the payment's original idempotency key.
+      <span class="k">Result</span>A retried payment no longer creates a second charge.
+    </div>
+    <div class="story">
+      <h3>4M reads a day</h3>
+      <span class="k">Problem</span>Database reads were far higher than the traffic explained.
+      <span class="k">Fix</span>Traced the reads to a client loop and fixed it on the server.
+      <span class="k">Result</span>About 4M fewer database reads every day.
+    </div>
+    <div class="story">
+      <h3>One-command releases</h3>
+      <span class="k">Problem</span>Four apps each needed builds for TestFlight, the App Store and Google Play.
+      <span class="k">Fix</span>Built one release pipeline that covers every app and store.
+      <span class="k">Result</span>One command ships all four apps.
+    </div>
+  </div>
+
+  <div class="also">
+    <b>Also built</b>
+    Payments with Stripe Connect and two campus meal-plan systems, including split payment · Dispute and chargeback handling · Automatic rider assignment behind release locks · Audit logs for admins and vendors · Tiered Google Maps caching
+  </div>
+</section>
+
+<!-- 02 D-Touch Health Platform -->
+<section class="page">
+  <div class="runhead"><span><b>Timothy Borja</b> · Technical portfolio · timothy-borja.pages.dev</span><span>02 / 04</span></div>
+  <h1>D-Touch Health Platform <span class="badge">Pre-launch</span></h1>
+  <p class="lede">Clinic management SaaS web app for many clinics on one backend: booking board, tooth charting, prescriptions, treatment estimates, and billing with GCash and QR Ph.</p>
+  <p class="meta">Sole engineer · Jan 2024 – present · Rewritten from Flutter to React Native · Running on test data only</p>
+
+  <div class="stats">
+    <div><b>4</b><span>apps on one backend</span></div>
+    <div><b>96</b><span>row-level security policies</span></div>
+    <div><b>192</b><span>tests</span></div>
+  </div>
+
+  <h2 class="label">How it fits together</h2>
+  <div class="flow">
+    <div class="box"><b>4 web apps</b>React, TypeScript<br>Installable, Web Push<br>Also build for Android</div>
+    <span class="arrow">→</span>
+    <div class="box"><b>Supabase</b>One backend for all clinics</div>
+    <span class="arrow">→</span>
+    <div class="box key"><b>PostgreSQL</b>Row-level security<br>Booking constraints<br>Audit log</div>
+  </div>
+
+  <div class="split" style="margin-top:23px">
+    <div>
+      <h2 class="label" style="margin-top:0">Engineering stories</h2>
+      <div class="storyrows">
+        <div class="story">
+          <h3>Permissions in the database</h3>
+          <dl>
+            <dt>Problem</dt><dd>Many clinics share one database, so a bug in any app could expose another clinic's data.</dd>
+            <dt>Fix</dt><dd>Enforced every permission in PostgreSQL with row-level security.</dd>
+            <dt>Result</dt><dd>720+ automated database tests prove each clinic sees only its own data.</dd>
+          </dl>
+        </div>
+        <div class="story">
+          <h3>No double-booking</h3>
+          <dl>
+            <dt>Problem</dt><dd>Two staff members can book the same slot at the same time.</dd>
+            <dt>Fix</dt><dd>Added a database constraint that rejects overlapping bookings.</dd>
+            <dt>Result</dt><dd>Double-booking is impossible, whichever app sends the request.</dd>
+          </dl>
+        </div>
+        <div class="story">
+          <h3>An audit log no client can skip</h3>
+          <dl>
+            <dt>Problem</dt><dd>A log written by the apps only works if every app remembers to write it.</dd>
+            <dt>Fix</dt><dd>Moved audit logging into the database itself.</dd>
+            <dt>Result</dt><dd>Every change is recorded, and no client can skip it.</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="phone">
+        <div class="screen mock">
+          <div class="bar"><span>9:41</span><span>●●● ▮</span></div>
+          <div class="top"><div><span style="color:#6d7d7c">THURSDAY</span><br><b>16 October</b></div><span class="pill wait">Sample data</span></div>
+          <div class="appt"><time>8:00</time><div><b>Juan Dela Cruz</b><span>Cleaning</span></div><span class="pill">Done</span></div>
+          <div class="appt"><time>9:00</time><div><b>Ana Reyes</b><span>Filling · #36</span></div><span class="pill">Done</span></div>
+          <div class="appt cur"><time>10:00</time><div><b>Marco Santos</b><span>Check-up</span></div><span class="pill now">In the chair</span></div>
+          <div class="appt"><time>11:00</time><div><b>Liza Bautista</b><span>Braces adjustment</span></div><span class="pill wait">Waiting</span></div>
+          <div class="appt"><time>1:00</time><div><b>Paolo Garcia</b><span>Extraction · #48</span></div><span class="pill book">Booked</span></div>
+          <div class="appt"><time>2:00</time><div><b>Bea Mendoza</b><span>Whitening</span></div><span class="pill book">Booked</span></div>
+          <div class="sect">In the chair</div>
+          <b style="font-size:7px">Marco Santos</b><br><span style="color:#6d7d7c">Check-up · last visit 12 Jun</span>
+          <div class="sect">Dental chart</div>
+          <div class="teeth"><i></i><i></i><i class="f"></i><i></i><i></i><i></i><i></i><i class="d"></i><i></i><i></i><i></i><i></i><i></i><i class="w"></i><i></i><i></i></div>
+          <div class="teeth"><i class="c"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="f"></i><i></i><i></i></div>
+          <div class="legend"><span><i style="background:#38a3e8"></i>Filled</span><span><i style="background:#f26b7a"></i>Caries</span><span><i style="background:#f5b83d"></i>Watch</span><span><i style="background:#3fbf8f"></i>Crown</span></div>
+          <div class="sect">Private note</div>
+          <div class="note">Watch #26 at next visit. Recall in 6 months.</div>
+        </div>
+      </div>
+      <p class="caption">Doctor's day view, drawn mock-up. Made-up patients; no real patient information.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 Presyo -->
+<section class="page">
+  <div class="runhead"><span><b>Timothy Borja</b> · Technical portfolio · timothy-borja.pages.dev</span><span>03 / 04</span></div>
+  <h1>Presyo <span class="badge live">Live</span> <a class="link" href="https://presyo.pages.dev">presyo.pages.dev</a></h1>
+  <p class="lede">Philippine price tracker on the web. A Python pipeline reads government and store sources into an Expo web app with no backend.</p>
+  <p class="meta">Sole engineer · Python, Expo, GitHub Actions</p>
+
+  <div class="stats">
+    <div><b>19</b><span>government and store sources</span></div>
+    <div><b>1,736</b><span>places covered</span></div>
+    <div><b>2×</b><span>updates a day</span></div>
+  </div>
+
+  <h2 class="label">How it fits together</h2>
+  <div class="flow">
+    <div class="box"><b>Sources</b>DA, PSA, DOE, DTI, DOH, BSP, Meralco and others</div>
+    <span class="arrow">→</span>
+    <div class="box key"><b>Python pipeline</b>GitHub Actions, twice a day</div>
+    <span class="arrow">→</span>
+    <div class="box" style="flex:.8"><b>Static JSON</b>No server</div>
+    <span class="arrow">→</span>
+    <div class="box" style="flex:.8"><b>Expo app</b>Reads the JSON directly</div>
+  </div>
+
+  <div class="split wide" style="margin-top:23px">
+    <div>
+      <h2 class="label" style="margin-top:0">What it covers</h2>
+      <ul class="covers">
+        <li>Prices for 39 wet markets, shown on a map.</li>
+        <li>Gadget prices with history and price-drop alerts.</li>
+        <li>Two places compared side by side.</li>
+        <li>English and Filipino throughout.</li>
+        <li>Feeds the meal planner in Gawain with real prices.</li>
+      </ul>
+
+      <h2 class="label">Engineering stories</h2>
+      <div class="storyrows">
+        <div class="story">
+          <h3>Messy place names</h3>
+          <dl>
+            <dt>Problem</dt><dd>Sources write the same town many ways, like "Sta. Cruz" or "City of Cebu".</dd>
+            <dt>Fix</dt><dd>Matched every name to a list of 1,736 official places.</dd>
+            <dt>Result</dt><dd>Prices land in the right town.</dd>
+          </dl>
+        </div>
+        <div class="story">
+          <h3>One broken source doesn't stop the rest</h3>
+          <dl>
+            <dt>Problem</dt><dd>A bad government PDF could break the whole update.</dd>
+            <dt>Fix</dt><dd>Made each of the 19 sources fail on its own.</dd>
+            <dt>Result</dt><dd>A broken source skips only itself; the rest still update.</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="phone"><img src="img/presyo.jpg" alt="Presyo home screen"></div>
+      <p class="caption">Home screen: market, fuel and gadget prices near you.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 More apps -->
+<section class="page">
+  <div class="runhead"><span><b>Timothy Borja</b> · Technical portfolio · timothy-borja.pages.dev</span><span>04 / 04</span></div>
+  <h1>More web and mobile apps</h1>
+
+  <div class="apps4">
+    <div class="app">
+      <div class="phone"><img src="img/pabili.jpg" alt="Pabili home screen"></div>
+      <h2>Pabili <span class="badge live plain">Live</span></h2>
+      <p>Shopping app concept with cart, vouchers, checkout, order tracking, price alerts, live selling and a "Wrapped" summary.</p>
+      <p class="stack">Expo · Web (PWA) and Android</p>
+      <p class="links"><a href="https://pabili.pages.dev">pabili.pages.dev</a></p>
+    </div>
+    <div class="app">
+      <div class="phone"><img src="img/gawain.jpg" alt="Gawain today screen"></div>
+      <h2>Gawain <span class="badge live plain">Live</span></h2>
+      <p>Fits chores into the gaps between meetings, shares them in turns, and plans weekly meals priced with Presyo data.</p>
+      <p class="stack">Expo, Supabase · Web and Android · 188 tests</p>
+      <p class="links"><a href="https://gawain-ccn.pages.dev">gawain-ccn.pages.dev</a></p>
+    </div>
+    <div class="app">
+      <div class="phone"><img src="img/bayarin.jpg" alt="Bayarin due screen"></div>
+      <h2>Bayarin <span class="badge live plain">Live</span></h2>
+      <p>Reads a bill photo on the device and fills in the amount and due date. Tracks a monthly budget and renewals.</p>
+      <p class="stack">Flutter, ML Kit · Web, Android, iOS</p>
+      <p class="links"><a href="https://bayarin-3q5.pages.dev">bayarin-3q5.pages.dev</a><br><a href="https://github.com/kdgbduyu28/Bayarin">GitHub ↗</a></p>
+    </div>
+    <div class="app">
+      <div class="phone"><img src="img/tugma.jpg" alt="Tugma speakers screen"></div>
+      <h2>Tugma <span class="badge plain">In progress</span></h2>
+      <p>Open-source speaker controller for Sonos, DLNA, Linkplay and Google Cast, with headphone EQ. Not yet tested on real speakers.</p>
+      <p class="stack">Kotlin · 209 tests</p>
+      <p class="links"><a href="https://github.com/kdgbduyu28/Tugma">GitHub ↗</a></p>
+    </div>
+  </div>
+
+  <div class="apps2">
+    <div class="app">
+      <h2>Sine <span class="badge plain">In progress</span></h2>
+      <p>Android TV video player with Dolby Vision, Atmos passthrough, Live TV and SMB, Jellyfin and Plex sources. Not yet tested on a TV.</p>
+      <p class="stack">Kotlin, Media3, libmpv · 252 tests</p>
+      <p class="links"><a href="https://github.com/kdgbduyu28/Sine">GitHub ↗</a></p>
+    </div>
+    <div class="app">
+      <h2>Groundwork <span class="badge plain">Source only</span></h2>
+      <p>AI documentation agent that answers from docs, checks its own citations and is tested on 50 questions.</p>
+      <p class="stack">Python, LangGraph, Claude API, Next.js</p>
+      <p class="links"><a href="https://github.com/kdgbduyu28/groundwork">GitHub ↗</a></p>
+    </div>
+  </div>
+
+  <div class="foot">
+    <div>
+      <h2 class="label">Skills</h2>
+      <dl class="skills">
+        <dt>Web &amp; frontend</dt><dd>React, TypeScript, Next.js, Tailwind, PWAs</dd>
+        <dt>Mobile</dt><dd>Flutter, Dart, React Native, Expo, Kotlin</dd>
+        <dt>Backend</dt><dd>Node.js, TypeScript, Python, REST, GraphQL</dd>
+        <dt>Cloud &amp; data</dt><dd>AWS Lambda, Supabase, PostgreSQL, Cloudflare</dd>
+        <dt>Tools</dt><dd>Stripe, GitHub Actions, fastlane, EAS, Docker</dd>
+      </dl>
+    </div>
+    <div class="contact">
+      <h2 class="label">Contact</h2>
+      <div><a href="mailto:timothyborja28@gmail.com">timothyborja28@gmail.com</a></div>
+      <div>+63 967 407 0209</div>
+      <div><a href="https://github.com/kdgbduyu28">github.com/kdgbduyu28</a></div>
+      <div><a href="https://timothy-borja.pages.dev">timothy-borja.pages.dev</a></div>
+      <div class="muted">Cavite, Philippines · Remote, worldwide</div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

@@ -49,7 +49,7 @@ links:
   - { label: Google Play, url: 'https://play.google.com/store/apps/developer?id=Byppo+Technologies,+LLC' }
 role: Sole engineer. Clients, serverless backend, payments and settlement, release pipeline.
 stack: [Flutter, Dart, Node.js, AWS Lambda, API Gateway, AppSync GraphQL, DynamoDB, Cognito, Step Functions, EventBridge, Stripe Connect, Twilio, Firebase, Google Maps, fastlane]
-skills: [Flutter & Dart, Node.js & GraphQL, AWS serverless, Payments (Stripe Connect), App Store & Play releases, CI/CD & automation, Testing, Product design]
+skills: [Flutter & Dart, Dashboards & admin portals, Node.js & GraphQL, AWS serverless, Payments (Stripe Connect), App Store & Play releases, CI/CD & automation, Testing, Product design]
 highlights:
   - 9 campuses, 15,000+ orders and 219 merchants in production
   - Customer, rider and merchant apps on iOS and Android, plus merchant and admin web portals

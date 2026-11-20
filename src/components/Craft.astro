@@ -2,7 +2,7 @@
 import AppIcon from './AppIcon.astro';
 import type { Project } from '../data/projects';
 
-// The mobile details that don't show up in a screenshot, each with a small live demo and the apps it shipped in.
+// The web and mobile details that don't show up in a screenshot, each with a small live demo and the apps it shipped in.
 
 interface Props {
   projects: Project[];
@@ -12,6 +12,24 @@ const { projects } = Astro.props;
 const pick = (...ids: string[]) => ids.map((id) => projects.find((p) => p.id === id)).filter((p) => p !== undefined);
 
 const tiles = [
+  {
+    key: 'portal',
+    title: 'Dashboards and portals people work in all day',
+    text: 'Booking boards, patient tables, order queues and admin portals with search, filters, CSV import and export, reports, and statements ready to print.',
+    apps: pick('clinic-platform', 'food-delivery-platform'),
+  },
+  {
+    key: 'pwa',
+    title: 'Web apps that feel installed',
+    text: 'Installable web apps with a manifest, service workers and Web Push, served from Cloudflare\'s edge with fast static pages and proper link previews.',
+    apps: pick('pabili', 'gawain', 'clinic-platform', 'bayarin'),
+  },
+  {
+    key: 'auth',
+    title: 'Sign-in and accounts, done properly',
+    text: 'Email and Google sign-in, password reset, bot protection with Turnstile, roles per account, and every rule enforced by the database rather than the page.',
+    apps: pick('clinic-platform', 'gawain', 'food-delivery-platform'),
+  },
   {
     key: 'push',
     title: 'Notifications that land at the right moment',
@@ -53,10 +71,11 @@ const tiles = [
 
 <section id="craft" class="wrap scroll-mt-24 py-20">
   <div class="max-w-2xl">
-    <p class="eyebrow">Mobile craft</p>
+    <p class="eyebrow">Craft</p>
     <h2 class="h-display mt-3 text-4xl sm:text-5xl">The details people feel.</h2>
     <p class="mt-4 text-lg text-muted">
-      Most of mobile is the hard part a screenshot can't show. These are the ones I've shipped to real users.
+      On the web or on a phone, most of the work is the part a screenshot can't show. These are the ones I've shipped to
+      real users.
     </p>
   </div>
 
@@ -65,6 +84,68 @@ const tiles = [
       tiles.map((t) => (
         <li class="flex flex-col overflow-hidden rounded-[28px] border border-line bg-card">
           <div class:list={['craft-visual relative h-44 overflow-hidden border-b border-line', `v-${t.key}`]} aria-hidden="true">
+            {t.key === 'portal' && (
+              <div class="portal">
+                <div class="portal-side">
+                  <i />
+                  <i />
+                  <i />
+                  <i />
+                </div>
+                <div class="portal-main">
+                  <div class="portal-tools">
+                    <span class="search">Search patients…</span>
+                    <span class="chip">Export CSV</span>
+                  </div>
+                  {[
+                    ['Ana Reyes', 'Filling', 'done'],
+                    ['Marco Santos', 'Check-up', 'now'],
+                    ['Liza Bautista', 'Braces', 'wait'],
+                    ['Paolo Garcia', 'Extraction', 'book'],
+                  ].map(([n, v, st], i) => (
+                    <div class="row" style={`--i:${i}`}>
+                      <b>{n}</b>
+                      <span>{v}</span>
+                      <em class={st} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            {t.key === 'pwa' && (
+              <div class="win">
+                <div class="win-bar">
+                  <span class="dots">
+                    <i />
+                    <i />
+                    <i />
+                  </span>
+                  <span class="url">pabili.pages.dev</span>
+                  <span class="install">⊕ Install</span>
+                </div>
+                <div class="win-body">
+                  <i />
+                  <i />
+                  <i />
+                  <i />
+                  <i />
+                  <i />
+                </div>
+                <p class="installed">Installed · works offline ✓</p>
+              </div>
+            )}
+            {t.key === 'auth' && (
+              <div class="signin">
+                <b>Sign in</b>
+                <span class="field">you@clinic.ph · ••••••••</span>
+                <span class="turnstile">
+                  <i />
+                  Verified human
+                </span>
+                <span class="go">Continue</span>
+                <span class="google">G&nbsp; Continue with Google</span>
+              </div>
+            )}
             {t.key === 'push' && (
               <div class="stack">
                 <div class="banner b1">
@@ -191,6 +272,234 @@ const tiles = [
     background:
       radial-gradient(70% 90% at 50% 0%, color-mix(in oklab, var(--color-accent) 12%, transparent), transparent),
       var(--color-paper);
+  }
+
+  /* Portal */
+  .portal {
+    position: absolute;
+    inset: 16px 16px 0;
+    display: flex;
+    border-radius: 14px 14px 0 0;
+    background: var(--color-card);
+    box-shadow: 0 0 0 1px var(--color-line);
+    overflow: hidden;
+    font-size: 10px;
+  }
+  .portal-side {
+    display: grid;
+    align-content: start;
+    gap: 7px;
+    width: 46px;
+    padding: 12px 9px;
+    border-right: 1px solid var(--color-line);
+  }
+  .portal-side i {
+    height: 6px;
+    border-radius: 3px;
+    background: var(--color-line);
+  }
+  .portal-side i:first-child {
+    background: var(--color-accent);
+  }
+  .portal-main {
+    flex: 1;
+    padding: 9px 10px;
+  }
+  .portal-tools {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+  .portal-tools .search {
+    flex: 1;
+    padding: 3px 7px;
+    border-radius: 6px;
+    box-shadow: 0 0 0 1px var(--color-line);
+    color: var(--color-muted);
+  }
+  .portal-tools .chip {
+    padding: 3px 7px;
+    border-radius: 6px;
+    background: var(--color-ink);
+    color: var(--color-paper);
+    font-weight: 600;
+  }
+  .portal .row {
+    display: grid;
+    grid-template-columns: 1fr 0.8fr 10px;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 2px;
+    border-bottom: 1px solid var(--color-line);
+    animation: rowin 6s ease-out infinite;
+    animation-delay: calc(var(--i) * 0.25s);
+  }
+  .portal .row span {
+    color: var(--color-muted);
+  }
+  .portal .row em {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+  .row .done {
+    background: #22c55e;
+  }
+  .row .now {
+    background: var(--color-accent);
+  }
+  .row .wait {
+    background: #f59e0b;
+  }
+  .row .book {
+    background: #94a3b8;
+  }
+  @keyframes rowin {
+    0% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    8%,
+    100% {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* Installable web app */
+  .win {
+    position: absolute;
+    inset: 18px 16px 0;
+    border-radius: 12px 12px 0 0;
+    background: var(--color-card);
+    box-shadow: 0 0 0 1px var(--color-line);
+    overflow: hidden;
+  }
+  .win-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 9px;
+    border-bottom: 1px solid var(--color-line);
+    font-size: 10px;
+  }
+  .dots {
+    display: flex;
+    gap: 4px;
+  }
+  .dots i {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--color-line);
+  }
+  .url {
+    flex: 1;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: color-mix(in oklab, var(--color-line) 50%, transparent);
+    color: var(--color-muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .install {
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: var(--color-accent);
+    color: #fff;
+    font-weight: 600;
+    animation: pulse 6s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%,
+    30%,
+    100% {
+      transform: none;
+    }
+    35% {
+      transform: scale(0.9);
+    }
+    40% {
+      transform: none;
+    }
+  }
+  .win-body {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    padding: 12px;
+  }
+  .win-body i {
+    height: 34px;
+    border-radius: 8px;
+    background: color-mix(in oklab, var(--color-accent) 18%, var(--color-line));
+  }
+  .installed {
+    position: absolute;
+    left: 50%;
+    bottom: 12px;
+    translate: -50% 0;
+    padding: 5px 10px;
+    border-radius: 999px;
+    background: #dcfce7;
+    color: #166534;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+    opacity: 0;
+    animation: on 6s infinite;
+  }
+
+  /* Sign-in */
+  .signin {
+    position: absolute;
+    inset: 14px 24% 0;
+    display: grid;
+    align-content: start;
+    gap: 5px;
+    padding: 10px 14px;
+    border-radius: 16px 16px 0 0;
+    background: var(--color-card);
+    box-shadow: 0 0 0 1px var(--color-line);
+    font-size: 10px;
+  }
+  .signin b {
+    font-size: 12px;
+  }
+  .signin .field {
+    padding: 4px 8px;
+    border-radius: 7px;
+    box-shadow: 0 0 0 1px var(--color-line);
+    color: var(--color-muted);
+  }
+  .signin .turnstile {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 8px;
+    border-radius: 7px;
+    background: color-mix(in oklab, var(--color-line) 45%, transparent);
+  }
+  .turnstile i {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    background: #22c55e;
+    animation: blink 3s ease-in-out infinite;
+  }
+  .signin .go {
+    padding: 4px 8px;
+    border-radius: 7px;
+    background: var(--color-ink);
+    color: var(--color-paper);
+    text-align: center;
+    font-weight: 600;
+  }
+  .signin .google {
+    padding: 4px 8px;
+    border-radius: 7px;
+    box-shadow: 0 0 0 1px var(--color-line);
+    text-align: center;
+    font-weight: 500;
   }
 
   /* Push */
@@ -495,6 +804,9 @@ const tiles = [
 
   @media (prefers-reduced-motion: reduce) {
     .banner,
+    .portal .row,
+    .install,
+    .turnstile i,
     .wifi svg,
     .toast,
     .cents,
@@ -503,6 +815,7 @@ const tiles = [
       animation: none;
     }
     .b1,
+    .installed,
     .toast.off {
       opacity: 1;
     }

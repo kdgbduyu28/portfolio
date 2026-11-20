@@ -18,11 +18,11 @@ const projects = await getProjects();
   <section id="apps" class="wrap scroll-mt-24 py-20">
     <div class="flex flex-wrap items-end justify-between gap-6">
       <div class="max-w-2xl">
-        <p class="eyebrow">Apps</p>
+        <p class="eyebrow">Projects</p>
         <h2 class="h-display mt-3 text-4xl sm:text-5xl">Shipped, and still running.</h2>
-        <p class="mt-4 text-lg text-muted">From a campus delivery fleet on the App Store and Google Play to price data for every Filipino city.</p>
+        <p class="mt-4 text-lg text-muted">From a campus delivery fleet on the App Store and Google Play to a clinic SaaS in the browser and price data for every Filipino city.</p>
       </div>
-      <a href="/projects" class="text-sm font-semibold underline-offset-4 hover:underline">All apps →</a>
+      <a href="/projects" class="text-sm font-semibold underline-offset-4 hover:underline">All projects →</a>
     </div>
     <div class="mt-12 grid gap-5 lg:grid-cols-2">
       {projects.map((p) => <AppCard project={p} />)}
@@ -39,10 +39,10 @@ const projects = await getProjects();
       <div class="pointer-events-none absolute -top-24 -right-24 size-80 rounded-full bg-indigo-500 opacity-30 blur-3xl"></div>
       <div class="pointer-events-none absolute -bottom-28 left-10 size-72 rounded-full bg-rose-500 opacity-20 blur-3xl"></div>
       <p class="relative font-mono text-xs tracking-[0.14em] text-white/60 uppercase">Contact</p>
-      <h2 class="h-display relative mt-3 max-w-2xl text-4xl sm:text-5xl">Have an app to build, or one to rescue? Let's talk.</h2>
+      <h2 class="h-display relative mt-3 max-w-2xl text-4xl sm:text-5xl">Have a web app, site or mobile app to build, or one to rescue? Let's talk.</h2>
       <p class="relative mt-4 max-w-xl text-white/70">
-        New builds, store releases, backends that need to scale, or a team that needs a mobile engineer. I usually reply within
-        a day or two.
+        New web apps and dashboards, mobile apps and store releases, backends that need to scale, or a team that needs a
+        web or mobile engineer. I usually reply within a day or two.
       </p>
       <div class="relative mt-8 flex flex-wrap gap-3">
         <a href="/contact" class="btn bg-white text-stone-900 hover:bg-accent hover:text-white">Send a message</a>

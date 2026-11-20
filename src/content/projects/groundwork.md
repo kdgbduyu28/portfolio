@@ -18,7 +18,7 @@ accent: '#4338ca'
 repo: https://github.com/kdgbduyu28/groundwork
 role: Agent design, retrieval, evaluation and UI
 stack: [Python, LangGraph, Claude API, FastAPI, PostgreSQL, pgvector, Next.js, Tailwind, pytest, GitHub Actions]
-skills: [AI agents & LLMs, Search & retrieval, Python data pipelines, Supabase & PostgreSQL, TypeScript, Testing, CI/CD & automation]
+skills: [AI agents & LLMs, Next.js & Tailwind, Search & retrieval, Python data pipelines, Supabase & PostgreSQL, React & TypeScript, Testing, CI/CD & automation]
 highlights:
   - Retries when the search results don't answer the question, instead of guessing
   - Checks each claim against the passage it cites, and labels an answer "unverified" when it can't

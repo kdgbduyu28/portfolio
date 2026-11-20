@@ -24,9 +24,11 @@ links:
   - { label: Android APK, url: 'https://github.com/kdgbduyu28/Gawain/releases' }
 role: Sole engineer. Product design and development.
 stack: [Expo SDK 57, React Native, Expo Router, TypeScript, Zustand, Supabase, PostgreSQL, Supabase Realtime, expo-calendar, expo-location, expo-notifications, Service Worker, Cloudflare Pages Functions, Home Assistant, Open-Meteo, Vitest, PGlite, GitHub Actions]
-skills: [React Native & Expo, TypeScript, Supabase & PostgreSQL, Database security (RLS), Product design, Testing, CI/CD & automation, Cloudflare]
+skills: [React Native & Expo, Web apps & PWAs, React & TypeScript, Supabase & PostgreSQL, Database security (RLS), Product design, Testing, CI/CD & automation, Cloudflare]
 highlights:
   - Repeats from when you last did it, so doing a chore late moves the next one too, and nothing nags on the wrong day
+  - "Chores on set days too (collection days, rent on the 15th), chores taken in turns across the household, and a week recap"
+  - Laundry that checks the weather and tells you to wait out the rain, beat it, or bring the clothes in
   - Finds free time between meetings and suggests chores that fit, keeping work-hour breaks short and a buffer before each call
   - "Appliance timers that check your calendar: if the washer finishes during standup, the reminder comes when standup ends"
   - "Meal planner: a week of cooking to your budget from 76 Filipino recipes, priced with this week's DA, PSA and DTI prices from Presyo, with the grocery list in palengke units"
@@ -34,11 +36,11 @@ highlights:
   - Pantry that learns how long each item lasts from your purchases and warns you before it runs out
   - Leave-home and arrive-at-store reminders through phone geofencing, with location kept on the device
   - Reads your calendar from the phone, or from a Google/Outlook iCal link with repeating meetings, time zones and moved or cancelled meetings
-  - Installable web app that works offline, with browser reminders, desktop layout, dark mode, Filipino and backup files; the Android APK is built by GitHub Actions
+  - Installable web app that works offline, with browser reminders, desktop layout, dark mode, the whole app in Filipino and backup files; the Android APK is built by GitHub Actions
   - Optional sign-in syncs a household across phones and browsers, and keeps working offline in between
   - "Smart-home triggers: a Home Assistant sensor, an NFC tag or a button can mark a chore done or start the washer timer, and reminders can be spoken on a Sonos or Nest speaker"
 stats:
-  - { value: '177', label: 'automated tests' }
+  - { value: '188', label: 'automated tests' }
   - { value: '3', label: 'platforms, one codebase' }
   - { value: '0', label: 'sign-ups needed; sync is optional' }
 ---

@@ -11,9 +11,9 @@ interface Props {
 const { projects } = Astro.props;
 
 const platforms = [
+  { label: 'Web', icon: 'Web' as const },
   { label: 'App Store', icon: 'iOS' as const },
   { label: 'Google Play', icon: 'Android' as const },
-  { label: 'Web', icon: 'Web' as const },
 ];
 ---
 
@@ -29,16 +29,17 @@ const platforms = [
         {SITE.availability}
       </p>
       <h1 class="h-display mt-6 text-[2.75rem] leading-[1.02] sm:text-6xl lg:text-[4.4rem]">
-        Mobile apps people open every day.
+        Web and mobile apps people use every day.
         <span class="block text-white/45">And everything behind them.</span>
       </h1>
       <p class="mt-6 max-w-xl text-lg leading-relaxed text-white/70">
-        I'm Tim, a mobile and full-stack engineer in the Philippines. I ship Flutter and React Native apps to the App
-        Store, Google Play and the web, with the AWS and Postgres backends that run them.
+        I'm Tim, a full-stack web and mobile developer in the Philippines. I build web apps, SaaS dashboards and admin
+        portals in React and TypeScript, ship Flutter and React Native apps to the App Store and Google Play, and run the
+        AWS and Postgres backends behind them.
       </p>
 
       <div class="mt-8 flex flex-wrap gap-3">
-        <a href="/projects" class="btn bg-white text-stone-900 hover:bg-accent hover:text-white">See my apps</a>
+        <a href="/projects" class="btn bg-white text-stone-900 hover:bg-accent hover:text-white">See my work</a>
         {
           SITE.resume && (
             <a href={SITE.resume} target="_blank" rel="noopener" class="btn border border-white/20 text-white hover:border-white">
@@ -72,7 +73,7 @@ const platforms = [
           [
             ['15k+', 'orders'],
             ['9', 'campuses'],
-            ['4', 'native apps'],
+            ['15+', 'web & mobile apps'],
             ['4+', 'years'],
           ].map(([v, l]) => (
             <div>

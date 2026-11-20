@@ -44,7 +44,7 @@ D-Touch and the campus food platform are shown with drawn mocks (`src/components
 
 ### Résumé and portfolio PDFs
 
-`public/resume.pdf` and `public/portfolio.pdf` are the downloadable versions. Short links to share: `/resume` and `/portfolio` (set in `public/_redirects`).
+`public/resume.pdf` and `public/portfolio.pdf` are the downloadable versions. Their sources are `pdf/resume.html` and `pdf/portfolio.html` (shared styles in `pdf/pdf.css`); after editing, run `./scripts/build-pdfs.sh` to print them with headless Chrome, then release. Short links to share: `/resume` and `/portfolio` (set in `public/_redirects`).
 
 To update one, replace the file and redeploy; keep the file names. Clear `resume` or `portfolio` in `src/data/site.ts` to hide its buttons.
 

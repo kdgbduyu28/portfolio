@@ -25,11 +25,13 @@ highlights:
   - A second engine (libmpv) behind the same player interface takes over when Media3 can't play a file, with the same subtitles, tracks and resume
   - Ten kinds of source, from SMB shares to Jellyfin, Emby and Plex, with resume points written back to the server
   - Switches the TV's refresh rate to match the film (23.976, 24, 25, 50 Hz) and waits while HDMI re-syncs
+  - A library with posters, cast and "more like this", home-screen rows, Trakt sync, and Live TV from M3U playlists, HDHomeRun and the media servers
+  - Offline downloads that keep a show's next episodes ready, profiles with a kids mode, music and photos, and subtitle auto-sync
   - Works as the external player for Jellyfin, Plex, Emby and file managers, using the MX Player and VLC conventions
 stats:
   - { value: '2', label: 'playback engines' }
   - { value: '10', label: 'kinds of source' }
-  - { value: '50+', label: 'unit tests' }
+  - { value: '252', label: 'unit tests' }
 ---
 
 ## The problem
@@ -52,4 +54,4 @@ A "What this TV can play" screen lists the Dolby Vision profiles, HDR formats, d
 
 ## Where it stands
 
-Phases 1 and 2 are on GitHub. Phases 3 to 12 are written and being compiled and tested before they go up: music, photos and a library screensaver, offline downloads, subtitle auto-sync, profiles with age limits, Trakt sync, Kodi `.nfo` metadata, Wake-on-LAN for a sleeping NAS and HDR tone-mapping for TVs without HDR. Sine hasn't been released yet; the next step is testing on real TVs and boxes.
+All twelve phases are on GitHub. Beyond playback they add a library with posters and cast, Live TV with a guide, music, photos and a library screensaver, offline downloads, subtitle auto-sync, profiles with age limits, Trakt sync, Kodi `.nfo` metadata, Wake-on-LAN for a sleeping NAS, Dolby Vision profile 7 to 8.1 conversion and HDR tone-mapping for TVs without HDR. The whole app builds, with 252 unit tests and lint passing. It hasn't been tried on a real TV or released yet; that's the next step.

@@ -25,18 +25,19 @@ links:
   - { label: Android APK, url: 'https://github.com/kdgbduyu28/Pabili/releases' }
 role: Sole engineer. Product design and development.
 stack: [Expo SDK 57, React Native, Expo Router, TypeScript, Zustand, Reanimated, Vitest, GitHub Actions, Cloudflare Pages]
-skills: [React Native & Expo, TypeScript, Product design, Testing, CI/CD & automation, Cloudflare]
+skills: [React Native & Expo, Web apps & PWAs, React & TypeScript, Product design, Testing, CI/CD & automation, Cloudflare]
 highlights:
-  - Full shopping flow, from search and categories to cart, vouchers, checkout and order tracking
+  - Full shopping flow, from search and categories to cart, vouchers, an address book, checkout and order tracking
+  - "Shopping tools: compare up to three products side by side, price alerts at your target, Buy Again at today's prices, Recently Viewed and a monthly budget that warns you at checkout"
   - Engagement features modelled on the big apps (daily coins, spin the wheel, Slash It, group buys, live selling, a virtual garden)
   - Shop pages, chat with sellers, ratings with photos, likes and following
   - Yearly "Wrapped" summary and achievements
   - Dark mode, Filipino/English toggle and local phone notifications
   - Installable as a web app, and as an Android APK that GitHub Actions builds and publishes for every version
 stats:
-  - { value: '37', label: 'screens' }
+  - { value: '42', label: 'screens' }
   - { value: '3', label: 'platforms, one codebase' }
-  - { value: '25', label: 'unit tests' }
+  - { value: '36', label: 'unit tests' }
 ---
 
 ## Why build it
@@ -47,7 +48,8 @@ Shopee and Lazada are some of the most-used apps in the Philippines, and much of
 
 A shopping app with real depth:
 
-- **Shopping:** home feed, categories, search, product pages, shops, cart, vouchers, address book, checkout and order tracking through to unboxing and rating.
+- **Shopping:** home feed, categories, search, product pages, shops, cart, vouchers, an address book with an address per order, checkout and order tracking through to unboxing and rating.
+- **Shopping tools:** compare up to three products side by side, price alerts when a product drops to your target, Buy Again at today's prices, Recently Viewed, order search and a monthly pretend budget that warns you at checkout.
 - **Engagement:** daily coin check-in, spin the wheel, Slash It (invite friends to cut a price), group buys, mega sales, a virtual garden and a shake-to-win game.
 - **Social:** chat with sellers, a feed, following shops, likes and a yearly "Wrapped" recap.
 - **Polish:** dark mode, Filipino/English, haptics and sounds, notifications for parcel arrivals and restocks, and an installable web app.
@@ -56,7 +58,7 @@ A shopping app with real depth:
 
 Pabili is one **Expo / React Native** codebase that runs on the web, Android and iOS. Navigation uses **Expo Router**, and state lives in a **Zustand** store saved on the device. Nothing ships and nothing is charged.
 
-- **Promotion math as pure functions.** Checkout groups lines by shop, then applies bundle discounts, shop vouchers, shipping fees and free-shipping gaps, the platform voucher and coins in a fixed order. It's plain TypeScript, so 19 Vitest cases cover the money paths.
+- **Promotion math as pure functions.** Checkout groups lines by shop, then applies bundle discounts, shop vouchers, shipping fees and free-shipping gaps, the platform voucher and coins in a fixed order. It's plain TypeScript, so Vitest cases cover the money paths, the budget and the price-alert timing.
 - **A notification feed derived from state.** One function builds the feed from orders, cart, restock alerts, group buys and check-ins, and schedules local phone notifications that deep-link to the right screen.
 - **Expo web on Cloudflare Pages.** Wrangler never uploads folders named `node_modules`, so the icon fonts Expo exports there returned 404 and every icon broke. The release script moves them and rewrites the bundle paths before deploying.
 

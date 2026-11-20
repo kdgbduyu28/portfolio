@@ -24,17 +24,20 @@ links:
   - { label: Android APK, url: 'https://github.com/kdgbduyu28/Presyo/releases' }
 role: Sole engineer. Data pipeline, app and automation.
 stack: [Python, uv, httpx, pdfplumber, shapely, pytest, Expo, React Native Web, TypeScript, Zustand, GitHub Actions, Cloudflare Pages]
-skills: [Python data pipelines, React Native & Expo, TypeScript, CI/CD & automation, Cloudflare, Product design]
+skills: [Python data pipelines, Web apps & PWAs, React Native & Expo, React & TypeScript, CI/CD & automation, Cloudflare, Product design]
 highlights:
   - "19 sources: DA, PSA, DOE, DTI, DOH, BSP, Meralco, MWSS and LTFRB reports, plus Apple, Samsung and five local gadget stores"
   - Phone, tablet, laptop and console prices across stores with price history, recent drops and 30-day lows, and Apple prices abroad converted at the BSP rate
   - Government price guides for common medicines, read from the DOH's PDF booklets
   - Star an item and get an alert in the app when its price drops below your target
+  - "Compare tab: your place against a second one, including electricity and water rates side by side"
+  - Maps of nearby wet markets with an item's price, or your whole basket's total, on each pin
+  - What your basket cost each week or month, and any price shared as an image card
   - 1,736 PSGC places and 39 geocoded wet markets, matched from messy place names like "Sta. Cruz" or "City of Cebu"
   - Updates itself twice a day with GitHub Actions, then rebuilds and redeploys; a version tag also builds the Android APK
   - "No backend: everything is precomputed, and the app picks the nearest place on the device"
   - Each source runs on its own, so one government site being down doesn't stop the update
-  - Dark mode, saved preferences and a desktop layout as well as a phone layout
+  - English and Filipino throughout, dark mode, saved preferences and a desktop layout as well as a phone layout
 stats:
   - { value: '19', label: 'data sources' }
   - { value: '1,736', label: 'places mapped' }
@@ -53,6 +56,8 @@ Nobody checks five PDFs before going to the market. So the data exists, but most
 
 A Gadgets tab follows phones, tablets, Macs, consoles and games across Apple, Samsung and local resellers, with each model's price history, so you can tell a real sale from a normal price. It also shows what the same iPhone costs in the US, Japan or Singapore, and works out installments.
 
+A Compare tab puts your place next to a second one, and a map shows the nearby wet markets with an item's price, or your whole basket's total, on each pin. The app runs in English or Filipino.
+
 Each price shows where it came from and when it was last updated, so you can check it against the original report.
 
 ## How it works
@@ -62,7 +67,7 @@ Each price shows where it came from and when it was last updated, so you can che
 - **Store prices:** Apple's own store pages embed their price data, the local Apple resellers run Shopify with a public product feed, and Samsung has a product-finder API. A price is stored only when it changes, so history stays small.
 - **Build:** precomputes small JSON files per source and place, with headline items and sparklines, so the app never filters large files.
 - **App (Expo / React Native):** resolves the nearest place on the device and fetches one small file per source. Hosting is static, so there is no server to run.
-- **Automation:** GitHub Actions runs test → fetch → commit → build → deploy at 12:00 and 20:00 Manila time. Failures are logged as warnings and the build still ships with the data that did arrive. A separate workflow builds the Android APK on each version tag; the APK reads the same published data, so it stays current without a new release.
+- **Automation:** GitHub Actions runs test → fetch → commit → build → deploy at 12:00 and 20:00 Manila time. Failures are logged as warnings and the build still ships with the data that did arrive, and a health check warns when a source stops producing new documents. A separate workflow builds the Android APK on each version tag; the APK reads the same published data, so it stays current without a new release.
 
 ## Try it
 

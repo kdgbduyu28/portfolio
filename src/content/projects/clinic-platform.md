@@ -22,36 +22,38 @@ links:
   - { label: Android APKs, url: 'https://github.com/kdgbduyu28/health-platform-fe/releases' }
 role: Sole engineer. Product, front end, database and deployment.
 stack: [React Native for Web, Expo Router, React 19, TypeScript, TanStack Query, Supabase, PostgreSQL 17, Row Level Security, PL/pgSQL, Deno Edge Functions, Web Push, Cloudflare Pages, Turnstile, Vitest, GitHub Actions]
-skills: [React Native & Expo, TypeScript, Supabase & PostgreSQL, Database security (RLS), Product design, Testing, CI/CD & automation, Cloudflare]
+skills: [React Native & Expo, Dashboards & admin portals, Web apps & PWAs, React & TypeScript, Supabase & PostgreSQL, Database security (RLS), Product design, Testing, CI/CD & automation, Cloudflare]
 highlights:
-  - 77 Row Level Security policies across 28 tables; tables deny by default
-  - 660+ database checks verify tenant isolation and every role's access
+  - 96 Row Level Security policies across 33 tables; tables deny by default
+  - 720+ database checks verify tenant isolation and every role's access
   - Exclusion constraints make double-booking impossible for any doctor or patient chart
+  - Prescriptions the patient can read and print, priced treatment estimates the patient accepts before they're billed, and x-rays and photos on the chart in private storage
+  - Clinic reports (visits, no-shows, doctors, services, new patients) and one-tap recall reminders for everyone due a check-up
   - CSV imports you can preview with a real dry run, then undo as a batch
   - An audit log written by database triggers, so no client can skip it
   - Consent recorded per Privacy Policy version and per clinic, under the Data Privacy Act (RA 10173)
-  - Rewritten from Flutter to React Native for Web, about 30,600 lines and 78 routes, with 187 Vitest tests
+  - Rewritten from Flutter to React Native for Web, about 33,800 lines and 80 routes, with 192 Vitest tests
   - "The same code runs on Android: GitHub Actions builds an APK of each app per version, with phone versions of the web-only controls (pickers, calendar taps) and room for the system bars"
 stats:
-  - { value: '77', label: 'RLS policies' }
-  - { value: '660+', label: 'database checks' }
-  - { value: '187', label: 'Vitest tests' }
+  - { value: '96', label: 'RLS policies' }
+  - { value: '720+', label: 'database checks' }
+  - { value: '192', label: 'Vitest tests' }
 ---
 
 ## What it is
 
 Small clinics in the Philippines often run on paper logbooks, Messenger and a spreadsheet. This platform gives each clinic four apps, one for each person's job, built for landscape tablets and desktops:
 
-- **Patient:** book and reschedule, a four-step intake form a guardian can complete, visit history, and a private calendar feed.
-- **Doctor:** day, week and month views, tooth charting (FDI or Universal), clinician-only notes and patient handover.
-- **Front desk:** a drag-and-drop status board from confirmed to arrived, in consultation and completed, plus walk-ins and recall lists.
-- **Admin:** staff invite codes with approval, billing with GCash, QR Ph, bank transfer or cash, an expense ledger, CSV import and export, and the audit log.
+- **Patient:** book and reschedule, a four-step intake form a guardian can complete, visit history, prescriptions, treatment estimates to accept or decline, shared x-rays and photos, and a private calendar feed.
+- **Doctor:** day, week and month views, tooth charting (FDI or Universal), clinician-only notes, prescriptions to write, void and print, x-rays and photos on the chart, and patient handover.
+- **Front desk:** a drag-and-drop status board from confirmed to arrived, in consultation and completed, plus walk-ins, recall lists and a reminder to everyone due for a check-up in one go.
+- **Admin:** staff invite codes with approval, billing with GCash, QR Ph, bank transfer or cash, treatment estimates that turn into bills, reports on visits, no-shows, doctors and services, an expense ledger, CSV import and export, and the audit log.
 
 It started as one dental practice with three hard-coded clinic identities. It is now multi-tenant: clinics are data rows, the clinic type switches dental features on per vertical, and each clinic has its own public page.
 
 ## The database is the backend
 
-There is no custom application server and no role logic in client queries. The apps talk to PostgREST and Supabase Auth, and **PostgreSQL enforces every rule**: 77 Row Level Security policies, 100+ PL/pgSQL functions and 50+ triggers, checked by 660+ database tests.
+There is no custom application server and no role logic in client queries. The apps talk to PostgREST and Supabase Auth, and **PostgreSQL enforces every rule**: 96 Row Level Security policies, 100+ PL/pgSQL functions and 50+ triggers, checked by 720+ database tests.
 
 - **A role that leaked across tenants.** Roles used to live on the global user profile, so one clinic's admin could promote a person at another clinic. Roles now sit on each clinic membership, a trigger restricts branch-locked admins, and a guard keeps every clinic's last full admin.
 - **Overlap rules that respect privacy.** Scheduling clashes are checked per patient chart, not per person. A person-wide rule would let one clinic discover that the same patient has a booking at another.

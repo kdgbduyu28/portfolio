@@ -24,16 +24,18 @@ links:
   - { label: Android APK, url: 'https://github.com/kdgbduyu28/Bayarin/releases' }
 role: Sole engineer. Product design and development.
 stack: [Flutter 3.35, Dart, Material 3, Riverpod 3, go_router, Google ML Kit, flutter_local_notifications, fl_chart, shared_preferences, GitHub Actions, Cloudflare Pages]
-skills: [Flutter & Dart, Product design, Testing, CI/CD & automation, Cloudflare]
+skills: [Flutter & Dart, Web apps & PWAs, Product design, Testing, CI/CD & automation, Cloudflare]
 highlights:
   - Reads a photo of a bill on the device (Google ML Kit) and fills in the amount, due date, kWh, billing period and account number, for you to check before saving
   - Bills without a fixed amount (Meralco, water, credit cards) can be entered when they arrive, scanned, or estimated from your last three payments
   - Turns kWh into pesos with Meralco's published rates, read from Presyo's open data
+  - A monthly budget for bills, a calendar of due dates and renewals, and a year in review
+  - History calls out a bill that's well above or below its usual amount, and records how each bill was paid
   - Works out LTO registration deadlines from the plate's last two digits
-  - Reminders scheduled on the phone, so they fire with the app closed; the web version exports a calendar file instead
-  - English and Filipino, dark mode, phone and desktop layouts, backup and restore
+  - Reminders scheduled on the phone, so they fire with the app closed, with a nudge the day after if a bill is still unpaid; the web version exports a calendar file instead
+  - English and Filipino, dark mode, phone and desktop layouts, CSV export, and backup and restore with a nudge when a backup is overdue
 stats:
-  - { value: '25', label: 'logic and widget tests' }
+  - { value: '42', label: 'logic and widget tests' }
   - { value: '10+', label: 'billers the scanner knows' }
   - { value: '0', label: 'accounts; data stays on your device' }
 ---

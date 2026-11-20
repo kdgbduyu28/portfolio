@@ -11,13 +11,22 @@ export async function getProjects(): Promise<Project[]> {
 // so a skill with no project behind it simply doesn't appear.
 export const SKILL_GROUPS: { title: string; skills: { name: string; blurb: string }[] }[] = [
   {
-    title: 'Mobile & frontend',
+    title: 'Web & frontend',
+    skills: [
+      { name: 'React & TypeScript', blurb: 'React 19, React Native Web and Next.js, typed end to end from database rows to screens.' },
+      { name: 'Web apps & PWAs', blurb: 'Installable web apps with service workers, Web Push and layouts that work from phone to desktop.' },
+      { name: 'Dashboards & admin portals', blurb: 'Booking boards, data tables, order queues and back-office tools for staff who use them all day.' },
+      { name: 'Next.js & Tailwind', blurb: 'React front ends on Next.js, styled with Tailwind.' },
+      { name: 'Product design', blurb: 'Flows, layouts and copy that work on a phone, a tablet and a desktop.' },
+    ],
+  },
+  {
+    title: 'Mobile',
     skills: [
       { name: 'Flutter & Dart', blurb: 'Native iOS and Android apps in production, with Riverpod, Provider and BLoC.' },
       { name: 'React Native & Expo', blurb: 'One codebase for web, Android and iOS, with Expo Router.' },
       { name: 'Native Android (Kotlin)', blurb: 'Jetpack Compose, Media3 and raw network protocols, for phones and TVs.' },
-      { name: 'TypeScript', blurb: 'Typed end to end, from database rows to screens.' },
-      { name: 'Product design', blurb: 'Flows, layouts and copy that work on a phone, a tablet and a desktop.' },
+      { name: 'App Store & Play releases', blurb: 'fastlane and EAS builds, TestFlight and store releases in one command.' },
     ],
   },
   {
@@ -28,23 +37,17 @@ export const SKILL_GROUPS: { title: string; skills: { name: string; blurb: strin
       { name: 'Payments (Stripe Connect)', blurb: 'Split tender, payouts, deposit holds, refunds and disputes, to the cent.' },
       { name: 'Supabase & PostgreSQL', blurb: 'Schemas, migrations, PL/pgSQL, triggers and full-text search.' },
       { name: 'Database security (RLS)', blurb: 'Many tenants on one database, kept apart by the database itself.' },
+      { name: 'Cloudflare', blurb: 'Pages hosting, Functions and Turnstile bot protection.' },
     ],
   },
   {
-    title: 'Data & AI',
+    title: 'Data, AI & delivery',
     skills: [
       { name: 'Python data pipelines', blurb: 'Turning PDFs, CSVs and messy sites into clean, versioned data.' },
       { name: 'AI agents & LLMs', blurb: 'LangGraph agents on Claude that check their own work.' },
       { name: 'Search & retrieval', blurb: 'Hybrid vector and keyword search, re-ranking, measured with evals.' },
-    ],
-  },
-  {
-    title: 'Delivery & operations',
-    skills: [
-      { name: 'App Store & Play releases', blurb: 'fastlane and EAS builds, TestFlight and store releases in one command.' },
       { name: 'CI/CD & automation', blurb: 'GitHub Actions that test, fetch data, deploy on a schedule and publish Android APKs.' },
       { name: 'Testing', blurb: 'Vitest, pytest and database test suites that run on every change.' },
-      { name: 'Cloudflare', blurb: 'Pages hosting, Functions and Turnstile bot protection.' },
     ],
   },
 ];
