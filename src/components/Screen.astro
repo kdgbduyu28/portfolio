@@ -5,6 +5,7 @@ import Phone from './device/Phone.astro';
 import Tablet from './device/Tablet.astro';
 import Browser from './device/Browser.astro';
 import TV from './device/TV.astro';
+import { Image } from 'astro:assets';
 import ScreenContent from './ScreenContent.astro';
 import ClinicDay from './mocks/ClinicDay.astro';
 import ClinicBoard from './mocks/ClinicBoard.astro';
@@ -78,6 +79,18 @@ const liveUrl = live && project.data.embed ? project.data.live : undefined;
 {
   device === 'browser' && (
     <div class:list={['relative', className]}>
+      {screen.image && (
+        <Browser url={(project.data.live ?? '').replace(/^https?:\/\//, '') || 'localhost'}>
+          <Image
+            src={screen.image}
+            alt={screen.caption}
+            widths={[640, 960, 1440]}
+            sizes="(min-width: 1024px) 720px, 100vw"
+            loading={eager ? 'eager' : 'lazy'}
+            class="block h-auto w-full"
+          />
+        </Browser>
+      )}
       {screen.mock === 'groundwork-chat' && (
         <Browser url="groundwork · localhost:3000" dark>
           <div class="relative aspect-[16/10] overflow-hidden">

@@ -50,13 +50,13 @@ b, strong { font-weight: 600; }
 
 /* ---------- Résumé ---------- */
 
-.resume { padding-top: 0.6in; }
+.resume { padding-top: 0.45in; }
 .resume h1 { font-size: 29px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.15; }
 .resume .role { color: var(--accent); font-weight: 500; font-size: 15.5px; margin-top: 7px; }
 .resume .contact { margin-top: 11px; }
-.resume .rule { border: 0; border-top: 1px solid var(--line); margin: 19px 0 20px; }
+.resume .rule { border: 0; border-top: 1px solid var(--line); margin: 15px 0 15px; }
 .resume .summary { font-size: 13.5px; }
-.resume section { margin-top: 19px; }
+.resume section { margin-top: 15px; }
 .resume .label { display: block; margin-bottom: 9px; }
 .resume .label small { font-size: 12.9px; font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--muted); }
 
@@ -149,6 +149,8 @@ b, strong { font-weight: 600; }
 .apps2 { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; border-top: 1px solid var(--line); margin-top: 14px; padding-top: 3px; }
 .apps2 .app h2 { justify-content: flex-start; gap: 11px; }
 .apps3 { grid-template-columns: repeat(3, 1fr); gap: 22px; font-size: 12px; }
+.apps4r { grid-template-columns: repeat(4, 1fr); gap: 18px; font-size: 11px; margin-top: 10px; }
+.apps4r .app h2 { font-size: 15px; }
 .foot { display: grid; grid-template-columns: 1.6fr 1fr; gap: 30px; border-top: 1px solid var(--line); margin-top: 14px; padding-top: 0; }
 .foot .label { margin: 13px 0 7px; }
 .foot .skills { grid-template-columns: 130px 1fr; row-gap: 2px; }
