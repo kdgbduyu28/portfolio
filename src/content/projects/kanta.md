@@ -18,6 +18,8 @@ order: 9
 featured: true
 accent: '#7c3aed'
 repo: https://github.com/kdgbduyu28/Kanta
+links:
+  - { label: Android APK, url: 'https://github.com/kdgbduyu28/Kanta/releases' }
 role: Engineer. Research, product design and development.
 stack: [React Native, Expo SDK 57, TypeScript, Expo Router, Zustand, Reanimated, expo-sqlite, Kotlin, Expo Modules API, MediaSessionManager, NotificationListenerService, Media3 (ExoPlayer + MediaSession), DynamicsProcessing, Spotify App Remote SDK, LRCLIB, Vitest, JUnit, GitHub Actions]
 skills: [React Native & Expo, Native Android (Kotlin), Testing, Product design, CI/CD & automation]
@@ -31,7 +33,7 @@ highlights:
   - An optional Spotify App Remote mode that starts and queues Spotify songs without switching apps
 stats:
   - { value: '4', label: 'sources in one queue' }
-  - { value: '53', label: 'library, link and lyrics tests' }
+  - { value: '63', label: 'TypeScript and Kotlin tests' }
   - { value: '0', label: 'accounts; everything stays on the phone' }
 ---
 
@@ -57,6 +59,6 @@ You save songs by sharing them from any music app, pasting a link, or tapping th
 
 ## Where it stands
 
-All the features are written and the source is on [GitHub](https://github.com/kdgbduyu28/Kanta). The TypeScript side passes 53 tests, type-checking and lint. The Kotlin module hasn't been compiled yet and the app hasn't run on a phone. Next is a small test app that checks, on a real phone, how each music app responds to being controlled, and then the first APK.
+Version 0.1.0 is on [GitHub](https://github.com/kdgbduyu28/Kanta), with an APK you can install from [Releases](https://github.com/kdgbduyu28/Kanta/releases). CI runs the 53 TypeScript tests, type-checking, lint and the 10 Kotlin unit tests on every push, and GitHub Actions builds the APK from each version tag. The app hasn't been tried on a real phone yet. Next is a small test app that checks how each music app responds to being controlled, which will tune how Kanta starts songs and spots the end of one.
 
 Kanta is unofficial and not affiliated with Spotify, Google or Apple.
