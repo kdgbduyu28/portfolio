@@ -151,6 +151,8 @@ b, strong { font-weight: 600; }
 .apps3 { grid-template-columns: repeat(3, 1fr); gap: 22px; font-size: 12px; }
 .apps4r { grid-template-columns: repeat(4, 1fr); gap: 18px; font-size: 11px; margin-top: 10px; }
 .apps4r .app h2 { font-size: 15px; }
+.apps5r { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; font-size: 10.5px; }
+.apps5r .app h2 { font-size: 14px; }
 .foot { display: grid; grid-template-columns: 1.6fr 1fr; gap: 30px; border-top: 1px solid var(--line); margin-top: 14px; padding-top: 0; }
 .foot .label { margin: 13px 0 7px; }
 .foot .skills { grid-template-columns: 130px 1fr; row-gap: 2px; }
@@ -181,3 +183,5 @@ b, strong { font-weight: 600; }
 .mock .legend { display: flex; gap: 7px; color: #6d7d7c; font-size: 5.4px; margin-top: 4px; }
 .mock .legend i { display: inline-block; width: 5px; height: 5px; border-radius: 1px; margin-right: 2px; vertical-align: -0.5px; }
 .mock .note { background: #fff; border: 1px solid #e3e8e8; border-radius: 4px; padding: 4px 6px; }
+.apps5r .app h2 { gap: 6px; font-size: 13px; }
+.apps5r .badge { font-size: 9px; padding: 1px 6px; }
